@@ -11,10 +11,10 @@ router.get('/listEmployees', function (req, res) {
 });
 
 // GET employee
-router.get('/getEmployee/:id', function (req, res) {
+router.get('/getEmployee/:code', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var docToFind = req.params.id;
+  var docToFind = req.params.code;
   collection.find({'code':docToFind}, {}, function (e, docs) {
     res.json(docs);
   });
@@ -32,10 +32,10 @@ router.post('/addEmployee', function (req, res) {
 });
 
 // DELETE to deleteuser
-router.delete('/delEmployee/:id', function (req, res) {
+router.delete('/delEmployee/:code', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var docToDelete = req.params.id;
+  var docToDelete = req.params.code;
   collection.remove({ '_id': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
