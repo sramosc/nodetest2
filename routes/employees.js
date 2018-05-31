@@ -1,11 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
-// GET userList
+// GET employees list
 router.get('/listEmployees', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   collection.find({}, {}, function (e, docs) {
+    res.json(docs);
+  });
+});
+
+// GET employee
+router.get('/getEmployee/:id', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employees');
+  var docToFind = req.params.id;
+  collection.find({'code':docToFind}, {}, function (e, docs) {
     res.json(docs);
   });
 });
