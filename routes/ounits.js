@@ -52,7 +52,7 @@ router.put('/updateOUnit/:id', function (req, res) {
 });
 
 // GET resetCollectionEmployees
-router.get('/resetCollectionOUnit', function (req, res) {
+router.get('/resetCollectionOUnits', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   collection.remove({});
