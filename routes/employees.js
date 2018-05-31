@@ -20,7 +20,7 @@ router.get('/getEmployee/:code', function (req, res) {
   });
 });
 
-// POST to adduser.
+// POST addEmployee.
 router.post('/addEmployee', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
@@ -31,12 +31,22 @@ router.post('/addEmployee', function (req, res) {
   });
 });
 
-// DELETE to deleteuser
-router.delete('/delEmployee/:id', function (req, res) {
+// DELETE delEmployee
+router.delete('/delEmployee/:code', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var userToDelete = req.params.id;
+  var userToDelete = req.params.code;
   collection.remove({ 'code': userToDelete }, function (err) {
+    res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
+  });
+});
+
+// PUT updateEmployee
+router.put('/updateEmployee/:code', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employees');
+  var userToUpdate = req.params.code;
+  collection.update({ 'code': userToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
