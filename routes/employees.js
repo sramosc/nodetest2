@@ -36,7 +36,7 @@ router.delete('/delEmployee/:code', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var docToDelete = req.params.code;
-  collection.remove({ '_id': docToDelete }, function (err) {
+  collection.remove({ 'code': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
