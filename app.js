@@ -12,6 +12,8 @@ var db = monk('usertest1:userpass1@ds119059.mlab.com:19059/nodetest1');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var employeesRoutes = require('./routes/employees');
+var oUnitsRoutes = require('./routes/ounits');
+
 
 var app = express();
 
@@ -34,6 +36,7 @@ app.use(function (req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/employees', employeesRoutes);
+app.use('/ounits', oUnitsRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
