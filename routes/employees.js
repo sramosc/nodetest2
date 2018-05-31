@@ -32,11 +32,11 @@ router.post('/addEmployee', function (req, res) {
 });
 
 // DELETE to deleteuser
-router.delete('/delEmployee/:code', function (req, res) {
+router.delete('/delEmployee/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var docToDelete = req.params.code;
-  collection.remove({code:docToDelete}, function (err) {
+  var userToDelete = req.params.id;
+  collection.remove({ 'code': userToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
