@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser');
 var createError = require('http-errors');
+var cors = require('cors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -16,6 +17,7 @@ var oUnitsRoutes = require('./routes/ounits');
 
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
