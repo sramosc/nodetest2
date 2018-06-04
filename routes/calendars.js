@@ -60,12 +60,12 @@ router.get('/resetCollectionCalendars', function (req, res) {
     {
       'name': 'Nvidad',
       'anio': '2018',
-      'tipo': 'Laboral',
+      'tipo': 'Laboral'
     },
     {
       'name': 'Semana Santa',
       'anio': '2017',
-      'tipo': 'Festivo',
+      'tipo': 'Festivo'
     }
   ]);
 });
