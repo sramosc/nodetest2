@@ -135,7 +135,11 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "compañia": "CAMBIAR ENTELGY S.A",
       "cuentaCon": "57270030"
     }
-  ]);
+  ], function (err, result) {
+    res.send(
+      (err === null) ? { msg: '' } : { msg: err }
+    );
+  });
 });
 
 module.exports = router;

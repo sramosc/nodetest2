@@ -36,7 +36,7 @@ router.delete('/delCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToDelete = req.params.id;
-  collection.remove({ 'id': docToDelete }, function (err) {
+  collection.remove({ 'anio': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
