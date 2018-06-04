@@ -67,7 +67,11 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'anio': '2017',
       'tipo': 'Festivo'
     }
-  ]);
+  ], function (err, result) {
+    res.send(
+      (err === null) ? { msg: '' } : { msg: err }
+    );
+  });
 });
 
 module.exports = router;

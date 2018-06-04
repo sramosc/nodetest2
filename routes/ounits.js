@@ -15,7 +15,7 @@ router.get('/getOUnit/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   var docToFind = req.params.id;
-  collection.find({'id':docToFind}, {}, function (e, docs) {
+  collection.find({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -148,7 +148,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
       notifActi: 'Sí',
       parent: '6'
     }
-  ]);  
+  ], function (err, result) {
+    res.send(
+      (err === null) ? { msg: '' } : { msg: err }
+    );
+  });
 });
 
 module.exports = router;

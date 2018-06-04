@@ -291,7 +291,11 @@ router.get('/resetCollectionEmployees', function (req, res) {
         "description": "UNIT5"
       }
     }
-  ]);
+  ], function (err, result) {
+    res.send(
+      (err === null) ? { msg: '' } : { msg: err }
+    );
+  });
 });
 
 module.exports = router;
