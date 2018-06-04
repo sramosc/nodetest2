@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-// GET ounits list
+// GET calendars list
 router.get('/listCalendars', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
@@ -10,7 +10,7 @@ router.get('/listCalendars', function (req, res) {
   });
 });
 
-// GET employee
+// GET calendar
 router.get('/getCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
@@ -20,7 +20,7 @@ router.get('/getCalendar/:id', function (req, res) {
   });
 });
 
-// POST addEmployee.
+// POST addCalendar.
 router.post('/addCalendar', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
@@ -31,7 +31,7 @@ router.post('/addCalendar', function (req, res) {
   });
 });
 
-// DELETE delEmployee
+// DELETE delCalendar
 router.delete('/delCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
@@ -41,7 +41,7 @@ router.delete('/delCalendar/:id', function (req, res) {
   });
 });
 
-// PUT updateEmployee
+// PUT updateCalendar
 router.put('/updateCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
@@ -51,7 +51,7 @@ router.put('/updateCalendar/:id', function (req, res) {
   });
 });
 
-// GET resetCollectionEmployees
+// GET resetCollectionCalendars
 router.get('/resetCollectionCalendars', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
