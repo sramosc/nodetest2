@@ -15,7 +15,7 @@ router.get('/getCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToFind = req.params.id;
-  collection.find({ 'anio': docToFind }, {}, function (e, docs) {
+  collection.find({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -36,7 +36,7 @@ router.delete('/delCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToDelete = req.params.id;
-  collection.remove({ 'anio': docToDelete }, function (err) {
+  collection.remove({ 'id': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -58,15 +58,19 @@ router.get('/resetCollectionCalendars', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      'name': 'Nvidad',
-      'anio': '2018',
-      'tipo': 'Laboral'
-    },
-    {
+      'id': '1',
+      'name': 'Navidad',
+      'fecha': '2018-05-04',
+      'tipo': 'Laboral',
+      'comentario' : 'Calendario de navidad'
+      },
+      {
+      'id': '2',
       'name': 'Semana Santa',
-      'anio': '2017',
-      'tipo': 'Festivo'
-    }
+      'fecha': '2018-05-03',
+      'tipo': 'Festivo',
+      'comentario' : 'Calendario de semana Santa'
+      }
   ], function (err, result) {
     res.send(
       (err === null) ? { msg: '' } : { msg: err }
