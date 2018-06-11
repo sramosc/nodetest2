@@ -65,9 +65,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'Sí',
-      expensesNotification: 'No',
-      activityNotification: 'Sí',
+      holidaysNotification: true,
+      expensesNotification: false,
+      activityNotification: true,
       parent: '#'
     },
     {
@@ -78,9 +78,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'No',
-      expensesNotification: 'Sí',
-      activityNotification: 'Sí',
+      holidaysNotification: false,
+      expensesNotification: true,
+      activityNotification: true,
       parent: '1'
     },
     {
@@ -91,9 +91,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'Sí',
-      expensesNotification: 'No',
-      activityNotification: 'No',
+      holidaysNotification: true,
+      expensesNotification: false,
+      activityNotification: false,
       parent: '1'
     },
     {
@@ -104,9 +104,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'No',
-      expensesNotification: 'Sí',
-      activityNotification: 'Sí',
+      holidaysNotification: false,
+      expensesNotification: true,
+      activityNotification: true,
       parent: '2'
     },
     {
@@ -117,9 +117,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'Sí',
-      expensesNotification: 'No',
-      activityNotification: 'Sí',
+      holidaysNotification: true,
+      expensesNotification: false,
+      activityNotification: true,
       parent: '3'
     },
     {
@@ -130,9 +130,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'Sí',
-      expensesNotification: 'Sí',
-      activityNotification: 'Sí',
+      holidaysNotification: true,
+      expensesNotification: true,
+      activityNotification: true,
       parent: '3'
     },
     {
@@ -143,9 +143,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       description: 'Descripcion',
       type: 'Tipo',
       department: 'Departamento',
-      holidaysNotification: 'Sí',
-      expensesNotification: 'No',
-      activityNotification: 'Sí',
+      holidaysNotification: true,
+      expensesNotification: false,
+      activityNotification: true,
       parent: '6'
     }
   ], function (err, result) {
