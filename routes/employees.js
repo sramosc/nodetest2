@@ -51,6 +51,18 @@ router.put('/updateEmployee/:code', function (req, res) {
   });
 });
 
+// PUT updateEmployee/:code/ounit/ounit
+router.put('/updateEmployee/:code/ounit/:ounit', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employees');
+  var userToUpdate = req.params.code;
+  var newOUnit = req.params.ounit;
+  collection.updateOne({ 'code': userToUpdate }, {$set: { "ounit": newOUnit}}, function (err) {
+    res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
+  });
+});
+
+
 // GET resetCollectionEmployees
 router.get('/resetCollectionEmployees', function (req, res) {
   var db = req.db;
@@ -61,37 +73,25 @@ router.get('/resetCollectionEmployees', function (req, res) {
       "code": "1",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "1",
-        "description": "UNIT1"
-      }
+      "ounit": "1"
     },
     {
       "code": "2",
       "name": "Pablo Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "2",
-        "description": "UNIT2"
-      }
+      "ounit": "2"
     },
     {
       "code": "3",
       "name": "Carlos Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "3",
-        "description": "UNIT3"
-      }
+      "ounit": "3"
     },
     {
       "code": "4",
       "name": "Jose Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "1",
-        "description": "UNIT1"
-      }
+      "ounit": "1"
     },
     {
       "code": "5",
@@ -103,10 +103,7 @@ router.get('/resetCollectionEmployees', function (req, res) {
       "code": "6",
       "name": "Yolanda Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "4",
-        "description": "UNIT4"
-      }
+      "ounit": "4"
     },
     {
       "code": "7",
@@ -118,28 +115,19 @@ router.get('/resetCollectionEmployees', function (req, res) {
       "code": "8",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "5",
-        "description": "UNIT5"
-      }
+      "ounit": "5"
     },
     {
       "code": "9",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "5",
-        "description": "UNIT5"
-      }
+      "ounit": "5"
     },
     {
       "code": "10",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "6",
-        "description": "UNIT6"
-      }
+      "ounit": "6"
     },
     {
       "code": "11",
@@ -151,145 +139,97 @@ router.get('/resetCollectionEmployees', function (req, res) {
       "code": "12",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "2",
-        "description": "UNIT2"
-      }
+      "ounit": "2"
     },
     {
       "code": "13",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "2",
-        "description": "UNIT2"
-      }
+      "ounit": "2"
     },
     {
       "code": "14",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "2",
-        "description": "UNIT2"
-      }
+      "ounit": "2"
     },
     {
       "code": "15",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "5",
-        "description": "UNIT5"
-      }
+      "ounit": "5"
     },
     {
       "code": "16",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "4",
-        "description": "UNIT4"
-      }
+      "ounit": "4"
     },
     {
       "code": "17",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "6",
-        "description": "UNIT6"
-      }
+      "ounit": "6"
     },
     {
       "code": "18",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "6",
-        "description": "UNIT6"
-      }
+      "ounit": "6"
     },
     {
       "code": "19",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "1",
-        "description": "UNIT1"
-      }
+      "ounit": "1"
     },
     {
       "code": "20",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "1",
-        "description": "UNIT1"
-      }
+      "ounit": "1"
     },
     {
       "code": "21",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "3",
-        "description": "UNIT3"
-      }
+      "ounit": "3"
     },
     {
       "code": "22",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "3",
-        "description": "UNIT3"
-      }
+      "ounit": "3"
     },
     {
       "code": "23",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "3",
-        "description": "UNIT3"
-      }
+      "ounit": "3"
     },
     {
       "code": "24",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "2",
-        "description": "UNIT2"
-      }
+      "ounit": "2"
     },
     {
       "code": "25",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "2",
-        "description": "UNIT2"
-      }
+      "ounit": "2"
     },
     {
       "code": "26",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "5",
-        "description": "UNIT5"
-      }
+      "ounit": "5"
     },
     {
       "code": "27",
       "name": "Ana Pérez",
       "mail": "anaperez@entelgy.com",
-      "ounit": {
-        "id": "5",
-        "description": "UNIT5"
-      }
+      "ounit": "5"
     }
   ], function (err, result) {
     res.send(
