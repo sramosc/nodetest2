@@ -51,8 +51,8 @@ router.put('/updateEmployee/:code', function (req, res) {
   });
 });
 
-// PUT updateEmployee/:code/ounit/ounit
-router.put('/updateEmployee/:code/ounit/:ounit', function (req, res) {
+// PATCH updateEmployee/:code/ounit/ounit
+router.patch('/updateEmployee/:code/ounit/:ounit', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var userToUpdate = req.params.code;
