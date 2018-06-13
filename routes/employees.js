@@ -57,7 +57,7 @@ router.patch('/updateEmployee/:code/ounit/:ounit', function (req, res) {
   var collection = db.get('employees');
   var userToUpdate = req.params.code;
   var newOUnit = req.params.ounit;
-  collection.updateOne({ 'code': userToUpdate }, {$set: { "ounit": newOUnit}}, function (err) {
+  collection.findOneAndUpdate({ 'code': userToUpdate }, { "ounit": newOUnit}, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
