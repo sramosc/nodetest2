@@ -60,80 +60,93 @@ router.get('/resetCollectionAccounts', function (req, res) {
     {
       "id": "1",
       "name": "BANCO POPULAR",
-      "cuenta": "ES950075104383050000227346",
-      "compañia": "Cambiar ENTELGY CONSULTING S.A",
-      "cuentaCon": "57200005"
+      "account": "ES950075104383050000227346",
+      "company":{
+        "id":1,
+        "name":"ENTELGY CONSULTING S.A"
+      },
+      "bookAccount":{
+        "id": 1,
+        "value":"57200005"
+      }
     },
     {
       "id": "2",
       "name": "CAIXA BANK",
-      "cuenta": "ES1121002120870200294059",
-      "compañia": "CAMBIAR ENTELGY CONSULTING S.A",
-      "cuentaCon": "57200030"
+      "account": "ES1121002120870200294059",
+      "company":{
+        "id":1,
+        "name":"ENTELGY CONSULTING S.A"
+      },
+      "bookAccount":{
+        "id": 2,
+        "value":"57200030"
+      }
     },
     {
       "id": "3",
       "name": "LA CAIXA",
-      "cuenta": "ES1121002120870200294059",
-      "compañia": "CAMBIAR ENTELGY IBAI S.A",
-      "cuentaCon": "57200030"
+      "account": "ES1121002120870200294059",
+      "company":{
+        "id":2,
+        "name":"ENTELGY IBAI S.A"
+      },
+      "bookAccount":{
+        "id": 2,
+        "value":"57200030"
+      }
     },
     {
       "id": "4",
-      "name": "LA CAIXA-DCL",
-      "cuenta": "ES112100676780870200294059",
-      "compañia": "CAMBIAR DCL SERPRO S.L",
-      "cuentaCon": "57200630"
+      "name": "BANCO PEPE",
+      "account": "ES950075104383050000227346",
+      "company":{
+        "id":2,
+        "name":"ENTELGY IBAI S.A"
+      },
+      "bookAccount":{
+        "id": 1,
+        "value":"57200005"
+      }
     },
     {
       "id": "5",
-      "name": "POPULAR IBAI",
-      "cuenta": "ES11210021208705667594059",
-      "compañia": "CAMBIAR ENTELGY ENTELGY IBAI S.A",
-      "cuentaCon": "57270030"
+      "name": "BANCO PACO",
+      "account": "ES950075104383050000227346",
+      "company":{
+        "id":3,
+        "name":"ENTELGY DIGITAL"
+      },
+      "bookAccount":{
+        "id": 3,
+        "value":"57200012"
+      }
     },
     {
       "id": "6",
-      "name": "CAIXA-BANK",
-      "cuenta": "ES112100212087058988294059",
-      "compañia": "CAMBIAR ENTELGY ENTELGY IBAI S.A",
-      "cuentaCon": "57270030"
+      "name": "BANCO JUAN",
+      "account": "ES950075104383050000227346",
+      "company":{
+        "id":3,
+        "name":"ENTELGY DIGITAL"
+      },
+      "bookAccount":{
+        "id": 4,
+        "value":"57200067"
+      }
     },
     {
       "id": "7",
-      "name": "BANCO POULAR",
-      "cuenta": "ES1121002120870566788294059",
-      "compañia": "CAMBIAR ENTELGY ENTELGY IBAI S.A",
-      "cuentaCon": "57270030"
-    },
-    {
-      "id": "8",
-      "name": "POPULAR IBAI",
-      "cuenta": "ES1121002120870566788294059",
-      "compañia": "CAMBIAR ENTELGY ENTELGY IBAI S.A",
-      "cuentaCon": "57270030"
-    },
-    {
-      "id": "9",
-      "name": "LA CAIXA",
-      "cuenta": "ES11R6002120870566788294059",
-      "compañia": "CAMBIAR ENTELGY ENTELGY IBAI S.A",
-      "cuentaCon": "57270030"
-
-    },
-    {
-      "id": "10",
-      "name": "POPULAR IBAI",
-      "cuenta": "ES1121002120870566788294059",
-      "compañia": "CAMBIAR ENTELGY DCL IBAI S.A",
-      "cuentaCon": "57270030"
-    },
-    {
-      "id": "11",
-      "name": "BANCO POPULAR",
-      "cuenta": "ES1121002120870566788294059",
-      "compañia": "CAMBIAR ENTELGY S.A",
-      "cuentaCon": "57270030"
+      "name": "BANCO MANOLO",
+      "account": "ES950075104383050000227346",
+      "company":{
+        "id":4,
+        "name":"ENTELGY S.A."
+      },
+      "bookAccount":{
+        "id": 4,
+        "value":"57200067"
+      }
     }
   ], function (err, result) {
     res.send(
