@@ -16,6 +16,7 @@ var employeesRoutes = require('./routes/employees');
 var oUnitsRoutes = require('./routes/ounits');
 var calendarsRoutes = require('./routes/calendars');
 var accountsRoutes = require('./routes/accounts');
+var companiesRoutes = require('./routes/companies');
 
 
 var app = express();
@@ -43,6 +44,7 @@ app.use('/employees', employeesRoutes);
 app.use('/ounits', oUnitsRoutes);
 app.use('/calendars', calendarsRoutes);
 app.use('/accounts', accountsRoutes);
+app.use('/companies', companiesRoutes);
 
 
 // catch 404 and forward to error handler
