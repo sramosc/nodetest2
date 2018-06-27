@@ -60,93 +60,72 @@ router.get('/resetCollectionAccounts', function (req, res) {
     {
       "id": "1",
       "name": "BANCO POPULAR",
-      "account": "ES950075104383050000227346",
+      "account": "ES6621000418401234567891",
       "company":{
         "id":1,
         "name":"ENTELGY CONSULTING S.A"
       },
-      "bookAccount":{
-        "id": 1,
-        "value":"57200005"
-      }
+      "ledgerAccount":"57200001"      
     },
     {
       "id": "2",
       "name": "CAIXA BANK",
-      "account": "ES1121002120870200294059",
+      "account": "ES6000491500051234567892",
       "company":{
         "id":1,
         "name":"ENTELGY CONSULTING S.A"
       },
-      "bookAccount":{
-        "id": 2,
-        "value":"57200030"
-      }
+      "ledgerAccount":"57200005"    
     },
     {
       "id": "3",
       "name": "LA CAIXA",
-      "account": "ES1121002120870200294059",
+      "account": "ES9420805801101234567891",
       "company":{
         "id":2,
         "name":"ENTELGY IBAI S.A"
       },
-      "bookAccount":{
-        "id": 2,
-        "value":"57200030"
-      }
+      "ledgerAccount":"57200002"    
     },
     {
       "id": "4",
       "name": "BANCO PEPE",
-      "account": "ES950075104383050000227346",
+      "account": "ES9000246912501234567891",
       "company":{
         "id":2,
         "name":"ENTELGY IBAI S.A"
       },
-      "bookAccount":{
-        "id": 1,
-        "value":"57200005"
-      }
+      "ledgerAccount":"57200003"    
     },
     {
       "id": "5",
       "name": "BANCO PACO",
-      "account": "ES950075104383050000227346",
+      "account": "ES7100302053091234567895",
       "company":{
         "id":3,
         "name":"ENTELGY DIGITAL"
       },
-      "bookAccount":{
-        "id": 3,
-        "value":"57200012"
-      }
+      "ledgerAccount":"57200005"    
     },
     {
       "id": "6",
       "name": "BANCO JUAN",
-      "account": "ES950075104383050000227346",
+      "account": "ES1000492352082414205416",
       "company":{
         "id":3,
         "name":"ENTELGY DIGITAL"
       },
-      "bookAccount":{
-        "id": 4,
-        "value":"57200067"
-      }
+      "ledgerAccount":"57200003"    
     },
     {
       "id": "7",
       "name": "BANCO MANOLO",
-      "account": "ES950075104383050000227346",
+      "account": "ES1720852066623456789011",
       "company":{
         "id":4,
         "name":"ENTELGY S.A."
       },
-      "bookAccount":{
-        "id": 4,
-        "value":"57200067"
-      }
+      "ledgerAccount":"57200001"
     }
   ], function (err, result) {
     res.send(
