@@ -15,7 +15,7 @@ router.get('/getAccount/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('accounts');
   var docToFind = req.params.id;
-  collection.find({ 'id': docToFind }, {}, function (e, docs) {
+  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -62,7 +62,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "BANCO POPULAR",
       "account": "ES6621000418401234567891",
       "company":{
-        "id":1,
+        "id":"1",
         "name":"ENTELGY CONSULTING S.A"
       },
       "ledgerAccount":"57200001"      
@@ -72,7 +72,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "CAIXA BANK",
       "account": "ES6000491500051234567892",
       "company":{
-        "id":1,
+        "id":"1",
         "name":"ENTELGY CONSULTING S.A"
       },
       "ledgerAccount":"57200005"    
@@ -82,7 +82,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "LA CAIXA",
       "account": "ES9420805801101234567891",
       "company":{
-        "id":2,
+        "id":"2",
         "name":"ENTELGY IBAI S.A"
       },
       "ledgerAccount":"57200002"    
@@ -92,7 +92,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "BANCO PEPE",
       "account": "ES9000246912501234567891",
       "company":{
-        "id":2,
+        "id":"2",
         "name":"ENTELGY IBAI S.A"
       },
       "ledgerAccount":"57200003"    
@@ -102,7 +102,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "BANCO PACO",
       "account": "ES7100302053091234567895",
       "company":{
-        "id":3,
+        "id":"3",
         "name":"ENTELGY DIGITAL"
       },
       "ledgerAccount":"57200005"    
@@ -112,7 +112,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "BANCO JUAN",
       "account": "ES1000492352082414205416",
       "company":{
-        "id":3,
+        "id":"3",
         "name":"ENTELGY DIGITAL"
       },
       "ledgerAccount":"57200003"    
@@ -122,7 +122,7 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "name": "BANCO MANOLO",
       "account": "ES1720852066623456789011",
       "company":{
-        "id":4,
+        "id":"4",
         "name":"ENTELGY S.A."
       },
       "ledgerAccount":"57200001"
