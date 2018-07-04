@@ -10,6 +10,24 @@ router.get('/listCalendars', function (req, res) {
   });
 });
 
+// LIST calendar years
+router.get('/listCalendarYears', function (req, res) {
+  var db = req.db;
+  var collection = db.get('calendars');
+  collection.distinct('year', function (e, docs) {
+    res.json(docs);
+  });
+});
+
+// LIST calendar types
+router.get('/listCalendarTypes', function (req, res) {
+  var db = req.db;
+  var collection = db.get('calendars');
+  collection.distinct('type', function (e, docs) {
+    res.json(docs);
+  });
+});
+
 // GET calendar
 router.get('/getCalendar/:id', function (req, res) {
   var db = req.db;
@@ -59,18 +77,80 @@ router.get('/resetCollectionCalendars', function (req, res) {
   collection.insert([
     {
       'id': '1',
-      'name': 'Navidad',
-      'fecha': '2018-05-04',
-      'tipo': 'Laboral',
-      'comentario' : 'Calendario de navidad'
-      },
-      {
+      'type': 'Festivos nacionales',
+      'year': '2018',
+      'events': [
+        {
+          'date': '2018-01-01T00:00:00.000Z',
+          'comment': 'dia 1 de enero'
+        },
+        {
+          'date': '2018-02-01T00:00:00.000Z',
+          'comment': 'dia 1 de febrero'
+        },
+        {
+          'date': '2018-03-01T00:00:00.000Z',
+          'comment': 'dia 1 de marzo'
+        }
+      ]
+    },
+    {
       'id': '2',
-      'name': 'Semana Santa',
-      'fecha': '2018-05-03',
-      'tipo': 'Festivo',
-      'comentario' : 'Calendario de semana Santa'
-      }
+      'type': 'Festivos Comunidad Madrid',
+      'year': '2018',
+      'events': [
+        {
+          'date': '2018-01-02T00:00:00.000Z',
+          'comment': 'dia 2 de enero'
+        },
+        {
+          'date': '2018-02-02T00:00:00.000Z',
+          'comment': 'dia 2 de febrero'
+        },
+        {
+          'date': '2018-03-02T00:00:00.000Z',
+          'comment': 'dia 2 de marzo'
+        }
+      ]
+    },
+    {
+      'id': '3',
+      'type': 'Festivos nacionales',
+      'year': '2017',
+      'events': [
+        {
+          'date': '2017-01-02T00:00:00.000Z',
+          'comment': 'dia 2 de enero'
+        },
+        {
+          'date': '2017-02-02T00:00:00.000Z',
+          'comment': 'dia 2 de febrero'
+        },
+        {
+          'date': '2017-03-02T00:00:00.000Z',
+          'comment': 'dia 2 de marzo'
+        }
+      ]
+    },
+    {
+      'id': '4',
+      'type': 'Festivos Pais Vasco',
+      'year': '2017',
+      'events': [
+        {
+          'date': '2017-10-02T00:00:00.000Z',
+          'comment': 'dia 2 de octubre'
+        },
+        {
+          'date': '2017-10-03T00:00:00.000Z',
+          'comment': 'dia 3 de octubre'
+        },
+        {
+          'date': '2017-10-04T00:00:00.000Z',
+          'comment': 'dia 4 de octubre'
+        }
+      ]
+    }
   ], function (err, result) {
     res.send(
       (err === null) ? { msg: '' } : { msg: err }
