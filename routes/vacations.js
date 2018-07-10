@@ -64,7 +64,7 @@ router.get('/getVacation/:id', function (req, res) {
 router.get('/listVacationYears', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
-  collection.find({}, {}, function (e, docs) {
+  collection.distinct('vacation_year', function (e, docs) {
     res.json(docs);
   });
 });
