@@ -5,9 +5,25 @@ var router = express.Router();
 router.get('/listVacations', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
-  collection.find({}, {}, function (e, docs) {
+  collection.aggregate([
+    {
+      $lookup: {
+        from: "employees",
+        localfield: "employees_id",
+        foreignField: "code",
+        as: "employee_data"
+      }
+    },
+    {
+      $project: {
+        year: "$vacation_year",
+        name: "$employee_data.name",
+        total_days: "$total_days"
+      }
+    }
+  ],function (e, docs) {
     res.json(docs);
-  });
+  })
 });
 
 // GET vacation (id = id)
