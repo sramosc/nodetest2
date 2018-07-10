@@ -28,7 +28,7 @@ router.get('/getVacation/:id', function (req, res) {
 });
 
 // GET vacation years list
-router.get('/listVacations', function (req, res) {
+router.get('/listVacationYears', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   collection.find({}, {}, function (e, docs) {
