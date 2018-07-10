@@ -7,11 +7,26 @@ router.get('/listVacations', function (req, res) {
   var collection = db.get('vacations');
   collection.aggregate([
     {
+      $project: {
+        _id: 0,
+        "$year": 1,
+        "$employee_id": 1,
+        "$total_days": 1
+      }
+    },
+    {
       $lookup: {
         from: "employees",
         localField: "employee_id",
         foreignField: "code",
         as: "employee_data"
+      }
+    },
+    {
+      $project: {
+        "$year": 1,
+        "$employee_data.name": 1,
+        "$total_days": 1
       }
     }
   ], {}, function (e, docs) {
