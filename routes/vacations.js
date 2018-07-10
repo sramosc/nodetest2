@@ -9,9 +9,19 @@ router.get('/listVacations', function (req, res) {
     {
       $project: {
         _id: 0,
+        "vacation_id": 1,
         "vacation_year": 1,
         "employee_id": 1,
-        "total_days": 1
+        "total_days": 1,
+        "consumed_days": {
+          $size: {
+            $filter: {
+              input: "days",
+              as: "day",
+              cond: { $eq: ["$$day.status", "approved"] }
+            }
+          }
+        }
       }
     },
     {
@@ -24,8 +34,9 @@ router.get('/listVacations', function (req, res) {
     },
     {
       $project: {
+        "vacation_id": 1,
         "vacation_year": 1,
-        "name": {$arrayElemAt: [ "$employee_data.name", 0 ]},
+        "name": { $arrayElemAt: ["$employee_data.name", 0] },
         "total_days": 1
       }
     }
