@@ -15,7 +15,11 @@ router.get('/listVacations', function (req, res) {
       }
     }
   ], {}, function (e, docs) {
-    res.json(docs)
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
   })
 });
 
