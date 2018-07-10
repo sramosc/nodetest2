@@ -14,9 +14,7 @@ router.get('/listVacations', function (req, res) {
         as: "employee_data"
       }
     }
-  ], function (e, docs) {
-    res.json(docs);
-  })
+  ]).then((res) => {})
 });
 
 // GET vacation (id = id)
