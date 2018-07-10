@@ -9,7 +9,7 @@ router.get('/listVacations', function (req, res) {
     {
       $project: {
         _id: 0,
-        "year": 1,
+        "vacation_year": 1,
         "employee_id": 1,
         "total_days": 1
       }
@@ -24,8 +24,8 @@ router.get('/listVacations', function (req, res) {
     },
     {
       $project: {
-        "year": 1,
-        "employee_data.name": 1,
+        "vacation_year": 1,
+        "name":"$employee_data.name",
         "total_days": 1
       }
     }
