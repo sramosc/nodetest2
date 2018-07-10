@@ -17,6 +17,7 @@ var oUnitsRoutes = require('./routes/ounits');
 var calendarsRoutes = require('./routes/calendars');
 var accountsRoutes = require('./routes/accounts');
 var companiesRoutes = require('./routes/companies');
+var vacationsRoutes = require('./routes/vacations');
 
 
 
@@ -46,6 +47,7 @@ app.use('/ounits', oUnitsRoutes);
 app.use('/calendars', calendarsRoutes);
 app.use('/accounts', accountsRoutes);
 app.use('/companies', companiesRoutes);
+app.use('/vacations', vacationsRoutes);
 
 
 
