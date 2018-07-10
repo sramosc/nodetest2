@@ -16,7 +16,7 @@ router.get('/listVacations', function (req, res) {
         "consumed_days": {
           $size: {
             $filter: {
-              input: "days",
+              input: "$days",
               as: "day",
               cond: { $eq: ["$$day.status", "approved"] }
             }
