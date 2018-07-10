@@ -13,13 +13,6 @@ router.get('/listVacations', function (req, res) {
         foreignField: "code",
         as: "employee_data"
       }
-    },
-    {
-      $project: {
-        "$vacation_year": 1,
-        "$employee_data.name": 1,
-        "$total_days": 1
-      }
     }
   ], function (e, docs) {
     res.json(docs);
