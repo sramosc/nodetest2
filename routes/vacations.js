@@ -25,7 +25,7 @@ router.get('/listVacations', function (req, res) {
     {
       $project: {
         "vacation_year": 1,
-        "name":"$employee_data.name",
+        "name": {$arrayElemAt: [ "$employee_data.name", 0 ]},
         "total_days": 1
       }
     }
