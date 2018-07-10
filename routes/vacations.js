@@ -37,7 +37,8 @@ router.get('/listVacations', function (req, res) {
         "vacation_id": 1,
         "vacation_year": 1,
         "name": { $arrayElemAt: ["$employee_data.name", 0] },
-        "total_days": 1
+        "total_days": 1,
+        "consumed_days":1
       }
     }
   ], {}, function (e, docs) {
