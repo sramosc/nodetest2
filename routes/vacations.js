@@ -9,7 +9,7 @@ router.get('/listVacations', function (req, res) {
     {
       $lookup: {
         from: "employees",
-        localfield: "employees_id",
+        localfield: "employee_id",
         foreignField: "code",
         as: "employee_data"
       }
