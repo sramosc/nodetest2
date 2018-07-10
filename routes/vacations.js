@@ -16,12 +16,12 @@ router.get('/listVacations', function (req, res) {
     },
     {
       $project: {
-        year: "$vacation_year",
-        name: "$employee_data.name",
-        total_days: "$total_days"
+        "$vacation_year": 1,
+        "$employee_data.name": 1,
+        "$total_days": 1
       }
     }
-  ],function (e, docs) {
+  ], function (e, docs) {
     res.json(docs);
   })
 });
