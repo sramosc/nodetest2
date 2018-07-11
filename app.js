@@ -18,7 +18,7 @@ var calendarsRoutes = require('./routes/calendars');
 var accountsRoutes = require('./routes/accounts');
 var companiesRoutes = require('./routes/companies');
 var vacationsRoutes = require('./routes/vacations');
-
+var activitiesRoutes = require('./routes/activities');
 
 
 var app = express();
@@ -48,8 +48,7 @@ app.use('/calendars', calendarsRoutes);
 app.use('/accounts', accountsRoutes);
 app.use('/companies', companiesRoutes);
 app.use('/vacations', vacationsRoutes);
-
-
+app.use('/activities', activitiesRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
