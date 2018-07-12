@@ -18,7 +18,40 @@ router.get('/resetCollectionActivities', function (req, res) {
   collection.insert([
     {
       "activity_id": "1",
-      "activity_name": "actividad 1"
+      "activity_name": "actividad 1",
+      "ounit": "2",
+      "employees": [
+        {
+          "employee_id":"1",
+          "employee_role":"1",
+          "employee_intervals": [
+            {
+              "start_date":"2016-01-15T00:00:00.000Z",
+              "end_date":""
+            }
+          ]
+        },
+        {
+          "employee_id":"2",
+          "employee_role":"1",
+          "employee_intervals": [
+            {
+              "start_date":"2016-01-15T00:00:00.000Z",
+              "end_date":""
+            }
+          ]
+        },
+        {
+          "employee_id":"1",
+          "employee_role":"1",
+          "employee_intervals": [
+            {
+              "start_date":"2018-01-01T00:00:00.000Z",
+              "end_date":"2018-02-01T00:00:00.000Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "activity_id": "2",
