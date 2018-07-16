@@ -10,7 +10,7 @@ router.get('/listVacations', function (req, res) {
       $addFields: {
         //ounits : {$setUnion: ["$days.ounits"] },
         ounits: {$reduce: {
-          input: "$days.ounits",
+          input: {$setUnion: ["$days.ounits"] },
           initialValue: [],
           in: { $concatArrays : ["$$value", "$$this"] }}
        },
