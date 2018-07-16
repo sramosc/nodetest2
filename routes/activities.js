@@ -10,6 +10,20 @@ router.get('/listActivities', function (req, res) {
   });
 });
 
+// List employees by activity
+router.get('/listEmployees/:activityId', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activities');
+  var docToFind = req.params.activityId;
+  collection.find({ 'activity_id': docToFind }, {'employees.employee_id':1}, function (e, docs) {
+    res.json(docs);
+  });
+});
+
+// List employees by ounits
+
+// List employees activities by year
+
 // GET resetCollectionActivities
 router.get('/resetCollectionActivities', function (req, res) {
   var db = req.db;

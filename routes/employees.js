@@ -240,14 +240,26 @@ router.get('/resetCollectionEmployees', function (req, res) {
     {
       "code": "29",
       "name": "Ruben Olmos",
-      "mail": "dg@entelgy.com",
+      "mail": "ro@entelgy.com",
       "ounit": "5"
     },
     {
       "code": "30",
       "name": "Daniel Quesadilla",
-      "mail": "dg@entelgy.com",
+      "mail": "dq@entelgy.com",
       "ounit": "5"
+    },
+    {
+      "code": "31",
+      "name": "Javier Carmena",
+      "mail": "jc@entelgy.com",
+      "ounit": "5"
+    },
+    {
+      "code": "32",
+      "name": "Raul Valorallanos",
+      "mail": "rv@entelgy.com",
+      "ounit": "6"
     }
   ], function (err, result) {
     res.send(

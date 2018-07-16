@@ -60,7 +60,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     {
       id: '1',
       manager: 'Responsable',
-      name: 'UNIT1',
+      name: 'Unidad Operativa 1',
       depends: 'Depende',
       description: 'Descripcion',
       type: 'Tipo',

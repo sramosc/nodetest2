@@ -36,6 +36,7 @@ router.get('/listVacations', function (req, res) {
       $project: {
         "vacation_id": 1,
         "vacation_year": 1,
+        "employee_id": 1,
         "name": { $arrayElemAt: ["$employee_data.name", 0] },
         "ounit": { $arrayElemAt: ["$employee_data.ounit", 0] },
         "total_days": 1,
@@ -87,10 +88,6 @@ router.get('/resetCollectionVacations', function (req, res) {
           "date": "2017-04-23T00:00:00.000Z",
           "comment": "vacacion1",
           "status": "pending",
-          "active_activities": [
-            { "activity_id": "1" },
-            { "activity_id": "3" },
-          ]
         },
         {
           "date": "2017-03-15T00:00:00.000Z",
@@ -163,6 +160,33 @@ router.get('/resetCollectionVacations', function (req, res) {
         }
       ]
     },
+    {
+      "vacation_id": "5",
+      "vacation_year": "2017",
+      "employee_id": "4",
+      "total_days": "22",
+      "days": [
+        {
+          "date": "2017-04-23T00:00:00.000Z",
+          "comment": "vacacion",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "vacation_id": "6",
+      "vacation_year": "2017",
+      "employee_id": "5",
+      "total_days": "22",
+      "days": [
+        {
+          "date": "2017-04-23T00:00:00.000Z",
+          "comment": "vacacion",
+          "status": "pending"
+        }
+      ]
+    },
+    
 
   ], function (err, result) {
     res.send(
