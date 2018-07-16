@@ -11,7 +11,8 @@ router.get('/listActivities', function (req, res) {
 });
 
 // List employees by activity
-router.get('/listEmployees/:activityId', function (req, res) {
+// devuelve el listado de los empleados que hayan estado vinculados a una actividad determinada
+router.get('/listEmployeesInActivity/:activityId', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
   var docToFind = req.params.activityId;
@@ -21,6 +22,15 @@ router.get('/listEmployees/:activityId', function (req, res) {
 });
 
 // List employees by ounits
+// devuelve el listado de los empleados que hayan estado vinculados a una unidad organizativa determinada y hayan realizado actividades en ella
+router.get('/listEmployeesInOUnit/:oUnitId', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activities');
+  var docToFind = req.params.activityId;
+  collection.find({ 'ounit': docToFind }, {'employees.employee_id':1}, function (e, docs) {
+    res.json(docs);
+  });
+});
 
 // List employees activities by year
 
