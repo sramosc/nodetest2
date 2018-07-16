@@ -8,7 +8,12 @@ router.get('/listVacations', function (req, res) {
   collection.aggregate([
     {
       $addFields: {
-        ounits : {$setUnion: ["$days.ounits"] },
+        //ounits : {$setUnion: ["$days.ounits"] },
+        ounits: {$reduce: {
+          input: "$days.ounits",
+          initialValue: [],
+          in: { $concatArrays : ["$$value", "$$this"] }}
+       },
         activities: {$setUnion: "$days.activities" }
       }
     },
