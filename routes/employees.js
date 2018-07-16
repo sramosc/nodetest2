@@ -71,164 +71,170 @@ router.get('/resetCollectionEmployees', function (req, res) {
   collection.insert([
     {
       "code": "1",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "1"
+      "name": "Jose Carlos Fernandez",
+      "mail": "jcf@entelgy.com",
+      "ounit": "2"
     },
     {
       "code": "2",
-      "name": "Pablo Pérez",
-      "mail": "anaperez@entelgy.com",
+      "name": "Manuel Pérez Vena",
+      "mail": "mpv@entelgy.com",
       "ounit": "2"
     },
     {
       "code": "3",
-      "name": "Carlos Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "3"
+      "name": "Maria Jesús Corrillo",
+      "mail": "mjc@entelgy.com",
+      "ounit": "1"
     },
     {
       "code": "4",
-      "name": "Jose Pérez",
-      "mail": "anaperez@entelgy.com",
+      "name": "Almudena Duero",
+      "mail": "ad@entelgy.com",
       "ounit": "1"
     },
     {
       "code": "5",
-      "name": "Rafael Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": ""
+      "name": "Rafael Montañez",
+      "mail": "rm@entelgy.com",
+      "ounit": "1"
     },
     {
       "code": "6",
-      "name": "Yolanda Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "4"
+      "name": "Sergio Ramirez",
+      "mail": "sr@entelgy.com",
+      "ounit": "5"
     },
     {
       "code": "7",
-      "name": "Trinidad Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": ""
+      "name": "Alfonso Sanchez",
+      "mail": "as@entelgy.com",
+      "ounit": "5"
     },
     {
       "code": "8",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "5"
+      "name": "Yolanda Soltero",
+      "mail": "ys@entelgy.com",
+      "ounit": "3"
     },
     {
       "code": "9",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "5"
+      "name": "Alvaro Noviciado",
+      "mail": "an@entelgy.com",
+      "ounit": "7"
     },
     {
       "code": "10",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "6"
+      "name": "Trinidad Pueblo",
+      "mail": "tp@entelgy.com",
+      "ounit": "7"
     },
     {
       "code": "11",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": ""
+      "name": "Ivan de la Sierra",
+      "mail": "idls@entelgy.com",
+      "ounit": "6"
     },
     {
       "code": "12",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "2"
+      "name": "Antonio Alfarero",
+      "mail": "aa@entelgy.com",
+      "ounit": "6"
     },
     {
       "code": "13",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "2"
+      "name": "Fernando Duque",
+      "mail": "fd@entelgy.com",
+      "ounit": ""
     },
     {
       "code": "14",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "2"
+      "name": "Luis Pared",
+      "mail": "lp@entelgy.com",
+      "ounit": ""
     },
     {
       "code": "15",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "5"
+      "name": "Maria de los Ángeles Frasco",
+      "mail": "maf@entelgy.com",
+      "ounit": "3"
     },
     {
       "code": "16",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "4"
+      "name": "Rosa Cinesal",
+      "mail": "rs@entelgy.com",
+      "ounit": "3"
     },
     {
       "code": "17",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "6"
+      "name": "Javier Orilla",
+      "mail": "jo@entelgy.com",
+      "ounit": "7"
     },
     {
       "code": "18",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "6"
+      "name": "Manuel Fajardo",
+      "mail": "mf@entelgy.com",
+      "ounit": "7"
     },
     {
       "code": "19",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "1"
+      "name": "Nieves Pichu",
+      "mail": "np@entelgy.com",
+      "ounit": "6"
     },
     {
       "code": "20",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "1"
+      "name": "Marcos Balseros",
+      "mail": "mb@entelgy.com",
+      "ounit": "6"
     },
     {
       "code": "21",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "3"
+      "name": "Alejandro Hades",
+      "mail": "ah@entelgy.com",
+      "ounit": "2"
     },
     {
       "code": "22",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "3"
+      "name": "Carlos Pego",
+      "mail": "cp@entelgy.com",
+      "ounit": "2"
     },
     {
       "code": "23",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "3"
+      "name": "Ana Ferrero",
+      "mail": "af@entelgy.com",
+      "ounit": "1"
     },
     {
       "code": "24",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "2"
+      "name": "Oscar Montoro",
+      "mail": "om@entelgy.com",
+      "ounit": "1"
     },
     {
       "code": "25",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
-      "ounit": "2"
+      "name": "Ernesto Diaz Isai",
+      "mail": "edi@entelgy.com",
+      "ounit": "1"
     },
     {
       "code": "26",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
+      "name": "Oscar Cristobal",
+      "mail": "oc@entelgy.com",
       "ounit": "5"
     },
     {
       "code": "27",
-      "name": "Ana Pérez",
-      "mail": "anaperez@entelgy.com",
+      "name": "Alberto Farra",
+      "mail": "af@entelgy.com",
+      "ounit": "5"
+    },
+    {
+      "code": "28",
+      "name": "Daniel Guerrero",
+      "mail": "dg@entelgy.com",
       "ounit": "5"
     }
   ], function (err, result) {
