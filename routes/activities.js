@@ -26,7 +26,7 @@ router.get('/listEmployeesInActivity/:activityId', function (req, res) {
 router.get('/listEmployeesInOUnit/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
-  var docToFind = req.params.activityId;
+  var docToFind = req.params.oUnitId;
   collection.find({ 'ounit': docToFind }, {'employees.employee_id':1}, function (e, docs) {
     res.json(docs);
   });
