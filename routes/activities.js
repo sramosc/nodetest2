@@ -142,7 +142,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "3",
       "activity_name": "actividad 3",
-      "activity_start":"2018-01-01T00:00:00.000Z",
+      "activity_start":"2017-01-01T00:00:00.000Z",
       "activity_end":"",
       "ounit": "1",
       "employees": [
@@ -150,7 +150,7 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employee_id":"23",          
           "employee_intervals": [
             {
-              "start_date":"2018-01-15T00:00:00.000Z",
+              "start_date":"2017-01-15T00:00:00.000Z",
               "end_date":"",
               "employee_role":"op_manager"
             }
@@ -160,7 +160,7 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employee_id":"25",          
           "employee_intervals": [
             {
-              "start_date":"2016-01-15T00:00:00.000Z",
+              "start_date":"2017-01-15T00:00:00.000Z",
               "end_date":"",
               "employee_role":"cm_manager"
             }
@@ -170,7 +170,7 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employee_id":"3",
           "employee_intervals": [
             {
-              "start_date":"2016-01-15T00:00:00.000Z",
+              "start_date":"2017-01-15T00:00:00.000Z",
               "end_date":"",
               "employee_role":"developer"            
             }
@@ -180,12 +180,12 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employee_id":"5",
           "employee_intervals": [
             {
-              "start_date":"2018-01-01T00:00:00.000Z",
-              "end_date":"2018-02-01T00:00:00.000Z",
+              "start_date":"2017-01-01T00:00:00.000Z",
+              "end_date":"2017-02-01T00:00:00.000Z",
               "employee_role":"developer"            
             },
             {
-              "start_date":"2018-02-01T00:00:00.000Z",              
+              "start_date":"2017-02-01T00:00:00.000Z",              
               "employee_role":"analyst"            
             }
           ]
