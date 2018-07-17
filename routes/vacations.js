@@ -79,6 +79,48 @@ router.get('/getVacation/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   var docToFind = req.params.id;
+  collection.aggregate([
+    { $match: { 'vacation_id': docToFind } },
+    {
+      $lookup: {
+        from: "employees",
+        localField: "employee_id",
+        foreignField: "code",
+        as: "employee_data"
+      }
+    },
+    {
+      $project: {
+        "vacation_id": 1,
+        "vacation_year": 1,
+        "employee_id": 1,
+        "name": { $arrayElemAt: ["$employee_data.name", 0] },
+        "ounit": { $arrayElemAt: ["$employee_data.ounit", 0] },
+        "total_days": 1,
+        "consumed_days": {
+          $size: {
+            $filter: {
+              input: "$days",
+              as: "day",
+              cond: { $eq: ["$$day.status", "approved"] }
+            }
+          }
+        },
+        "pending_days": {
+          $size: {
+            $filter: {
+              input: "$days",
+              as: "day",
+              cond: { $eq: ["$$day.status", "pending"] }
+            }
+          }
+        },
+        "days": 1,
+        "requests": 1
+      }
+    }
+
+  ])
   collection.findOne({ 'vacation_id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
