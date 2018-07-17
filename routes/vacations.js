@@ -119,9 +119,7 @@ router.get('/getVacation/:id', function (req, res) {
         "requests": 1
       }
     }
-
-  ])
-  collection.findOne({ 'vacation_id': docToFind }, {}, function (e, docs) {
+  ], function (e, docs) {
     res.json(docs);
   });
 });
