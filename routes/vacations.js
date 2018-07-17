@@ -159,7 +159,7 @@ router.get('/resetCollectionVacations', function (req, res) {
       ]
     },
     {
-      "vacation_id": "2",
+      "vacation_id": "7",
       "vacation_year": "2016",
       "employee_id": "2",
       "total_days": "22",
