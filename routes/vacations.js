@@ -79,7 +79,7 @@ router.get('/getVacation/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   var docToFind = req.params.id;
-  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
+  collection.findOne({ 'vacation_id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
