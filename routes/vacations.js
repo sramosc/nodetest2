@@ -91,6 +91,7 @@ router.get('/getVacation/:id', function (req, res) {
     },
     {
       $project: {
+        _id: 0,
         "vacation_id": 1,
         "vacation_year": 1,
         "employee_id": 1,
@@ -166,6 +167,33 @@ router.get('/resetCollectionVacations', function (req, res) {
           "status": "cancelled",
           "ounits": [],
           "activities": []
+        }
+      ],
+      "requests": [
+        {
+          "vacation_date": "2017-03-15T00:00:00.000Z",
+          "request_date": "2017-01-01T00:00:00.000Z",
+          "response_date": "2017-01-05T00:00:00.000Z",
+          "status": "approved",
+          "comments": [
+            {
+              "employee_id": "",
+              "date": "",
+              "message": ""
+            },
+            {
+              "employee_id": "",
+              "date": "",
+              "message": ""
+            },
+          ]
+        },
+        {
+          "vacation_date": "2017-04-23T00:00:00.000Z",
+          "request_date": "2017-01-07T00:00:00.000Z",
+          "response_date": "2017-01-09T00:00:00.000Z",
+          "status": "cancelled",
+          "comments": "porque no"
         }
       ]
     },
