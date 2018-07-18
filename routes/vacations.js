@@ -127,7 +127,7 @@ router.get('/resetCollectionVacations', function (req, res) {
       "employee_id": "1",
       "employee_name": "Jose Carlos Fernandez",
       "manager_id": "30",
-      "manager_name": "Daniel Quesadilla",
+      "manager_name": "Daniel Quesadille",
       "ounit_id": "2",
       "ounit_name": "UNIT2",
       "total_days": "22",
