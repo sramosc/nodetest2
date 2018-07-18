@@ -99,7 +99,8 @@ router.get('/getVacation/:id', function (req, res) {
         "manager_name": 1,
         "ounit_name": 1
       }
-    }
+    },
+    { $limit: 1 }
   ], function (e, docs) {
     res.json(docs);
   });
