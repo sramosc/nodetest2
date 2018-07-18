@@ -57,8 +57,8 @@ router.get('/listVacations', function (req, res) {
         "vacation_id": 1,
         "vacation_year": 1,
         "employee_id": 1,
-        "name": { $arrayElemAt: ["$employee_data.name", 0] },
-        "ounit": { $arrayElemAt: ["$employee_data.ounit", 0] },
+        "employee_name": { $arrayElemAt: ["$employee_data.name", 0] },
+        "ounit_id": { $arrayElemAt: ["$employee_data.ounit", 0] },
         "total_days": 1,
         "consumed_days": 1,
         "ounits": 1,
@@ -82,40 +82,17 @@ router.get('/getVacation/:id', function (req, res) {
   collection.aggregate([
     { $match: { 'vacation_id': docToFind } },
     {
-      $lookup: {
-        from: "employees",
-        localField: "employee_id",
-        foreignField: "code",
-        as: "employee_data"
-      }
-    },
-    {
       $project: {
         _id: 0,
         "vacation_id": 1,
         "vacation_year": 1,
         "employee_id": 1,
-        "name": { $arrayElemAt: ["$employee_data.name", 0] },
-        "ounit": { $arrayElemAt: ["$employee_data.ounit", 0] },
+        "employee_name": 1,
+        "ounit_id": 1,
         "total_days": 1,
-        "consumed_days": {
-          $size: {
-            $filter: {
-              input: "$days",
-              as: "day",
-              cond: { $eq: ["$$day.status", "approved"] }
-            }
-          }
-        },
-        "pending_days": {
-          $size: {
-            $filter: {
-              input: "$days",
-              as: "day",
-              cond: { $eq: ["$$day.status", "pending"] }
-            }
-          }
-        },
+        "approved_days": 1,
+        "consumed_days": 1,
+        "pending_days": 1,
         "days": 1,
         "requests": 1
       }
@@ -145,7 +122,15 @@ router.get('/resetCollectionVacations', function (req, res) {
       "vacation_id": "1",
       "vacation_year": "2017",
       "employee_id": "1",
+      "employee_name": "Jose Carlos Fernandez",
+      "manager_id": "30",
+      "manager_name": "Daniel Quesadilla",
+      "ounit_id": "2",
+      "ounit_name": "UNIT2",
       "total_days": "22",
+      "approved_days": "1",
+      "consumed_days": "1",
+      "pending_days": "1",
       "days": [
         {
           "date": "2017-04-23T00:00:00.000Z",
