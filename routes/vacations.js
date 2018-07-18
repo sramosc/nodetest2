@@ -94,7 +94,10 @@ router.get('/getVacation/:id', function (req, res) {
         "consumed_days": 1,
         "pending_days": 1,
         "days": 1,
-        "requests": 1
+        "requests": 1,
+        "manager_id": 1,
+        "manager_name": 1,
+        "ounit_name": 1
       }
     }
   ], function (e, docs) {
