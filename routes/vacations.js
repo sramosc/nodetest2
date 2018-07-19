@@ -93,7 +93,6 @@ router.get('/listVacationYears', function (req, res) {
   });
 });
 
-
 // GET resetCollectionVacations
 router.get('/resetCollectionVacations', function (req, res) {
   var db = req.db;
@@ -138,6 +137,7 @@ router.get('/resetCollectionVacations', function (req, res) {
       ],
       "requests": [
         {
+          "request_id":1,
           "vacation_date": "2017-03-15T00:00:00.000Z",
           "request_date": "2017-01-01T00:00:00.000Z",
           "response_date": "2017-01-05T00:00:00.000Z",
@@ -156,6 +156,7 @@ router.get('/resetCollectionVacations', function (req, res) {
           ]
         },
         {
+          "request_id":2,
           "vacation_date": "2017-04-23T00:00:00.000Z",
           "request_date": "2017-01-07T00:00:00.000Z",
           "response_date": "2017-01-09T00:00:00.000Z",
