@@ -79,17 +79,17 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'id': '1',
       'type': 'Festivos nacionales',
       'year': '2018',
-      'events': [
+      'days': [
         {
-          'date': '2018-01-01T00:00:00.000Z',
+          'date': '2018-01-01',
           'comment': 'dia 1 de enero'
         },
         {
-          'date': '2018-02-01T00:00:00.000Z',
+          'date': '2018-02-01',
           'comment': 'dia 1 de febrero'
         },
         {
-          'date': '2018-03-01T00:00:00.000Z',
+          'date': '2018-03-01',
           'comment': 'dia 1 de marzo'
         }
       ]
@@ -98,17 +98,17 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'id': '2',
       'type': 'Festivos Comunidad Madrid',
       'year': '2018',
-      'events': [
+      'days': [
         {
-          'date': '2018-01-02T00:00:00.000Z',
+          'date': '2018-01-02',
           'comment': 'dia 2 de enero'
         },
         {
-          'date': '2018-02-02T00:00:00.000Z',
+          'date': '2018-02-02',
           'comment': 'dia 2 de febrero'
         },
         {
-          'date': '2018-03-02T00:00:00.000Z',
+          'date': '2018-03-02',
           'comment': 'dia 2 de marzo'
         }
       ]
@@ -117,17 +117,17 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'id': '3',
       'type': 'Festivos nacionales',
       'year': '2017',
-      'events': [
+      'days': [
         {
-          'date': '2017-01-02T00:00:00.000Z',
+          'date': '2017-01-02',
           'comment': 'dia 2 de enero'
         },
         {
-          'date': '2017-02-02T00:00:00.000Z',
+          'date': '2017-02-02',
           'comment': 'dia 2 de febrero'
         },
         {
-          'date': '2017-03-02T00:00:00.000Z',
+          'date': '2017-03-02',
           'comment': 'dia 2 de marzo'
         }
       ]
@@ -136,17 +136,17 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'id': '4',
       'type': 'Festivos Pais Vasco',
       'year': '2017',
-      'events': [
+      'days': [
         {
-          'date': '2017-10-02T00:00:00.000Z',
+          'date': '2017-10-02',
           'comment': 'dia 2 de octubre'
         },
         {
-          'date': '2017-10-03T00:00:00.000Z',
+          'date': '2017-10-03',
           'comment': 'dia 3 de octubre'
         },
         {
-          'date': '2017-10-04T00:00:00.000Z',
+          'date': '2017-10-04',
           'comment': 'dia 4 de octubre'
         }
       ]
