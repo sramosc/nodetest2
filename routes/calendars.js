@@ -33,7 +33,7 @@ router.get('/getCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToFind = req.params.id;
-  collection.find({ 'id': docToFind }, {}, function (e, docs) {
+  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
