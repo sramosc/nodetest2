@@ -8,8 +8,7 @@ var logger = require('morgan');
 // Database
 var mongo = require('mongodb');
 var monk = require('monk');
-import config from './config.json'
-var db = monk(config.mongoUrl);
+var db = monk('usertest1:userpass1@ds119059.mlab.com:19059/nodetest1');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
