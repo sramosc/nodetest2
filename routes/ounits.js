@@ -55,7 +55,7 @@ router.put('/updateOUnit/:id', function (req, res) {
 router.get('/listOUnitsFilter', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  collection.find({}, {"id":1,"name":1}, function (e, docs) {
+  collection.find({}, { fields: { id: 1, name: 1 } }, function (e, docs) {
     res.json(docs);
   });
 });
