@@ -51,6 +51,15 @@ router.put('/updateOUnit/:id', function (req, res) {
   });
 });
 
+// GET ounits Filter list
+router.get('/listOUnitsFilter', function (req, res) {
+  var db = req.db;
+  var collection = db.get('ounits');
+  collection.find({}, {"id":1,"name":1}, function (e, docs) {
+    res.json(docs);
+  });
+});
+
 // GET resetCollectionEmployees
 router.get('/resetCollectionOUnits', function (req, res) {
   var db = req.db;
