@@ -20,6 +20,7 @@ var companiesRoutes = require('./routes/companies');
 var vacationsRoutes = require('./routes/vacations');
 var activitiesRoutes = require('./routes/activities');
 var activitiesTypesRoutes = require('./routes/activitiesTypes');
+var clientsRoutes = require('./routes/clients');
 
 
 var app = express();
@@ -51,6 +52,7 @@ app.use('/companies', companiesRoutes);
 app.use('/vacations', vacationsRoutes);
 app.use('/activities', activitiesRoutes);
 app.use('/activitiesTypes', activitiesTypesRoutes);
+app.use('/clients', clientsRoutes);
 
 
 // catch 404 and forward to error handler
