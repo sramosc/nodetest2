@@ -43,6 +43,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "1",
       "activity_name": "actividad 1",
+      "activity_code": "QWE123",
       "activity_start":"2016-01-01T00:00:00.000Z",
       "activity_end":"",
       "ounit": "2",
@@ -93,6 +94,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "2",
       "activity_name": "actividad 2",
+      "activity_code": "RTY456",      
       "activity_start":"2017-01-01T00:00:00.000Z",
       "activity_end":"2018-01-01T00:00:00.000Z",
       "ounit": "1",
@@ -142,6 +144,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "3",
       "activity_name": "actividad 3",
+      "activity_code": "001122",
       "activity_start":"2017-01-01T00:00:00.000Z",
       "activity_end":"",
       "ounit": "1",
@@ -195,6 +198,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "4",
       "activity_name": "actividad 4",
+      "activity_code": "001133",
       "activity_start":"2016-01-01T00:00:00.000Z",
       "activity_end":"2018-01-01T00:00:00.000Z",
       "ounit": "5",
@@ -244,6 +248,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "5",
       "activity_name": "actividad 5",
+      "activity_code": "098765",
       "activity_start":"2015-01-01T00:00:00.000Z",
       "activity_end":"",
       "ounit": "3",
@@ -283,6 +288,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "6",
       "activity_name": "actividad 6",
+      "activity_code": "023412",
       "activity_start":"2015-01-01T00:00:00.000Z",
       "activity_end":"2016-01-01T00:00:00.000Z",
       "ounit": "7",
@@ -332,6 +338,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     {
       "activity_id": "7",
       "activity_name": "actividad 7",
+      "activity_code": "GF4545",
       "activity_start":"2018-01-01T00:00:00.000Z",
       "activity_end":"",
       "ounit": "7",
