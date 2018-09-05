@@ -19,13 +19,13 @@ router.get('/listAccounts', function (req, res) {
     },
     {
       $project: {
-        "_id":0,
+        "_id": 0,
         "accountId": 1,
         "accountName": 1,
         "accountNumber": 1,
         "companyId": 1,
         "companyName": { $arrayElemAt: ["$company.companyName", 0] },
-        "ledgerAccount": "57200001",
+        "ledgerAccount": 1
       }
     }
   ], {}, function (e, docs) {
@@ -88,50 +88,50 @@ router.get('/resetCollectionAccounts', function (req, res) {
       "accountId": "1",
       "accountName": "BANCO POPULAR",
       "accountNumber": "ES6621000418401234567891",
-      "companyId":"1",
-      "ledgerAccount":"57200001"      
+      "companyId": "1",
+      "ledgerAccount": "57200001"
     },
     {
       "accountId": "2",
       "accountName": "CAIXA BANK",
       "accountNumber": "ES6000491500051234567892",
-      "companyId":"1",
-      "ledgerAccount":"57200005"    
+      "companyId": "1",
+      "ledgerAccount": "57200005"
     },
     {
       "accountId": "3",
       "accountName": "LA CAIXA",
       "accountNumber": "ES9420805801101234567891",
-      "companyId":"2",
-      "ledgerAccount":"57200002"    
+      "companyId": "2",
+      "ledgerAccount": "57200002"
     },
     {
       "accountId": "4",
       "accountName": "BANCO PEPE",
       "accountNumber": "ES9000246912501234567891",
-      "companyId":"2",
-      "ledgerAccount":"57200003"    
+      "companyId": "2",
+      "ledgerAccount": "57200003"
     },
     {
       "accountId": "5",
       "accountName": "BANCO PACO",
       "accountNumber": "ES7100302053091234567895",
-      "companyId":"3",
-      "ledgerAccount":"57200005"    
+      "companyId": "3",
+      "ledgerAccount": "57200005"
     },
     {
       "accountId": "6",
       "accountName": "BANCO JUAN",
       "accountNumber": "ES1000492352082414205416",
-      "companyId":"3",
-      "ledgerAccount":"57200003"    
+      "companyId": "3",
+      "ledgerAccount": "57200003"
     },
     {
       "accountId": "7",
       "accountName": "BANCO MANOLO",
       "accountNumber": "ES1720852066623456789011",
-      "companyId":"4",
-      "ledgerAccount":"57200001"
+      "companyId": "4",
+      "ledgerAccount": "57200001"
     }
   ], function (err, result) {
     res.send(
