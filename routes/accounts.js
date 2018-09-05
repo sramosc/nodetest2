@@ -19,6 +19,7 @@ router.get('/listAccounts', function (req, res) {
     },
     {
       $project: {
+        "_id":0,
         "accountId": 1,
         "accountName": 1,
         "accountNumber": 1,
