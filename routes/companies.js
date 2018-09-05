@@ -10,12 +10,12 @@ router.get('/listCompanies', function (req, res) {
   });
 });
 
-// GET company (id = id)
+// GET company (companyId = id)
 router.get('/getCompany/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   var docToFind = req.params.id;
-  collection.find({ 'id': docToFind }, {}, function (e, docs) {
+  collection.find({ 'companyId': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -31,22 +31,22 @@ router.post('/addCompany', function (req, res) {
   });
 });
 
-// DELETE delCompany (id = id)
+// DELETE delCompany (companyId = id)
 router.delete('/delCompany/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   var docToDelete = req.params.id;
-  collection.remove({ 'id': docToDelete }, function (err) {
+  collection.remove({ 'companyId': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
 
-// PUT updateCompany (id = id)
+// PUT updateCompany (companyId = id)
 router.put('/updateCompany/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   var docToUpdate = req.params.id;
-  collection.update({ 'id': docToUpdate }, req.body, function (err) {
+  collection.update({ 'companyId': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -58,20 +58,20 @@ router.get('/resetCollectionCompanies', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "id": 1,
-      "name": "ENTELGY CONSULTING S.A"
+      "companyId": "1",
+      "companyName": "ENTELGY CONSULTING S.A"
     },
     {
-      "id": 2,
-      "name": "ENTELGY IBAI S.A"
+      "companyId": "2",
+      "companyName": "ENTELGY IBAI S.A"
     },
     {
-      "id": 3,
-      "name": "ENTELGY DIGITAL"
+      "companyId": "3",
+      "companyName": "ENTELGY DIGITAL"
     },
     {
-      "id": 4,
-      "name": "ENTELGY S.A."
+      "companyId": "4",
+      "companyName": "ENTELGY S.A."
     }
   ], function (err, result) {
     res.send(

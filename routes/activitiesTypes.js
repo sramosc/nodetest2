@@ -17,36 +17,36 @@ router.get('/resetCollectionActivitiesTypes', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "activityType_id": "1",
-      "activityType_name": "PROYECTO EXTERNO"
+      "activityTypeId": "1",
+      "activityTypeName": "PROYECTO EXTERNO"
     },
     {
-      "activityType_id": "2",
-      "activityType_name": "PROYECTO INTERNO"
+      "activityTypeId": "2",
+      "activityTypeName": "PROYECTO INTERNO"
     },
     {
-      "activityType_id": "3",
-      "activityType_name": "PREVENTA"
+      "activityTypeId": "3",
+      "activityTypeName": "PREVENTA"
     },
     {
-      "activityType_id": "4",
-      "activityType_name": "FORMACION"
+      "activityTypeId": "4",
+      "activityTypeName": "FORMACION"
     },
     {
-      "activityType_id": "5",
-      "activityType_name": "GESTION / ESTRUCTURA"
+      "activityTypeId": "5",
+      "activityTypeName": "GESTION / ESTRUCTURA"
     },
     {
-      "activityType_id": "6",
-      "activityType_name": "PENDIENTE DE ASIGNACION"
+      "activityTypeId": "6",
+      "activityTypeName": "PENDIENTE DE ASIGNACION"
     },
     {
-      "activityType_id": "7",
-      "activityType_name": "HORAS SINDICALES"
+      "activityTypeId": "7",
+      "activityTypeName": "HORAS SINDICALES"
     },
     {
-      "activityType_id": "8",
-      "activityType_name": "AUSENCIA"
+      "activityTypeId": "8",
+      "activityTypeName": "AUSENCIA"
     }
   ], function (err, result) {
     res.send(

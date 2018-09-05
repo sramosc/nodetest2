@@ -23,7 +23,7 @@ router.get('/listCalendarYears', function (req, res) {
 router.get('/listCalendarTypes', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
-  collection.distinct('type', function (e, docs) {
+  collection.distinct('calendarType', function (e, docs) {
     res.json(docs);
   });
 });
@@ -33,7 +33,7 @@ router.get('/getCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToFind = req.params.id;
-  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
+  collection.findOne({ 'calendarId': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -54,7 +54,7 @@ router.delete('/delCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToDelete = req.params.id;
-  collection.remove({ 'id': docToDelete }, function (err) {
+  collection.remove({ 'calendarId': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -64,7 +64,7 @@ router.put('/updateCalendar/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToUpdate = req.params.id;
-  collection.update({ 'id': docToUpdate }, req.body, function (err) {
+  collection.update({ 'calendarId': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -76,77 +76,77 @@ router.get('/resetCollectionCalendars', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      'id': '1',
-      'type': 'Festivos nacionales',
+      'calendarId': '1',
+      'calendarType': 'Festivos nacionales',
       'year': '2018',
       'days': [
         {
-          'date': '2018-01-01',
+          'date': '01/01/2018',
           'comment': 'dia 1 de enero'
         },
         {
-          'date': '2018-02-01',
+          'date': '01/02/2018',
           'comment': 'dia 1 de febrero'
         },
         {
-          'date': '2018-03-01',
+          'date': '01/03/2018',
           'comment': 'dia 1 de marzo'
         }
       ]
     },
     {
-      'id': '2',
-      'type': 'Festivos Comunidad Madrid',
+      'calendarId': '2',
+      'calendarType': 'Festivos Comunidad Madrid',
       'year': '2018',
       'days': [
         {
-          'date': '2018-01-02',
+          'date': '02/01/2018',
           'comment': 'dia 2 de enero'
         },
         {
-          'date': '2018-02-02',
+          'date': '02/02/2018',
           'comment': 'dia 2 de febrero'
         },
         {
-          'date': '2018-03-02',
+          'date': '02/03/2018',
           'comment': 'dia 2 de marzo'
         }
       ]
     },
     {
-      'id': '3',
-      'type': 'Festivos nacionales',
+      'calendarId': '3',
+      'calendarType': 'Festivos nacionales',
       'year': '2017',
       'days': [
         {
-          'date': '2017-01-02',
+          'date': '02/01/2017',
           'comment': 'dia 2 de enero'
         },
         {
-          'date': '2017-02-02',
+          'date': '02/02/2017',
           'comment': 'dia 2 de febrero'
         },
         {
-          'date': '2017-03-02',
+          'date': '02/03/2017',
           'comment': 'dia 2 de marzo'
         }
       ]
     },
     {
-      'id': '4',
-      'type': 'Festivos Pais Vasco',
+      'calendarId': '4',
+      'calendarType': 'Festivos Pais Vasco',
       'year': '2017',
       'days': [
         {
-          'date': '2017-10-02',
+          'date': '02/10/2017',
           'comment': 'dia 2 de octubre'
         },
         {
-          'date': '2017-10-03',
+          'date': '03/10/2017',
           'comment': 'dia 3 de octubre'
         },
         {
-          'date': '2017-10-04',
+          'date': '04/10/2017',
           'comment': 'dia 4 de octubre'
         }
       ]

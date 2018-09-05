@@ -11,11 +11,11 @@ router.get('/listOUnits', function (req, res) {
 });
 
 // GET employee
-router.get('/getOUnit/:id', function (req, res) {
+router.get('/getOUnit/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  var docToFind = req.params.id;
-  collection.find({ 'id': docToFind }, {}, function (e, docs) {
+  var docToFind = req.params.oUnitId;
+  collection.find({ 'oUnitId': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -32,21 +32,21 @@ router.post('/addOUnit', function (req, res) {
 });
 
 // DELETE delEmployee
-router.delete('/delOUnit/:id', function (req, res) {
+router.delete('/delOUnit/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  var docToDelete = req.params.id;
-  collection.remove({ 'id': docToDelete }, function (err) {
+  var docToDelete = req.params.oUnitId;
+  collection.remove({ 'oUnitId': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
 
 // PUT updateEmployee
-router.put('/updateOUnit/:id', function (req, res) {
+router.put('/updateOUnit/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  var docToUpdate = req.params.id;
-  collection.update({ 'id': docToUpdate }, req.body, function (err) {
+  var docToUpdate = req.params.oUnitId;
+  collection.update({ 'oUnitId': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -55,7 +55,7 @@ router.put('/updateOUnit/:id', function (req, res) {
 router.get('/listOUnitsFilter', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  collection.find({}, { fields: { id: 1, name: 1 } }, function (e, docs) {
+  collection.find({}, { fields: { oUnitId: 1, oUnitName: 1 } }, function (e, docs) {
     res.json(docs);
   });
 });
@@ -67,95 +67,88 @@ router.get('/resetCollectionOUnits', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      id: '1',
-      manager: 'Responsable',
-      name: 'Unidad Operativa 1',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: true,
-      expensesNotification: false,
-      activityNotification: true,
-      parent: '#'
+      oUnitId: '1',
+      responsibleId: '1',
+      oUnitName: 'IBERIA 04 MLA',
+      description: 'texto descriptivo unidad organizativa 1',
+      oUnitTypeId: '1',
+      deptId: '1',
+      noticeToManagerHoliday: "true",
+      noticeToManagerExpenditure: "false",
+      noticeToManagerWorkReport: "true",
+      parentId: '#'
     },
     {
-      id: '2',
-      manager: 'Responsable',
-      name: 'UNIT2',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: false,
-      expensesNotification: true,
-      activityNotification: true,
-      parent: '1'
+      oUnitId: '2',
+      responsibleId: 'Responsable',
+      oUnitName: 'DIGITAL ARCHITECTURE',
+      description: 'texto descriptivo unidad organizativa 2',
+      oUnitTypeId: '2',
+      deptId: '2',
+      noticeToManagerHoliday: "false",
+      noticeToManagerExpenditure: "true",
+      noticeToManagerWorkReport: "true",
+      parentId: '1'
     },
     {
-      id: '3',
-      manager: 'Responsable',
-      name: 'UNIT3',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: true,
-      expensesNotification: false,
-      activityNotification: false,
-      parent: '1'
+      oUnitId: '3',
+      responsibleId: 'Responsable',
+      oUnitName: 'UNIT3',
+      description: 'texto descriptivo unidad organizativa 3',
+      oUnitTypeId: '3',
+      deptId: '2',
+      noticeToManagerHoliday: "true",
+      noticeToManagerExpenditure: "false",
+      noticeToManagerWorkReport: "false",
+      parentId: '1'
     },
     {
-      id: '4',
-      manager: 'Responsable',
-      name: 'UNIT4',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: false,
-      expensesNotification: true,
-      activityNotification: true,
-      parent: '2'
+      oUnitId: '4',
+      responsibleId: 'Responsable',
+      oUnitName: 'UNIT4',
+      description: 'texto descriptivo unidad organizativa 4',
+      oUnitTypeId: '2',
+      deptId: '3',
+      noticeToManagerHoliday: "false",
+      noticeToManagerExpenditure: "true",
+      noticeToManagerWorkReport: "true",
+      parentId: '2'
     },
     {
-      id: '5',
-      manager: 'Responsable',
-      name: 'UNIT5',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: true,
-      expensesNotification: false,
-      activityNotification: true,
-      parent: '3'
+      oUnitId: '5',
+      responsibleId: 'Responsable',
+      oUnitName: 'UNIT5',
+      description: 'texto descriptivo unidad organizativa 5',
+      oUnitTypeId: '2',
+      deptId: '4',
+      noticeToManagerHoliday: "true",
+      noticeToManagerExpenditure: "false",
+      noticeToManagerWorkReport: "true",
+      parentId: '3'
     },
     {
-      id: '6',
-      manager: 'Responsable',
-      name: 'UNIT6',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: true,
-      expensesNotification: true,
-      activityNotification: true,
-      parent: '3'
+      oUnitId: '6',
+      responsibleId: 'Responsable',
+      oUnitName: 'UNIT6',
+      description: 'texto descriptivo unidad organizativa 6',
+      oUnitTypeId: '1',
+      deptId: '5',
+      noticeToManagerHoliday: "true",
+      noticeToManagerExpenditure: "true",
+      noticeToManagerWorkReport: "true",
+      parentId: '3'
     },
     {
-      id: '7',
-      manager: 'Responsable',
-      name: 'UNIT7',
-      depends: 'Depende',
-      description: 'Descripcion',
-      type: 'Tipo',
-      department: 'Departamento',
-      holidaysNotification: true,
-      expensesNotification: false,
-      activityNotification: true,
-      parent: '6'
+      oUnitId: '7',
+      responsibleId: 'Responsable',
+      oUnitName: 'UNIT7',
+      description: 'texto descriptivo unidad organizativa 7',
+      oUnitTypeId: '1',
+      deptId: '2',
+      noticeToManagerHoliday: "true",
+      noticeToManagerExpenditure: "false",
+      noticeToManagerWorkReport: "true",
+      parentId: '6'
     }
   ], function (err, result) {
     res.send(

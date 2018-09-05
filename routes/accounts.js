@@ -10,12 +10,12 @@ router.get('/listAccounts', function (req, res) {
   });
 });
 
-// GET account (id = id)
-router.get('/getAccount/:id', function (req, res) {
+// GET account (accountId = accountId)
+router.get('/getAccount/:accountId', function (req, res) {
   var db = req.db;
   var collection = db.get('accounts');
-  var docToFind = req.params.id;
-  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
+  var docToFind = req.params.accountId;
+  collection.findOne({ 'accountId': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -31,22 +31,22 @@ router.post('/addAccount', function (req, res) {
   });
 });
 
-// DELETE delAccount (id = id)
-router.delete('/delAccount/:id', function (req, res) {
+// DELETE delAccount (accountId = accountId)
+router.delete('/delAccount/:accountId', function (req, res) {
   var db = req.db;
   var collection = db.get('accounts');
-  var docToDelete = req.params.id;
-  collection.remove({ 'id': docToDelete }, function (err) {
+  var docToDelete = req.params.accountId;
+  collection.remove({ 'accountId': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
 
-// PUT updateAccount (id = id)
-router.put('/updateAccount/:id', function (req, res) {
+// PUT updateAccount (accountId = accountId)
+router.put('/updateAccount/:accountId', function (req, res) {
   var db = req.db;
   var collection = db.get('accounts');
-  var docToUpdate = req.params.id;
-  collection.update({ 'id': docToUpdate }, req.body, function (err) {
+  var docToUpdate = req.params.accountId;
+  collection.update({ 'accountId': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -58,73 +58,52 @@ router.get('/resetCollectionAccounts', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "id": "1",
-      "name": "BANCO POPULAR",
-      "account": "ES6621000418401234567891",
-      "company":{
-        "id":"1",
-        "name":"ENTELGY CONSULTING S.A"
-      },
+      "accountId": "1",
+      "accountName": "BANCO POPULAR",
+      "accountNumber": "ES6621000418401234567891",
+      "companyId":"1",
       "ledgerAccount":"57200001"      
     },
     {
-      "id": "2",
-      "name": "CAIXA BANK",
-      "account": "ES6000491500051234567892",
-      "company":{
-        "id":"1",
-        "name":"ENTELGY CONSULTING S.A"
-      },
+      "accountId": "2",
+      "accountName": "CAIXA BANK",
+      "accountNumber": "ES6000491500051234567892",
+      "companyId":"1",
       "ledgerAccount":"57200005"    
     },
     {
-      "id": "3",
-      "name": "LA CAIXA",
-      "account": "ES9420805801101234567891",
-      "company":{
-        "id":"2",
-        "name":"ENTELGY IBAI S.A"
-      },
+      "accountId": "3",
+      "accountName": "LA CAIXA",
+      "accountNumber": "ES9420805801101234567891",
+      "companyId":"2",
       "ledgerAccount":"57200002"    
     },
     {
-      "id": "4",
-      "name": "BANCO PEPE",
-      "account": "ES9000246912501234567891",
-      "company":{
-        "id":"2",
-        "name":"ENTELGY IBAI S.A"
-      },
+      "accountId": "4",
+      "accountName": "BANCO PEPE",
+      "accountNumber": "ES9000246912501234567891",
+      "companyId":"2",
       "ledgerAccount":"57200003"    
     },
     {
-      "id": "5",
-      "name": "BANCO PACO",
-      "account": "ES7100302053091234567895",
-      "company":{
-        "id":"3",
-        "name":"ENTELGY DIGITAL"
-      },
+      "accountId": "5",
+      "accountName": "BANCO PACO",
+      "accountNumber": "ES7100302053091234567895",
+      "companyId":"3",
       "ledgerAccount":"57200005"    
     },
     {
-      "id": "6",
-      "name": "BANCO JUAN",
-      "account": "ES1000492352082414205416",
-      "company":{
-        "id":"3",
-        "name":"ENTELGY DIGITAL"
-      },
+      "accountId": "6",
+      "accountName": "BANCO JUAN",
+      "accountNumber": "ES1000492352082414205416",
+      "companyId":"3",
       "ledgerAccount":"57200003"    
     },
     {
-      "id": "7",
-      "name": "BANCO MANOLO",
-      "account": "ES1720852066623456789011",
-      "company":{
-        "id":"4",
-        "name":"ENTELGY S.A."
-      },
+      "accountId": "7",
+      "accountName": "BANCO MANOLO",
+      "accountNumber": "ES1720852066623456789011",
+      "companyId":"4",
       "ledgerAccount":"57200001"
     }
   ], function (err, result) {

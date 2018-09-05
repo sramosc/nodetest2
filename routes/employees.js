@@ -11,11 +11,11 @@ router.get('/listEmployees', function (req, res) {
 });
 
 // GET employee
-router.get('/getEmployee/:code', function (req, res) {
+router.get('/getEmployee/:employeeId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var docToFind = req.params.code;
-  collection.find({ 'code': docToFind }, {}, function (e, docs) {
+  var docToFind = req.params.employeeId;
+  collection.find({ 'employeeId': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -32,32 +32,32 @@ router.post('/addEmployee', function (req, res) {
 });
 
 // DELETE delEmployee
-router.delete('/delEmployee/:code', function (req, res) {
+router.delete('/delEmployee/:employeeId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var userToDelete = req.params.code;
-  collection.remove({ 'code': userToDelete }, function (err) {
+  var userToDelete = req.params.employeeId;
+  collection.remove({ 'employeeId': userToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
 
 // PUT updateEmployee
-router.put('/updateEmployee/:code', function (req, res) {
+router.put('/updateEmployee/:employeeId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var userToUpdate = req.params.code;
-  collection.update({ 'code': userToUpdate }, req.body, function (err) {
+  var userToUpdate = req.params.employeeId;
+  collection.update({ 'employeeId': userToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
 
-// PATCH updateEmployee/:code/ounit/ounit
-router.patch('/updateEmployee/:code/ounit/:ounit', function (req, res) {
+// PATCH updateEmployee/:employeeId/oUnitId/:oUnitId
+router.patch('/updateEmployee/:employeeId/oUnitId/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  var userToUpdate = req.params.code;
-  var newOUnit = req.params.ounit;
-  collection.findOneAndUpdate({ 'code': userToUpdate }, { $set: { "ounit": newOUnit } }, function (err) {
+  var userToUpdate = req.params.employeeId;
+  var newoUnitId = req.params.oUnitId;
+  collection.findOneAndUpdate({ 'employeeId': userToUpdate }, { $set: { "oUnitId": newoUnitId } }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -70,196 +70,196 @@ router.get('/resetCollectionEmployees', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "code": "1",
-      "name": "Jose Carlos Fernandez",
+      "employeeId": "1",
+      "employeeName": "Jose Carlos Fernandez",
       "mail": "jcf@entelgy.com",
-      "ounit": "2"
+      "oUnitId": "2"
     },
     {
-      "code": "2",
-      "name": "Manuel Pérez Vena",
+      "employeeId": "2",
+      "employeeName": "Manuel Pérez Vena",
       "mail": "mpv@entelgy.com",
-      "ounit": "2"
+      "oUnitId": "2"
     },
     {
-      "code": "3",
-      "name": "Maria Jesús Corrillo",
+      "employeeId": "3",
+      "employeeName": "Maria Jesús Corrillo",
       "mail": "mjc@entelgy.com",
-      "ounit": "1"
+      "oUnitId": "1"
     },
     {
-      "code": "4",
-      "name": "Almudena Duero",
+      "employeeId": "4",
+      "employeeName": "Almudena Duero",
       "mail": "ad@entelgy.com",
-      "ounit": "1"
+      "oUnitId": "1"
     },
     {
-      "code": "5",
-      "name": "Rafael Montañez",
+      "employeeId": "5",
+      "employeeName": "Rafael Montañez",
       "mail": "rm@entelgy.com",
-      "ounit": "1"
+      "oUnitId": "1"
     },
     {
-      "code": "6",
-      "name": "Sergio Ramirez",
+      "employeeId": "6",
+      "employeeName": "Sergio Ramirez",
       "mail": "sr@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "7",
-      "name": "Alfonso Sanchez",
+      "employeeId": "7",
+      "employeeName": "Alfonso Sanchez",
       "mail": "as@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "8",
-      "name": "Yolanda Soltero",
+      "employeeId": "8",
+      "employeeName": "Yolanda Soltero",
       "mail": "ys@entelgy.com",
-      "ounit": "3"
+      "oUnitId": "3"
     },
     {
-      "code": "9",
-      "name": "Alvaro Noviciado",
+      "employeeId": "9",
+      "employeeName": "Alvaro Noviciado",
       "mail": "an@entelgy.com",
-      "ounit": "7"
+      "oUnitId": "7"
     },
     {
-      "code": "10",
-      "name": "Trinidad Pueblo",
+      "employeeId": "10",
+      "employeeName": "Trinidad Pueblo",
       "mail": "tp@entelgy.com",
-      "ounit": "7"
+      "oUnitId": "7"
     },
     {
-      "code": "11",
-      "name": "Ivan de la Sierra",
+      "employeeId": "11",
+      "employeeName": "Ivan de la Sierra",
       "mail": "idls@entelgy.com",
-      "ounit": "6"
+      "oUnitId": "6"
     },
     {
-      "code": "12",
-      "name": "Antonio Alfarero",
+      "employeeId": "12",
+      "employeeName": "Antonio Alfarero",
       "mail": "aa@entelgy.com",
-      "ounit": "6"
+      "oUnitId": "6"
     },
     {
-      "code": "13",
-      "name": "Fernando Duque",
+      "employeeId": "13",
+      "employeeName": "Fernando Duque",
       "mail": "fd@entelgy.com",
-      "ounit": ""
+      "oUnitId": ""
     },
     {
-      "code": "14",
-      "name": "Luis Pared",
+      "employeeId": "14",
+      "employeeName": "Luis Pared",
       "mail": "lp@entelgy.com",
-      "ounit": ""
+      "oUnitId": ""
     },
     {
-      "code": "15",
-      "name": "Maria de los Ángeles Frasco",
+      "employeeId": "15",
+      "employeeName": "Maria de los Ángeles Frasco",
       "mail": "maf@entelgy.com",
-      "ounit": "3"
+      "oUnitId": "3"
     },
     {
-      "code": "16",
-      "name": "Rosa Cinesal",
+      "employeeId": "16",
+      "employeeName": "Rosa Cinesal",
       "mail": "rs@entelgy.com",
-      "ounit": "3"
+      "oUnitId": "3"
     },
     {
-      "code": "17",
-      "name": "Javier Orilla",
+      "employeeId": "17",
+      "employeeName": "Javier Orilla",
       "mail": "jo@entelgy.com",
-      "ounit": "7"
+      "oUnitId": "7"
     },
     {
-      "code": "18",
-      "name": "Manuel Fajardo",
+      "employeeId": "18",
+      "employeeName": "Manuel Fajardo",
       "mail": "mf@entelgy.com",
-      "ounit": "7"
+      "oUnitId": "7"
     },
     {
-      "code": "19",
-      "name": "Nieves Pichu",
+      "employeeId": "19",
+      "employeeName": "Nieves Pichu",
       "mail": "np@entelgy.com",
-      "ounit": "6"
+      "oUnitId": "6"
     },
     {
-      "code": "20",
-      "name": "Marcos Balseros",
+      "employeeId": "20",
+      "employeeName": "Marcos Balseros",
       "mail": "mb@entelgy.com",
-      "ounit": "6"
+      "oUnitId": "6"
     },
     {
-      "code": "21",
-      "name": "Alejandro Hades",
+      "employeeId": "21",
+      "employeeName": "Alejandro Hades",
       "mail": "ah@entelgy.com",
-      "ounit": "2"
+      "oUnitId": "2"
     },
     {
-      "code": "22",
-      "name": "Carlos Pego",
+      "employeeId": "22",
+      "employeeName": "Carlos Pego",
       "mail": "cp@entelgy.com",
-      "ounit": "2"
+      "oUnitId": "2"
     },
     {
-      "code": "23",
-      "name": "Ana Ferrero",
+      "employeeId": "23",
+      "employeeName": "Ana Ferrero",
       "mail": "af@entelgy.com",
-      "ounit": "1"
+      "oUnitId": "1"
     },
     {
-      "code": "24",
-      "name": "Oscar Montoro",
+      "employeeId": "24",
+      "employeeName": "Oscar Montoro",
       "mail": "om@entelgy.com",
-      "ounit": "1"
+      "oUnitId": "1"
     },
     {
-      "code": "25",
-      "name": "Ernesto Diaz Isai",
+      "employeeId": "25",
+      "employeeName": "Ernesto Diaz Isai",
       "mail": "edi@entelgy.com",
-      "ounit": "1"
+      "oUnitId": "1"
     },
     {
-      "code": "26",
-      "name": "Oscar Cristobal",
+      "employeeId": "26",
+      "employeeName": "Oscar Cristobal",
       "mail": "oc@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "27",
-      "name": "Alberto Farra",
+      "employeeId": "27",
+      "employeeName": "Alberto Farra",
       "mail": "af@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "28",
-      "name": "Daniel Guerrero",
+      "employeeId": "28",
+      "employeeName": "Daniel Guerrero",
       "mail": "dg@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "29",
-      "name": "Ruben Olmos",
+      "employeeId": "29",
+      "employeeName": "Ruben Olmos",
       "mail": "ro@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "30",
-      "name": "Daniel Quesadilla",
+      "employeeId": "30",
+      "employeeName": "Daniel Quesadilla",
       "mail": "dq@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "31",
-      "name": "Javier Carmena",
+      "employeeId": "31",
+      "employeeName": "Javier Carmena",
       "mail": "jc@entelgy.com",
-      "ounit": "5"
+      "oUnitId": "5"
     },
     {
-      "code": "32",
-      "name": "Raul Valorallanos",
+      "employeeId": "32",
+      "employeeName": "Raul Valorallanos",
       "mail": "rv@entelgy.com",
-      "ounit": "6"
+      "oUnitId": "6"
     }
   ], function (err, result) {
     res.send(

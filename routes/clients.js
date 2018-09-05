@@ -17,24 +17,24 @@ router.get('/resetCollectionClients', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "client_id": "1",
-      "client_name": "TELEFONICA",
+      "clientId": "1",
+      "clientName": "430000025 - TELEFONICA MOVILES ESPAÑA S.A.",
     },
     {
-      "client_id": "2",
-      "client_name": "BBVA",
+      "clientId": "2",
+      "clientName": "430000026 - BBVA",
     },
     {
-      "client_id": "3",
-      "client_name": "BANCO SANTANDER",
+      "clientId": "3",
+      "clientName": "430000027 - BANCO SANTANDER",
     },
     {
-      "client_id": "4",
-      "client_name": "LA CAIXA",
+      "clientId": "4",
+      "clientName": "430000028 - LA CAIXA",
     },
     {
-      "client_id": "5",
-      "client_name": "MERCADONA",
+      "clientId": "5",
+      "clientName": "430000029 - MERCADONA",
     },
     
   ], function (err, result) {
