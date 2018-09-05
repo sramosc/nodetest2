@@ -5,9 +5,25 @@ var router = express.Router();
 router.get('/listAccounts', function (req, res) {
   var db = req.db;
   var collection = db.get('accounts');
-  collection.find({}, {}, function (e, docs) {
+  /*collection.find({}, {}, function (e, docs) {
     res.json(docs);
-  });
+  });*/
+  collection.aggregate([
+    {
+      $lookup: {
+        from: "companies",
+        localField: "companyId",
+        foreignField: "companyId",
+        as: "company"
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
 
 // GET account (accountId = accountId)
