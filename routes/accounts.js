@@ -23,7 +23,7 @@ router.get('/listAccounts', function (req, res) {
         "accountName": 1,
         "accountNumber": 1,
         "companyId": 1,
-        "company.companyName":"companyName",
+        "companyName": { $arrayElemAt: ["$company.companyName", 0] },
         "ledgerAccount": "57200001",
       }
     }
