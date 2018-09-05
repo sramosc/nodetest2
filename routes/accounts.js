@@ -16,6 +16,16 @@ router.get('/listAccounts', function (req, res) {
         foreignField: "companyId",
         as: "company"
       }
+    },
+    {
+      $project: {
+        "accountId": 1,
+        "accountName": 1,
+        "accountNumber": 1,
+        "companyId": 1,
+        "company.companyName":"companyName",
+        "ledgerAccount": "57200001",
+      }
     }
   ], {}, function (e, docs) {
     if (e != null) {
