@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-// GET activities list
-router.get('/listActivitiesTypes', function (req, res) {
+// GET activitiy types list
+router.get('/listActivityTypes', function (req, res) {
   var db = req.db;
-  var collection = db.get('activitiesTypes');
+  var collection = db.get('activityTypes');
   collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
 });
 
-// GET resetCollectionActivitiesTypes
-router.get('/resetCollectionActivitiesTypes', function (req, res) {
+// GET resetCollectionActivityTypes
+router.get('/resetCollectionActivityTypes', function (req, res) {
   var db = req.db;
-  var collection = db.get('activitiesTypes');
+  var collection = db.get('activitiyTypes');
   collection.remove({});
   collection.insert([
     {
@@ -50,7 +50,7 @@ router.get('/resetCollectionActivitiesTypes', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: 'la coleccion activitiesType se ha reseteado correctamente' } : { msg: err }
+      (err === null) ? { msg: 'OK: activitiyTypes collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });
