@@ -81,15 +81,15 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'year': '2018',
       'days': [
         {
-          'date': '01/01/2018',
+          'date': '2018-01-01',
           'comment': 'dia 1 de enero'
         },
         {
-          'date': '01/02/2018',
+          'date': '2018-02-01',
           'comment': 'dia 1 de febrero'
         },
         {
-          'date': '01/03/2018',
+          'date': '2018-03-01',
           'comment': 'dia 1 de marzo'
         }
       ]
@@ -100,15 +100,15 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'year': '2018',
       'days': [
         {
-          'date': '02/01/2018',
+          'date': '2018-01-02',
           'comment': 'dia 2 de enero'
         },
         {
-          'date': '02/02/2018',
+          'date': '2018-02-02',
           'comment': 'dia 2 de febrero'
         },
         {
-          'date': '02/03/2018',
+          'date': '2018-03-02',
           'comment': 'dia 2 de marzo'
         }
       ]
@@ -119,15 +119,15 @@ router.get('/resetCollectionCalendars', function (req, res) {
       'year': '2017',
       'days': [
         {
-          'date': '02/01/2017',
+          'date': '2017-01-02',
           'comment': 'dia 2 de enero'
         },
         {
-          'date': '02/02/2017',
+          'date': '2017-02-02',
           'comment': 'dia 2 de febrero'
         },
         {
-          'date': '02/03/2017',
+          'date': '2017-03-02',
           'comment': 'dia 2 de marzo'
         }
       ]
@@ -135,18 +135,18 @@ router.get('/resetCollectionCalendars', function (req, res) {
     {
       'calendarId': '4',
       'calendarType': 'Festivos Pais Vasco',
-      'year': '2017',
+      'year': '2016',
       'days': [
         {
-          'date': '02/10/2017',
+          'date': '2016-10-02',
           'comment': 'dia 2 de octubre'
         },
         {
-          'date': '03/10/2017',
+          'date': '2016-10-03',
           'comment': 'dia 3 de octubre'
         },
         {
-          'date': '04/10/2017',
+          'date': '2016-10-04',
           'comment': 'dia 4 de octubre'
         }
       ]
