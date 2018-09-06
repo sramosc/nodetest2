@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/listActivitiesTypes', function (req, res) {
   var db = req.db;
   var collection = db.get('activitiesTypes');
-  collection.find({}, {}, function (e, docs) {
+  collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
 });
