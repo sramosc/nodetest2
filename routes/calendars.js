@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/listCalendars', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
-  collection.find({}, {'_id': 0}, function (e, docs) {
+  collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
 });
