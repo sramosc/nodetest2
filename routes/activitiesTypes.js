@@ -50,7 +50,7 @@ router.get('/resetCollectionActivitiesTypes', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: '' } : { msg: err }
+      (err === null) ? { msg: 'la coleccion activitiesType se ha reseteado correctamente' } : { msg: err }
     );
   });
 });
