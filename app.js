@@ -20,6 +20,7 @@ var companiesRoutes = require('./routes/companies');
 var vacationsRoutes = require('./routes/vacations');
 var activitiesRoutes = require('./routes/activities');
 var activityTypesRoutes = require('./routes/activityTypes');
+var activityLinesRoutes = require('./routes/activityLines');
 var clientsRoutes = require('./routes/clients');
 
 
@@ -52,6 +53,7 @@ app.use('/companies', companiesRoutes);
 app.use('/vacations', vacationsRoutes);
 app.use('/activities', activitiesRoutes);
 app.use('/activityTypes', activityTypesRoutes);
+app.use('/activityLines', activityLinesRoutes);
 app.use('/clients', clientsRoutes);
 
 

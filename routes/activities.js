@@ -56,8 +56,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "cumulativeDataYear": "2018",
       "activityLineId":"1",
       "activityTypeId":"1",
-      "startDate":"08/01/2018",
-      "endDate":"31/12/2018",
+      "startDate":"2018-01-08",
+      "endDate":"2018-12-31",
       "comRespId":"1",
       "opRespId":"2",
       "dBooking":"true",
@@ -86,7 +86,7 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employeeId": "21",
           "employeeIntervals": [
             {
-              "startDate": "15/01/2016",
+              "startDate": "2018-01-15",
               "endDate": "",
               "roleId": "1"
             }
@@ -96,7 +96,7 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employeeId": "22",
           "employeeIntervals": [
             {
-              "startDate": "15/01/2016",
+              "startDate": "2018-01-16",
               "endDate": "",
               "roleId": "2"
             }
@@ -106,7 +106,7 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employeeId": "2",
           "employeeIntervals": [
             {
-              "startDate": "15/01/2016",
+              "startDate": "2018-01-08",
               "endDate": "",
               "roleId": "3"
             }
@@ -116,11 +116,14 @@ router.get('/resetCollectionActivities', function (req, res) {
           "employeeId": "1",
           "employeeIntervals": [
             {
-              "startDate": "01/01/2018",
-              "endDate": "01/02/2018",
+              "startDate": "2018-02-01",
+              "endDate": "2018-02-10",
               "roleId": "3"
             }
           ]
+        },
+        {
+          "groupId":"1"
         }
       ]
     },
