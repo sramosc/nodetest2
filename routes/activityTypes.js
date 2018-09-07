@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-// GET activitiy types list
+// GET activityTypes list
 router.get('/listActivityTypes', function (req, res) {
   var db = req.db;
   var collection = db.get('activityTypes');
@@ -13,7 +13,7 @@ router.get('/listActivityTypes', function (req, res) {
 // GET resetCollectionActivityTypes
 router.get('/resetCollectionActivityTypes', function (req, res) {
   var db = req.db;
-  var collection = db.get('activitiyTypes');
+  var collection = db.get('activityTypes');
   collection.remove({});
   collection.insert([
     {
