@@ -114,7 +114,24 @@ router.get('/listActivities', function (req, res) {
         "activityCode": 1,
         "startDate": 1,
         "endDate": 1,
+        "budget": 1,
+        "efectiveHours": 1,
+        "expenses": 1,
+        "production": 1,
+        "margin": 1,
+        "invoiced": 1,
+        "initialCurrentWork": 1,
+        "currentWork": 1,
+        "pending": 1,
+        "cumulativeDatayear": 1,
         "activityLineId": 1,
+        "plannedHours": 1,
+        "finanCost": 1,
+        "plannedCost": 1,
+        "mBSale": 1,
+        "mBFinan": 1,
+        "startDate": 1,
+        "endDate": 1,
         "activityLine": "$activityLine.name",
         "invoiceCompanyId": 1,
         "invoiceCompany": "$invoiceCompany.companyName",
@@ -125,9 +142,25 @@ router.get('/listActivities', function (req, res) {
         "activitySubtypeId": 1,
         "activitySubtype": "$activitySubtype.name",
         "businessOunitId": 1,
-        "businessOunit": 1,
+        "businessOunit": "$businessOunit.oUnitName",
         "commertialOunitId": 1,
-        "commertialOunit": 1
+        "commertialOunit": "$commertialOunit.oUnitName",
+        "expensesPermissionsId": 1,
+        // falta expensesPermissions
+        "invoicingTypeId": 1,
+        // falta invoicingType
+        "incomeTypeId": 1,
+        // falta incomeTypeId
+        "doubleBooking": 1,
+        "visible": 1,
+        "nightHourFactor": 1,
+        "holidayHourFactor": 1,
+        "watchHourFactor": 1,
+        "nightHolidayHourFactor": 1,
+        "watchHolidayHourFactor": 1,
+        "intervectionInWatchHourFactor": 1,
+        "intervectionInHolidayWatchHourFactor": 1,
+        "extraHourFactor": 1
       }
     }
   ], {}, function (e, docs) {
