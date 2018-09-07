@@ -28,14 +28,15 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$anCompany" },
-    /*{
+    {
       $lookup: {
         from: "clients",
         localField: "clientId",
         foreignField: "clientId",
         as: "client"
       }
-    },*/
+    },
+    { $unwind: "$client" },
     {
       $lookup: {
         from: "activityLines",
@@ -53,6 +54,7 @@ router.get('/listActivities', function (req, res) {
         as: "activitySubtype"
       }
     },
+    { $unwind: "$activitySubtype" },
     /*{
       $lookup: {
         from: "ounits",
@@ -112,7 +114,13 @@ router.get('/listActivities', function (req, res) {
         "activityLineId": 1,
         "activityLine": "$activityLine.name",
         "invoiceCompanyId": 1,
-        "invoiceCompany" : "$invoiceCompany.name"
+        "invoiceCompany": "$invoiceCompany.companyName",
+        "anCompanyId": 1,
+        "anCompany": "$anCompany.companyName",
+        "clientId": 1,
+        "client": "$client.clientName",
+        "activitySubtypeId": 1,
+        "activitySubtype": "$activitySubtype.name"
       }
     }
   ], {}, function (e, docs) {
