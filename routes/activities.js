@@ -117,8 +117,8 @@ router.get('/listActivities', function (req, res) {
         "invoiceCompany": "$invoiceCompany.companyName",
         "anCompanyId": 1,
         "anCompany": "$anCompany.companyName",
-        //"clientId": 1,
-        //"client": "$client.clientName",
+        "clientId": 1,
+        "client": "$client.clientName",
         //"activitySubtypeId": 1,
         //"activitySubtype": "$activitySubtype.name"
       }
