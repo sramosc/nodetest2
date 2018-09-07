@@ -46,7 +46,7 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$activityLine" },
-    {
+  /*  {
       $lookup: {
         from: "activitySubtypes",
         localField: "activitySubtypeId",
@@ -119,8 +119,8 @@ router.get('/listActivities', function (req, res) {
         "anCompany": "$anCompany.companyName",
         "clientId": 1,
         "client": "$client.clientName",
-        "activitySubtypeId": 1,
-        "activitySubtype": "$activitySubtype.name"
+        //"activitySubtypeId": 1,
+        //"activitySubtype": "$activitySubtype.name"
       }
     }
   ], {}, function (e, docs) {
