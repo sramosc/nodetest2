@@ -25,6 +25,7 @@ var activityRolesRoutes = require('./routes/activityRoles');
 var activityInvoicingTypesRoutes = require('./routes/activityInvoicingTypes');
 var activityExpensesPermissionTypesRoutes = require('./routes/activityExpensesPermissionTypes');
 var activitySubtypesRoutes = require('./routes/activitySubtypes');
+var activityIncomeTypesRoutes = require('./routes/activityIncomeTypes');
 var clientsRoutes = require('./routes/clients');
 
 
@@ -62,6 +63,7 @@ app.use('/activityRoles', activityRolesRoutes);
 app.use('/activityInvoicingTypes', activityInvoicingTypesRoutes);
 app.use('/activityExpensesPermissionTypes', activityExpensesPermissionTypesRoutes);
 app.use('/activitySubtypes', activitySubtypesRoutes);
+app.use('/activityIncomeTypes', activityIncomeTypesRoutes);
 app.use('/clients', clientsRoutes);
 
 
