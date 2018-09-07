@@ -19,42 +19,42 @@ router.get('/resetCollectionActivitySubtypes', function (req, res) {
     {
       "name": "PROYECTO INTERNO",
       "activityTypeId": "2",
-      "activitySubTypeId": "5"
+      "activitySubtypeId": "5"
     },
     {
       "name": "PREVENTA",
       "activityTypeId": "3",
-      "activitySubTypeId": "8"
+      "activitySubtypeId": "8"
     },
     {
       "name": "FORMACION",
       "activityTypeId": "2",
-      "activitySubTypeId": "9"
+      "activitySubtypeId": "9"
     },
     {
       "name": "GESTION / ESTRUCTURA",
       "activityTypeId": "2",
-      "activitySubTypeId": "12"
+      "activitySubtypeId": "12"
     },
     {
       "name": "PENDIENTE DE ASIGNACIÓN",
       "activityTypeId": "2",
-      "activitySubTypeId": "15"
+      "activitySubtypeId": "15"
     },
     {
       "name": "HORAS SINDICALES",
       "activityTypeId": "2",
-      "activitySubTypeId": "16"
+      "activitySubtypeId": "16"
     },
     {
       "name": "AUSENCIA",
       "activityTypeId": "4",
-      "activitySubTypeId": "24"
+      "activitySubtypeId": "24"
     },
     {
       "name": "PROYECTO EXTERNO",
       "activityTypeId": "1",
-      "activitySubTypeId": "25"
+      "activitySubtypeId": "25"
     }
   ], function (err, result) {
     res.send(
