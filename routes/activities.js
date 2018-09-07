@@ -5,9 +5,114 @@ var router = express.Router();
 router.get('/listActivities', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
-  collection.find({}, {}, function (e, docs) {
+  /*collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
+});*/
+collection.aggregate([
+  {
+    $lookup: {
+      from: "companies",
+      localField: "invoiceCompanyId",
+      foreignField: "companyId",
+      as: "invoiceCompany"
+    }
+  },
+  {
+    $lookup: {
+      from: "companies",
+      localField: "anCompanyId",
+      foreignField: "companyId",
+      as: "anCompany"
+    }
+  },
+  /*{
+    $lookup: {
+      from: "clients",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },*/
+  {
+    $lookup: {
+      from: "activityLines",
+      localField: "activityLineId",
+      foreignField: "activityLineId",
+      as: "activityLine"
+    }
+  },
+  {
+    $lookup: {
+      from: "activitySubtypes",
+      localField: "activitySubtypeId",
+      foreignField: "activitySubtypeId",
+      as: "activitySubtype"
+    }
+  },
+  /*{
+    $lookup: {
+      from: "ounits",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },
+  {
+    $lookup: {
+      from: "ounits",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },
+  {
+    $lookup: {
+      from: "expensespermissiontypes",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },
+  {
+    $lookup: {
+      from: "invoicingtypes",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },
+  {
+    $lookup: {
+      from: "incometypes",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },
+  {
+    $lookup: {
+      from: "clients",
+      localField: "clientId",
+      foreignField: "clientId",
+      as: "client"
+    }
+  },*/
+  {
+    $project: {
+      "_id": 0,
+      "activityName": 1,
+      "invoiceCompany": 1,
+      "acactivityCode": 1
+    }
+  }
+], {}, function (e, docs) {
+  if (e != null) {
+    res.json(e)
+  } else {
+    res.json(docs)
+  }
+})
 });
 
 // List employees by activity
@@ -973,7 +1078,7 @@ router.get('/resetCollectionActivities', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: '' } : { msg: err }
+      (err === null) ? { msg: 'OK: activities collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });
