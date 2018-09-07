@@ -55,54 +55,57 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$activitySubtype" },
-    /*{
-      $lookup: {
-        from: "ounits",
-        localField: "clientId",
-        foreignField: "clientId",
-        as: "client"
-      }
-    },
     {
       $lookup: {
         from: "ounits",
-        localField: "clientId",
-        foreignField: "clientId",
-        as: "client"
+        localField: "commertialOunitId",
+        foreignField: "oUnitId",
+        as: "commertialOunit"
       }
     },
+    { $unwind: "$commertialOunit" },
+
     {
       $lookup: {
-        from: "expensespermissiontypes",
-        localField: "clientId",
-        foreignField: "clientId",
-        as: "client"
+        from: "ounits",
+        localField: "businessOunitId",
+        foreignField: "oUnitId",
+        as: "businessOunit"
       }
     },
-    {
-      $lookup: {
-        from: "invoicingtypes",
-        localField: "clientId",
-        foreignField: "clientId",
-        as: "client"
-      }
-    },
-    {
-      $lookup: {
-        from: "incometypes",
-        localField: "clientId",
-        foreignField: "clientId",
-        as: "client"
-      }
-    },
-    {
-      $lookup: {
-        from: "clients",
-        localField: "clientId",
-        foreignField: "clientId",
-        as: "client"
-      }
-    },*/
+    { $unwind: "$businessOunit" },
+    /* {
+       $lookup: {
+         from: "expensespermissiontypes",
+         localField: "clientId",
+         foreignField: "clientId",
+         as: "client"
+       }
+     },
+     {
+       $lookup: {
+         from: "invoicingtypes",
+         localField: "clientId",
+         foreignField: "clientId",
+         as: "client"
+       }
+     },
+     {
+       $lookup: {
+         from: "incometypes",
+         localField: "clientId",
+         foreignField: "clientId",
+         as: "client"
+       }
+     },
+     {
+       $lookup: {
+         from: "clients",
+         localField: "clientId",
+         foreignField: "clientId",
+         as: "client"
+       }
+     },*/
     {
       $project: {
         "_id": 0,
@@ -120,7 +123,11 @@ router.get('/listActivities', function (req, res) {
         "clientId": 1,
         "client": "$client.clientName",
         "activitySubtypeId": 1,
-        "activitySubtype": "$activitySubtype.name"
+        "activitySubtype": "$activitySubtype.name",
+        "businessOunitId": 1,
+        "businessOunit": 1,
+        "commertialOunitId": 1,
+        "commertialOunit": 1
       }
     }
   ], {}, function (e, docs) {
