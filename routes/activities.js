@@ -9,110 +9,119 @@ router.get('/listActivities', function (req, res) {
     res.json(docs);
   });
 });*/
-collection.aggregate([
-  {
-    $lookup: {
-      from: "companies",
-      localField: "invoiceCompanyId",
-      foreignField: "companyId",
-      as: "invoiceCompany"
+  collection.aggregate([
+    {
+      $lookup: {
+        from: "companies",
+        localField: "invoiceCompanyId",
+        foreignField: "companyId",
+        as: "invoiceCompany"
+      }
+    },
+    { $unwind: "$invoiceCompany" },
+    {
+      $lookup: {
+        from: "companies",
+        localField: "anCompanyId",
+        foreignField: "companyId",
+        as: "anCompany"
+      }
+    },
+    { $unwind: "$anCompany" },
+    /*{
+      $lookup: {
+        from: "clients",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },*/
+    {
+      $lookup: {
+        from: "activityLines",
+        localField: "activityLineId",
+        foreignField: "activityLineId",
+        as: "activityLine"
+      }
+    },
+    { $unwind: "$activityLine" },
+    {
+      $lookup: {
+        from: "activitySubtypes",
+        localField: "activitySubtypeId",
+        foreignField: "activitySubtypeId",
+        as: "activitySubtype"
+      }
+    },
+    /*{
+      $lookup: {
+        from: "ounits",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },
+    {
+      $lookup: {
+        from: "ounits",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },
+    {
+      $lookup: {
+        from: "expensespermissiontypes",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },
+    {
+      $lookup: {
+        from: "invoicingtypes",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },
+    {
+      $lookup: {
+        from: "incometypes",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },
+    {
+      $lookup: {
+        from: "clients",
+        localField: "clientId",
+        foreignField: "clientId",
+        as: "client"
+      }
+    },*/
+    {
+      $project: {
+        "_id": 0,
+        "activityId": 1,
+        "activityName": 1,
+        "activityCode": 1,
+        "startDate": 1,
+        "endDate": 1,
+        "activityLineId": 1,
+        "activityLine": "$activityLine.name",
+        "invoiceCompanyId": 1,
+        "invoiceCompany" : "$invoiceCompany.name"
+      }
     }
-  },
-  {
-    $lookup: {
-      from: "companies",
-      localField: "anCompanyId",
-      foreignField: "companyId",
-      as: "anCompany"
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
     }
-  },
-  /*{
-    $lookup: {
-      from: "clients",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },*/
-  {
-    $lookup: {
-      from: "activityLines",
-      localField: "activityLineId",
-      foreignField: "activityLineId",
-      as: "activityLine"
-    }
-  },
-  {
-    $lookup: {
-      from: "activitySubtypes",
-      localField: "activitySubtypeId",
-      foreignField: "activitySubtypeId",
-      as: "activitySubtype"
-    }
-  },
-  /*{
-    $lookup: {
-      from: "ounits",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },
-  {
-    $lookup: {
-      from: "ounits",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },
-  {
-    $lookup: {
-      from: "expensespermissiontypes",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },
-  {
-    $lookup: {
-      from: "invoicingtypes",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },
-  {
-    $lookup: {
-      from: "incometypes",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },
-  {
-    $lookup: {
-      from: "clients",
-      localField: "clientId",
-      foreignField: "clientId",
-      as: "client"
-    }
-  },*/
-  {
-    $project: {
-      "_id": 0,
-      "activityName": 1,
-      "invoiceCompany": 1,
-      "acactivityCode": 1
-    }
-  }
-], {}, function (e, docs) {
-  if (e != null) {
-    res.json(e)
-  } else {
-    res.json(docs)
-  }
-})
+  })
 });
 
 // List employees by activity
@@ -146,6 +155,7 @@ router.get('/resetCollectionActivities', function (req, res) {
   collection.remove({});
   collection.insert([
     {
+      "activityId": "1",
       "activityName": "FORMACION \"GPG\"",
       "activityCode": "NF0001",
       "budget": '747.692,00',
@@ -264,6 +274,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "2",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -333,6 +344,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "3",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -402,6 +414,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "4",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -504,6 +517,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "5",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -700,6 +714,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "6",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -817,6 +832,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "7",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -886,6 +902,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "8",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -955,6 +972,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "9",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1024,6 +1042,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       ]
     },
     {
+      "activityId": "10",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
