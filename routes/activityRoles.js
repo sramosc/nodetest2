@@ -30,7 +30,7 @@ router.get('/resetCollectionActivityRoles', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: 'OK: activitiyRoles collection has been correctly initialized' } : { msg: 'KO: ' + err }
+      (err === null) ? { msg: 'OK: activityRoles collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });
