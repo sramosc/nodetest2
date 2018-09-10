@@ -83,7 +83,7 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$expensesPermissions" },
-
+/*
     {
       $lookup: {
         from: "activityInvoicingTypes",
@@ -101,7 +101,7 @@ router.get('/listActivities', function (req, res) {
         as: "incomeType"
       }
     },
-    { $unwind: "$incomeType" },
+    { $unwind: "$incomeType" },*/
 
     {
       $project: {
@@ -145,9 +145,9 @@ router.get('/listActivities', function (req, res) {
         "expensesPermissionsId": 1,
         "expensesPermissions": "$expensesPermissions.name",
         "invoicingTypeId": 1,
-        "invoicingType": "$invoicingType.name",
+        //"invoicingType": "$invoicingType.name",
         "incomeTypeId": 1,
-        "incomeType": "$incomeType.name",
+        //"incomeType": "$incomeType.name",
         "doubleBooking": 1,
         "visible": 1,
         "nightHourFactor": 1,
