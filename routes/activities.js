@@ -10,7 +10,7 @@ router.get('/listActivities', function (req, res) {
   });
 });*/
   collection.aggregate([
-    {
+   /* {
       $lookup: {
         from: "companies",
         localField: "invoiceCompanyId",
@@ -74,7 +74,7 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$businessOunit" },
-   /* {
+    {
       $lookup: {
         from: "activityExpensesPermissionTypes",
         localField: "expensesPermissionsId",
@@ -129,19 +129,19 @@ router.get('/listActivities', function (req, res) {
         "mBFinan": 1,
         "startDate": 1,
         "endDate": 1,
-        "activityLine": "$activityLine.name",
+        //"activityLine": "$activityLine.name",
         "invoiceCompanyId": 1,
-        "invoiceCompany": "$invoiceCompany.companyName",
+        //"invoiceCompany": "$invoiceCompany.companyName",
         "anCompanyId": 1,
-        "anCompany": "$anCompany.companyName",
+        //"anCompany": "$anCompany.companyName",
         "clientId": 1,
-        "client": "$client.clientName",
+        //"client": "$client.clientName",
         "activitySubtypeId": 1,
-        "activitySubtype": "$activitySubtype.name",
+        //"activitySubtype": "$activitySubtype.name",
         "businessOunitId": 1,
-        "businessOunit": "$businessOunit.oUnitName",
+        //"businessOunit": "$businessOunit.oUnitName",
         "commertialOunitId": 1,
-        "commertialOunit": "$commertialOunit.oUnitName",
+        //"commertialOunit": "$commertialOunit.oUnitName",
         "expensesPermissionsId": 1,
         //"expensesPermissions": "$expensesPermissions.name",
         "invoicingTypeId": 1,
