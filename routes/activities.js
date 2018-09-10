@@ -11,6 +11,39 @@ router.get('/listActivities', function (req, res) {
 });*/
   collection.aggregate([
     {
+      $project: {
+        "_id": 0,
+        "activityId": 1,
+        "activityName": 1,
+        "activityCode": 1,        
+        "startDate": 1,
+        "businessOunitId": 1,
+        "commertialOunitId": 1,
+        "clientId": 1,
+        "activitySubtypeId": 1,        
+        "status": 1,
+        "registry": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+// GET activities list
+router.get('/getActivity/:activityId', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activities');
+  var docToFind = req.params.activityId;
+  collection.aggregate([
+    {
+      $match : {"activityId" : docToFind}
+    },
+    {
       $lookup: {
         from: "companies",
         localField: "invoiceCompanyId",
