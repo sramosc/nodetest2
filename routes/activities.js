@@ -425,7 +425,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
       "production": '48.146,84',
-      "margin": '100%',
+      "margin": '100%', 
       "invoiced": '34.325,86',
       "initialCurrentWork": '0,00',
       "currentWork": '13.820,98',
