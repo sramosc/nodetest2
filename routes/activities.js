@@ -74,7 +74,7 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$businessOunit" },
-    {
+   /* {
       $lookup: {
         from: "activityExpensesPermissionTypes",
         localField: "expensesPermissionsId",
@@ -83,7 +83,7 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$expensesPermissions" },
-/*
+
     {
       $lookup: {
         from: "activityInvoicingTypes",
@@ -92,7 +92,7 @@ router.get('/listActivities', function (req, res) {
         as: "invoicingType"
       }
     },
-    { $unwind: "$invoicingType" },
+    { $unwind: "$invoicingType" },*/
     {
       $lookup: {
         from: "activityIncomeTypes",
@@ -101,7 +101,7 @@ router.get('/listActivities', function (req, res) {
         as: "incomeType"
       }
     },
-    { $unwind: "$incomeType" },*/
+    { $unwind: "$incomeType" },
 
     {
       $project: {
@@ -143,7 +143,7 @@ router.get('/listActivities', function (req, res) {
         "commertialOunitId": 1,
         "commertialOunit": "$commertialOunit.oUnitName",
         "expensesPermissionsId": 1,
-        "expensesPermissions": "$expensesPermissions.name",
+        //"expensesPermissions": "$expensesPermissions.name",
         "invoicingTypeId": 1,
         //"invoicingType": "$invoicingType.name",
         "incomeTypeId": 1,
