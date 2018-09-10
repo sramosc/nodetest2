@@ -39,7 +39,7 @@ router.get('/resetCollectionClients', function (req, res) {
     
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: '' } : { msg: err }
+      (err === null) ? { msg: 'OK: clients collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });

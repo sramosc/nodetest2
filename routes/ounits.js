@@ -152,7 +152,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: '' } : { msg: err }
+      (err === null) ? { msg: 'OK: ounits collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });

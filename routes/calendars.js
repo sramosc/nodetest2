@@ -153,7 +153,7 @@ router.get('/resetCollectionCalendars', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: '' } : { msg: err }
+      (err === null) ? { msg: 'OK: calendars collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });

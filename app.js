@@ -27,6 +27,7 @@ var activityExpensesPermissionTypesRoutes = require('./routes/activityExpensesPe
 var activitySubtypesRoutes = require('./routes/activitySubtypes');
 var activityIncomeTypesRoutes = require('./routes/activityIncomeTypes');
 var clientsRoutes = require('./routes/clients');
+var employeeGroupsRoutes = require('./routes/employeeGroups');
 
 
 var app = express();
@@ -65,6 +66,8 @@ app.use('/activityExpensesPermissionTypes', activityExpensesPermissionTypesRoute
 app.use('/activitySubtypes', activitySubtypesRoutes);
 app.use('/activityIncomeTypes', activityIncomeTypesRoutes);
 app.use('/clients', clientsRoutes);
+app.use('/employeeGroups', employeeGroupsRoutes);
+
 
 
 // catch 404 and forward to error handler
