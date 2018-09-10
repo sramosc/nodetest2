@@ -10,7 +10,7 @@ router.get('/listActivities', function (req, res) {
   });
 });*/
   collection.aggregate([
-    {
+    /* {
       $lookup: {
         from: "companies",
         localField: "invoiceCompanyId",
@@ -18,8 +18,8 @@ router.get('/listActivities', function (req, res) {
         as: "invoiceCompany"
       }
     },
-    { $unwind: "$invoiceCompany" },
-  /*  {
+    { $unwind: "$invoiceCompany" }, */
+    /* {
       $lookup: {
         from: "companies",
         localField: "anCompanyId",
@@ -27,8 +27,8 @@ router.get('/listActivities', function (req, res) {
         as: "anCompany"
       }
     },
-    { $unwind: "$anCompany" },
-    {
+    { $unwind: "$anCompany" }, */
+    /* {
       $lookup: {
         from: "clients",
         localField: "clientId",
@@ -36,8 +36,8 @@ router.get('/listActivities', function (req, res) {
         as: "client"
       }
     },
-    { $unwind: "$client" },
-    {
+    { $unwind: "$client" }, */
+    /* {
       $lookup: {
         from: "activityLines",
         localField: "activityLineId",
@@ -45,8 +45,8 @@ router.get('/listActivities', function (req, res) {
         as: "activityLine"
       }
     },
-    { $unwind: "$activityLine" },
-    {
+    { $unwind: "$activityLine" }, */
+    /* {
       $lookup: {
         from: "activitySubtypes",
         localField: "activitySubtypeId",
@@ -54,8 +54,8 @@ router.get('/listActivities', function (req, res) {
         as: "activitySubtype"
       }
     },
-    { $unwind: "$activitySubtype" },
-    {
+    { $unwind: "$activitySubtype" }, */
+    /* {
       $lookup: {
         from: "ounits",
         localField: "commertialOunitId",
@@ -63,9 +63,8 @@ router.get('/listActivities', function (req, res) {
         as: "commertialOunit"
       }
     },
-    { $unwind: "$commertialOunit" },
-
-    {
+    { $unwind: "$commertialOunit" }, */
+    /* {
       $lookup: {
         from: "ounits",
         localField: "businessOunitId",
@@ -73,8 +72,8 @@ router.get('/listActivities', function (req, res) {
         as: "businessOunit"
       }
     },
-    { $unwind: "$businessOunit" },
-    {
+    { $unwind: "$businessOunit" }, */
+    /* {
       $lookup: {
         from: "activityExpensesPermissionTypes",
         localField: "expensesPermissionsId",
@@ -82,9 +81,8 @@ router.get('/listActivities', function (req, res) {
         as: "expensesPermissions"
       }
     },
-    { $unwind: "$expensesPermissions" },
-
-    {
+    { $unwind: "$expensesPermissions" }, */
+    /* {
       $lookup: {
         from: "activityInvoicingTypes",
         localField: "invoicingTypeId",
@@ -92,8 +90,8 @@ router.get('/listActivities', function (req, res) {
         as: "invoicingType"
       }
     },
-    { $unwind: "$invoicingType" },*/
-    /*{
+    { $unwind: "$invoicingType" }, */
+    /* {
       $lookup: {
         from: "activityIncomeTypes",
         localField: "incomeTypeId",
@@ -101,8 +99,7 @@ router.get('/listActivities', function (req, res) {
         as: "incomeType"
       }
     },
-    { $unwind: "$incomeType" },*/
-
+    { $unwind: "$incomeType" }, */
     {
       $project: {
         "_id": 0,
@@ -121,7 +118,6 @@ router.get('/listActivities', function (req, res) {
         "currentWork": 1,
         "pending": 1,
         "cumulativeDatayear": 1,
-        "activityLineId": 1,
         "plannedHours": 1,
         "finanCost": 1,
         "plannedCost": 1,
@@ -129,6 +125,7 @@ router.get('/listActivities', function (req, res) {
         "mBFinan": 1,
         "startDate": 1,
         "endDate": 1,
+        "activityLineId": 1,
         //"activityLine": "$activityLine.name",
         "invoiceCompanyId": 1,
         //"invoiceCompany": "$invoiceCompany.companyName",
