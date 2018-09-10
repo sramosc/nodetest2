@@ -131,7 +131,7 @@ router.get('/listActivities', function (req, res) {
         "endDate": 1,
         //"activityLine": "$activityLine.name",
         "invoiceCompanyId": 1,
-        "invoiceCompany": "$invoiceCompany.companyName",
+        //"invoiceCompany": "$invoiceCompany.companyName",
         "anCompanyId": 1,
         //"anCompany": "$anCompany.companyName",
         "clientId": 1,
