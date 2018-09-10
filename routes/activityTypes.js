@@ -18,11 +18,11 @@ router.get('/resetCollectionActivityTypes', function (req, res) {
   collection.insert([
     {
       "activityTypeId": "1",
-      "activityTypeName": "PROYECTO EXTERNO"
+      "activityTypeName": "FACTURABLE"
     },
     {
       "activityTypeId": "2",
-      "activityTypeName": "PROYECTO INTERNO"
+      "activityTypeName": "NO FACTURABLE"
     },
     {
       "activityTypeId": "3",
@@ -30,22 +30,6 @@ router.get('/resetCollectionActivityTypes', function (req, res) {
     },
     {
       "activityTypeId": "4",
-      "activityTypeName": "FORMACION"
-    },
-    {
-      "activityTypeId": "5",
-      "activityTypeName": "GESTION / ESTRUCTURA"
-    },
-    {
-      "activityTypeId": "6",
-      "activityTypeName": "PENDIENTE DE ASIGNACION"
-    },
-    {
-      "activityTypeId": "7",
-      "activityTypeName": "HORAS SINDICALES"
-    },
-    {
-      "activityTypeId": "8",
       "activityTypeName": "AUSENCIA"
     }
   ], function (err, result) {
