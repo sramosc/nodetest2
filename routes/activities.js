@@ -93,7 +93,7 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$invoicingType" },*/
-    {
+    /*{
       $lookup: {
         from: "activityIncomeTypes",
         localField: "incomeTypeId",
@@ -101,7 +101,7 @@ router.get('/listActivities', function (req, res) {
         as: "incomeType"
       }
     },
-    { $unwind: "$incomeType" },
+    { $unwind: "$incomeType" },*/
 
     {
       $project: {
