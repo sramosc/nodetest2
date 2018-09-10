@@ -10,7 +10,7 @@ router.get('/listActivities', function (req, res) {
   });
 });*/
   collection.aggregate([
-     {
+    {
       $lookup: {
         from: "companies",
         localField: "invoiceCompanyId",
@@ -18,8 +18,8 @@ router.get('/listActivities', function (req, res) {
         as: "invoiceCompany"
       }
     },
-    { $unwind: "$invoiceCompany" }, 
-     {
+    { $unwind: "$invoiceCompany" },
+    {
       $lookup: {
         from: "companies",
         localField: "anCompanyId",
@@ -27,8 +27,8 @@ router.get('/listActivities', function (req, res) {
         as: "anCompany"
       }
     },
-    { $unwind: "$anCompany" }, 
-     {
+    { $unwind: "$anCompany" },
+    {
       $lookup: {
         from: "clients",
         localField: "clientId",
@@ -36,8 +36,8 @@ router.get('/listActivities', function (req, res) {
         as: "client"
       }
     },
-    { $unwind: "$client" }, 
-     {
+    { $unwind: "$client" },
+    {
       $lookup: {
         from: "activityLines",
         localField: "activityLineId",
@@ -45,8 +45,8 @@ router.get('/listActivities', function (req, res) {
         as: "activityLine"
       }
     },
-    { $unwind: "$activityLine" }, 
-     {
+    { $unwind: "$activityLine" },
+    {
       $lookup: {
         from: "activitySubtypes",
         localField: "activitySubtypeId",
@@ -54,8 +54,8 @@ router.get('/listActivities', function (req, res) {
         as: "activitySubtype"
       }
     },
-    { $unwind: "$activitySubtype" }, 
-     {
+    { $unwind: "$activitySubtype" },
+    {
       $lookup: {
         from: "ounits",
         localField: "commertialOunitId",
@@ -63,8 +63,8 @@ router.get('/listActivities', function (req, res) {
         as: "commertialOunit"
       }
     },
-    { $unwind: "$commertialOunit" }, 
-     {
+    { $unwind: "$commertialOunit" },
+    {
       $lookup: {
         from: "ounits",
         localField: "businessOunitId",
@@ -72,8 +72,8 @@ router.get('/listActivities', function (req, res) {
         as: "businessOunit"
       }
     },
-    { $unwind: "$businessOunit" }, 
-     {
+    { $unwind: "$businessOunit" },
+    {
       $lookup: {
         from: "activityExpensesPermissionTypes",
         localField: "expensesPermissionsId",
@@ -81,8 +81,8 @@ router.get('/listActivities', function (req, res) {
         as: "expensesPermissions"
       }
     },
-    { $unwind: "$expensesPermissions" }, 
-     {
+    { $unwind: "$expensesPermissions" },
+    {
       $lookup: {
         from: "activityInvoicingTypes",
         localField: "invoicingTypeId",
@@ -90,8 +90,8 @@ router.get('/listActivities', function (req, res) {
         as: "invoicingType"
       }
     },
-    { $unwind: "$invoicingType" }, 
-     {
+    { $unwind: "$invoicingType" },
+    {
       $lookup: {
         from: "activityIncomeTypes",
         localField: "incomeTypeId",
@@ -99,15 +99,13 @@ router.get('/listActivities', function (req, res) {
         as: "incomeType"
       }
     },
-    { $unwind: "$incomeType" }, 
+    { $unwind: "$incomeType" },
     {
       $project: {
         "_id": 0,
         "activityId": 1,
         "activityName": 1,
         "activityCode": 1,
-        "startDate": 1,
-        "endDate": 1,
         "budget": 1,
         "efectiveHours": 1,
         "expenses": 1,
@@ -146,7 +144,6 @@ router.get('/listActivities', function (req, res) {
         "incomeTypeId": 1,
         "incomeType": "$incomeType.name",
         "doubleBooking": 1,
-        "visible": 1,
         "nightHourFactor": 1,
         "holidayHourFactor": 1,
         "watchHourFactor": 1,
@@ -154,7 +151,9 @@ router.get('/listActivities', function (req, res) {
         "watchHolidayHourFactor": 1,
         "intervectionInWatchHourFactor": 1,
         "intervectionInHolidayWatchHourFactor": 1,
-        "extraHourFactor": 1
+        "extraHourFactor": 1,
+        "status": 1,
+        "registry": 1
       }
     }
   ], {}, function (e, docs) {
@@ -228,7 +227,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -344,7 +344,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -414,7 +415,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "2",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -485,7 +487,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "CLOSED",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -587,7 +590,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "3",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -784,7 +788,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -902,7 +907,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "DELETED",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -972,7 +978,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -1042,7 +1049,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "CLOSED",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
@@ -1112,7 +1120,8 @@ router.get('/resetCollectionActivities', function (req, res) {
       "invoicingTypeId": "2",
       "incomeTypeId": "1",
       "doubleBooking": "false",
-      "visible": "true",
+      "registry": "OPEN",
+      "status": "ACTIVE",
       "nightHourFactor": "1",
       "holidayHourFactor": "1",
       "watchHourFactor": "1",
