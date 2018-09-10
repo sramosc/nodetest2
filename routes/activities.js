@@ -74,38 +74,35 @@ router.get('/listActivities', function (req, res) {
       }
     },
     { $unwind: "$businessOunit" },
-    /* {
-       $lookup: {
-         from: "expensespermissiontypes",
-         localField: "clientId",
-         foreignField: "clientId",
-         as: "client"
-       }
-     },
-     {
-       $lookup: {
-         from: "invoicingtypes",
-         localField: "clientId",
-         foreignField: "clientId",
-         as: "client"
-       }
-     },
-     {
-       $lookup: {
-         from: "incometypes",
-         localField: "clientId",
-         foreignField: "clientId",
-         as: "client"
-       }
-     },
-     {
-       $lookup: {
-         from: "clients",
-         localField: "clientId",
-         foreignField: "clientId",
-         as: "client"
-       }
-     },*/
+    {
+      $lookup: {
+        from: "activityExpensesPermissionTypes",
+        localField: "expensesPermissionsId",
+        foreignField: "activityExpensesPermissionTypeId",
+        as: "expensesPermissions"
+      }
+    },
+    { $unwind: "$expensesPermissions" },
+
+    {
+      $lookup: {
+        from: "activityInvoicingTypes",
+        localField: "invoicingTypeId",
+        foreignField: "activityInvoicingTypeId",
+        as: "invoicingType"
+      }
+    },
+    { $unwind: "$invoicingType" },
+    {
+      $lookup: {
+        from: "activityIncomeTypes",
+        localField: "incomeTypeId",
+        foreignField: "activityIncomeTypeId",
+        as: "incomeType"
+      }
+    },
+    { $unwind: "$incomeType" },
+
     {
       $project: {
         "_id": 0,
@@ -146,11 +143,11 @@ router.get('/listActivities', function (req, res) {
         "commertialOunitId": 1,
         "commertialOunit": "$commertialOunit.oUnitName",
         "expensesPermissionsId": 1,
-        // falta expensesPermissions
+        "expensesPermissions": "$expensesPermissions.name",
         "invoicingTypeId": 1,
-        // falta invoicingType
+        "invoicingType": "$invoicingType.name",
         "incomeTypeId": 1,
-        // falta incomeTypeId
+        "incomeType": "$incomeType.name",
         "doubleBooking": 1,
         "visible": 1,
         "nightHourFactor": 1,
