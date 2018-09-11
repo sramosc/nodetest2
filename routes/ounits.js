@@ -1,13 +1,45 @@
 var express = require('express');
 var router = express.Router();
 
-// GET ounits list
+// GET activities lines list
 router.get('/listOUnits', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  collection.find({}, {}, function (e, docs) {
-    res.json(docs);
-  });
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+// GET activities lines para combo modal
+router.get('/listOUnitsModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('ounits');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$oUnitId",
+        "name": "$oUnitName"
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
 
 // GET employee
@@ -15,7 +47,7 @@ router.get('/getOUnit/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   var docToFind = req.params.oUnitId;
-  collection.find({ 'oUnitId': docToFind }, {}, function (e, docs) {
+  collection.findOne({ 'oUnitId': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -70,9 +102,9 @@ router.get('/resetCollectionOUnits', function (req, res) {
       oUnitId: '1',
       responsibleId: '1',
       oUnitName: 'IBERIA 04 MLA',
-      description: 'texto descriptivo unidad organizativa 1',
+      description: '',
       oUnitTypeId: '1',
-      deptId: '1',
+      dept: "1000/1000/ES0100",
       noticeToManagerHoliday: "true",
       noticeToManagerExpenditure: "false",
       noticeToManagerWorkReport: "true",
@@ -80,11 +112,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
     },
     {
       oUnitId: '2',
-      responsibleId: 'Responsable',
+      responsibleId: '12',
       oUnitName: 'DIGITAL ARCHITECTURE',
-      description: 'texto descriptivo unidad organizativa 2',
+      description: '',
       oUnitTypeId: '2',
-      deptId: '2',
+      dept: "2000/2000/ES0200",
       noticeToManagerHoliday: "false",
       noticeToManagerExpenditure: "true",
       noticeToManagerWorkReport: "true",
@@ -92,11 +124,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
     },
     {
       oUnitId: '3',
-      responsibleId: 'Responsable',
-      oUnitName: 'UNIT3',
-      description: 'texto descriptivo unidad organizativa 3',
+      responsibleId: '23',
+      oUnitName: 'SOA-BPM-RIA',
+      description: '',
       oUnitTypeId: '3',
-      deptId: '2',
+      dept: "3000/3000/ES0300",
       noticeToManagerHoliday: "true",
       noticeToManagerExpenditure: "false",
       noticeToManagerWorkReport: "false",
@@ -104,11 +136,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
     },
     {
       oUnitId: '4',
-      responsibleId: 'Responsable',
-      oUnitName: 'UNIT4',
-      description: 'texto descriptivo unidad organizativa 4',
+      responsibleId: '24',
+      oUnitName: 'C&F AREA IT',
+      description: '',
       oUnitTypeId: '2',
-      deptId: '3',
+      dept: "5000/5000/ES0500",
       noticeToManagerHoliday: "false",
       noticeToManagerExpenditure: "true",
       noticeToManagerWorkReport: "true",
@@ -116,11 +148,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
     },
     {
       oUnitId: '5',
-      responsibleId: 'Responsable',
-      oUnitName: 'UNIT5',
-      description: 'texto descriptivo unidad organizativa 5',
+      responsibleId: '25',
+      oUnitName: 'OFICINA DE PROYECTOS',
+      description: '',
       oUnitTypeId: '2',
-      deptId: '4',
+      dept: "4000/4000/ES0400",
       noticeToManagerHoliday: "true",
       noticeToManagerExpenditure: "false",
       noticeToManagerWorkReport: "true",
@@ -128,11 +160,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
     },
     {
       oUnitId: '6',
-      responsibleId: 'Responsable',
-      oUnitName: 'UNIT6',
-      description: 'texto descriptivo unidad organizativa 6',
+      responsibleId: '26',
+      oUnitName: 'SOFTWARE LIBRE',
+      description: '',
       oUnitTypeId: '1',
-      deptId: '5',
+      dept: "3400/4000/ES0400",
       noticeToManagerHoliday: "true",
       noticeToManagerExpenditure: "true",
       noticeToManagerWorkReport: "true",
@@ -140,11 +172,11 @@ router.get('/resetCollectionOUnits', function (req, res) {
     },
     {
       oUnitId: '7',
-      responsibleId: 'Responsable',
-      oUnitName: 'UNIT7',
-      description: 'texto descriptivo unidad organizativa 7',
+      responsibleId: '27',
+      oUnitName: 'WOLTERS KLUWER',
+      description: '',
       oUnitTypeId: '1',
-      deptId: '2',
+      dept: "4000/2343/ES0400",
       noticeToManagerHoliday: "true",
       noticeToManagerExpenditure: "false",
       noticeToManagerWorkReport: "true",
