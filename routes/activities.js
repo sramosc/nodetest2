@@ -43,6 +43,7 @@ router.get('/getActivity/:activityId', function (req, res) {
     {
       $match : {"activityId" : docToFind}
     },
+    { $limit: 1 },
     {
       $lookup: {
         from: "companies",
@@ -188,7 +189,7 @@ router.get('/getActivity/:activityId', function (req, res) {
         "status": 1,
         "registry": 1
       }
-    }
+    }    
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
