@@ -1,13 +1,45 @@
 var express = require('express');
 var router = express.Router();
 
-// GET activitySubtypes list
-router.get('/listActivitySubtypes', function (req, res) {
+// GET activities types list
+router.get('/listActivitySubypes', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activitySubypes');
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+// GET activities types para combo modal
+router.get('/listActivitySubtypesModal', function (req, res) {
   var db = req.db;
   var collection = db.get('activitySubtypes');
-  collection.find({}, '-_id', function (e, docs) {
-    res.json(docs);
-  });
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activitySubtypeId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
 
 // GET resetCollectionActivitySubtypes
