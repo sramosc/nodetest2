@@ -5,9 +5,26 @@ var router = express.Router();
 router.get('/listActivityLines', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');
-  /*   collection.find({}, '-_id', function (e, docs) {
-      res.json(docs);
-    }); */
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+// GET activities list para combo modal
+router.get('/listActivityLinesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activityLines');
+
   collection.aggregate([
     {
       $project: {
