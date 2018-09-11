@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-// GET activities list
+// GET activities lines list
 router.get('/listActivityLines', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');
@@ -20,7 +20,7 @@ router.get('/listActivityLines', function (req, res) {
   })
 });
 
-// GET activities list para combo modal
+// GET activities lines para combo modal
 router.get('/listActivityLinesModal', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');

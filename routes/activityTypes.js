@@ -1,13 +1,45 @@
 var express = require('express');
 var router = express.Router();
 
-// GET activityTypes list
+// GET activities types list
 router.get('/listActivityTypes', function (req, res) {
   var db = req.db;
   var collection = db.get('activityTypes');
-  collection.find({}, '-_id', function (e, docs) {
-    res.json(docs);
-  });
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+// GET activities types para combo modal
+router.get('/listActivityTypesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activityTypes');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activityTypeId",
+        "name": "$activityTypeName"
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
 
 // GET resetCollectionActivityTypes
