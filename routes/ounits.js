@@ -164,7 +164,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
       oUnitName: 'SOFTWARE LIBRE',
       description: '',
       oUnitTypeId: '1',
-      dept: "3400/4000/ES0400",
+      dept: "3400/4000/ES0300",
       noticeToManagerHoliday: "true",
       noticeToManagerExpenditure: "true",
       noticeToManagerWorkReport: "true",
