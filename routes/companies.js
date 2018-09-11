@@ -59,19 +59,19 @@ router.get('/resetCollectionCompanies', function (req, res) {
   collection.insert([
     {
       "companyId": "1",
-      "companyName": "ENTELGY CONSULTING S.A"
+      "companyName": "NTL CONSULTING S.A"
     },
     {
       "companyId": "2",
-      "companyName": "ENTELGY IBAI S.A"
+      "companyName": "NTL QWER S.A"
     },
     {
       "companyId": "3",
-      "companyName": "ENTELGY DIGITAL"
+      "companyName": "NTL DIGITAL"
     },
     {
       "companyId": "4",
-      "companyName": "ENTELGY S.A."
+      "companyName": "NTL S.A."
     }
   ], function (err, result) {
     res.send(

@@ -18,23 +18,23 @@ router.get('/resetCollectionClients', function (req, res) {
   collection.insert([
     {
       "clientId": "1",
-      "clientName": "430000025 - TELEFONICA MOVILES ESPAÑA S.A.",
+      "clientName": "MODAS AMPARO",
     },
     {
       "clientId": "2",
-      "clientName": "430000026 - BBVA",
+      "clientName": "CHARCUTERIA PEPI",
     },
     {
       "clientId": "3",
-      "clientName": "430000027 - BANCO SANTANDER",
+      "clientName": "ULTRAMARINOS MANOLO",
     },
     {
       "clientId": "4",
-      "clientName": "430000028 - LA CAIXA",
+      "clientName": "MERCERIA TOÑI",
     },
     {
       "clientId": "5",
-      "clientName": "430000029 - MERCADONA",
+      "clientName": "FABRICA DE MIGUELITOS",
     },
     
   ], function (err, result) {

@@ -101,7 +101,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     {
       oUnitId: '1',
       responsibleId: '1',
-      oUnitName: 'IBERIA 04 MLA',
+      oUnitName: 'HIVERIA 04 MLA',
       description: '',
       oUnitTypeId: '1',
       dept: "1000/1000/ES0100",
@@ -113,7 +113,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     {
       oUnitId: '2',
       responsibleId: '12',
-      oUnitName: 'DIGITAL ARCHITECTURE',
+      oUnitName: 'MANUAL ARCHITECTURE',
       description: '',
       oUnitTypeId: '2',
       dept: "2000/2000/ES0200",
@@ -125,7 +125,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     {
       oUnitId: '3',
       responsibleId: '23',
-      oUnitName: 'SOA-BPM-RIA',
+      oUnitName: 'OGT-A2M-RIA',
       description: '',
       oUnitTypeId: '3',
       dept: "3000/3000/ES0300",
@@ -137,7 +137,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     {
       oUnitId: '4',
       responsibleId: '24',
-      oUnitName: 'C&F AREA IT',
+      oUnitName: 'B&M AREA IT',
       description: '',
       oUnitTypeId: '2',
       dept: "5000/5000/ES0500",
@@ -173,7 +173,7 @@ router.get('/resetCollectionOUnits', function (req, res) {
     {
       oUnitId: '7',
       responsibleId: '27',
-      oUnitName: 'WOLTERS KLUWER',
+      oUnitName: 'JANDERS KLANDERS',
       description: '',
       oUnitTypeId: '1',
       dept: "4000/2343/ES0400",
