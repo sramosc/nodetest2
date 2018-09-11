@@ -5,10 +5,26 @@ var router = express.Router();
 router.get('/listActivityLines', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');
-  collection.find({}, '-_id', function (e, docs) {
-    res.json(docs);
-  });
+  /*   collection.find({}, '-_id', function (e, docs) {
+      res.json(docs);
+    }); */
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activityLineId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
+
 
 // GET resetCollectionActivities
 router.get('/resetCollectionActivityLines', function (req, res) {
