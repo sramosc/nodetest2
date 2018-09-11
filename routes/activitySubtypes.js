@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 // GET activities types list
-router.get('/listActivitySubypes', function (req, res) {
+router.get('/listActivitySubtypes', function (req, res) {
   var db = req.db;
-  var collection = db.get('activitySubypes');
+  var collection = db.get('activitySubtypes');
   collection.aggregate([
     {
       $project: {
