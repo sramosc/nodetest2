@@ -11,8 +11,8 @@ router.get('/listActivityLines', function (req, res) {
         "_id": 0,
       }
     },
-    { $sort: { id: 1 } }
-  ], { collation: { locale: "es", numericOrdering: true } }, function (e, docs) {
+    { $sort: { _id: 1 } }
+  ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
     } else {
