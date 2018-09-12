@@ -30,7 +30,8 @@ router.get('/listOUnitsModal', function (req, res) {
       $project: {
         "_id": 0,
         "id": "$oUnitId",
-        "name": "$oUnitName"
+        "name": "$oUnitName",
+        "dept": 1
       }
     }
   ], {}, function (e, docs) {
