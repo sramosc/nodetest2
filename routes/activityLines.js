@@ -10,7 +10,8 @@ router.get('/listActivityLines', function (req, res) {
       $project: {
         "_id": 0,
       }
-    }
+    },
+    { $sort: { id: 1 } }
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
@@ -32,7 +33,9 @@ router.get('/listActivityLinesModal', function (req, res) {
         "id": "$activityLineId",
         "name": 1
       }
-    }
+    },
+    { $sort: { id: 1 } }
+
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
