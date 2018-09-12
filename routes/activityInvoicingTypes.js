@@ -13,7 +13,7 @@ router.get('/listActivityInvoicingTypes', function (req, res) {
 // GET activityInvoicingTypes Modal list
 router.get('/listActivityInvoicingTypesModal', function (req, res) {
   var db = req.db;
-  var collection = db.get('activityInvoicingTypesModal');
+  var collection = db.get('activityInvoicingTypes');
 
   collection.aggregate([
     {
