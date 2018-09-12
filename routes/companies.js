@@ -5,9 +5,31 @@ var router = express.Router();
 router.get('/listCompanies', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
-  collection.find({}, {}, function (e, docs) {
+  collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
+});
+
+// GET companies Modal list
+router.get('/listCompaniesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('companies');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$companyId",
+        "name": "$companyName"
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
 
 // GET company (companyId = id)

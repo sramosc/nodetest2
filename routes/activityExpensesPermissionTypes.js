@@ -10,6 +10,28 @@ router.get('/listActivityExpensesPermissionTypes', function (req, res) {
   });
 });
 
+// GET activityExpensesPermissionTypes Modal list
+router.get('/listActivityExpensesPermissionTypesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activityExpensesPermissionTypes');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activityExpensesPermissionTypeId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
 // GET resetCollectionActivityExpensesPermissionTypes
 router.get('/resetCollectionActivityExpensesPermissionTypes', function (req, res) {
   var db = req.db;

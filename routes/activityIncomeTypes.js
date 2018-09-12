@@ -10,6 +10,28 @@ router.get('/listActivityIncomeTypes', function (req, res) {
   });
 });
 
+// GET activityIncomeTypes Modal list
+router.get('/listActivityIncomeTypesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activityIncomeTypes');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activityIncomeTypeId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
 // GET resetCollectionActivityIncomeTypes
 router.get('/resetCollectionActivityIncomeTypes', function (req, res) {
   var db = req.db;
