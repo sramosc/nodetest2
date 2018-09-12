@@ -10,6 +10,29 @@ router.get('/listActivityInvoicingTypes', function (req, res) {
   });
 });
 
+// GET activityInvoicingTypes Modal list
+router.get('/listActivityInvoicingTypesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activityInvoicingTypesModal');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activityInvoicingTypeId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+
 // GET resetCollectionActivityInvoicingTypes
 router.get('/resetCollectionActivityInvoicingTypes', function (req, res) {
   var db = req.db;
