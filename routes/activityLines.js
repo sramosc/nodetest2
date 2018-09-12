@@ -12,7 +12,7 @@ router.get('/listActivityLines', function (req, res) {
       }
     },
     { $sort: { id: 1 } }
-  ], {collation:{numericOrdering: true}}, function (e, docs) {
+  ], { collation: { locale: "en_ES", numericOrdering: true } }, function (e, docs) {
     if (e != null) {
       res.json(e)
     } else {
