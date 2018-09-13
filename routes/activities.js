@@ -15,12 +15,12 @@ router.get('/listActivities', function (req, res) {
         "_id": 0,
         "activityId": 1,
         "activityName": 1,
-        "activityCode": 1,        
+        "activityCode": 1,
         "startDate": 1,
         "businessOunitId": 1,
         "commertialOunitId": 1,
         "clientId": 1,
-        "activitySubtypeId": 1,        
+        "activitySubtypeId": 1,
         "status": 1,
         "registry": 1
       }
@@ -41,7 +41,7 @@ router.get('/getActivity/:activityId', function (req, res) {
   var docToFind = req.params.activityId;
   collection.aggregate([
     {
-      $match : {"activityId" : docToFind}
+      $match: { "activityId": docToFind }
     },
     {
       $lookup: {
@@ -168,10 +168,10 @@ router.get('/getActivity/:activityId', function (req, res) {
         "activitySubtype": "$activitySubtype.name",
         "businessOunitId": 1,
         "businessOunit": "$businessOunit.oUnitName",
-        "opDept" : "$businessOunit.dept",
+        "opDept": "$businessOunit.dept",
         "commertialOunitId": 1,
         "commertialOunit": "$commertialOunit.oUnitName",
-        "comDept" : "$commertialOunit.dept",
+        "comDept": "$commertialOunit.dept",
         "expensesPermissionId": 1,
         "expensesPermission": "$expensesPermission.name",
         "invoicingTypeId": 1,
@@ -188,9 +188,10 @@ router.get('/getActivity/:activityId', function (req, res) {
         "intervectionInHolidayWatchHourFactor": 1,
         "extraHourFactor": 1,
         "status": 1,
-        "registry": 1
+        "registry": 1,
+        "team": 1
       }
-    }    
+    }
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e[0])
@@ -427,7 +428,7 @@ router.get('/resetCollectionActivities', function (req, res) {
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
       "production": '48.146,84',
-      "margin": '100%', 
+      "margin": '100%',
       "invoiced": '34.325,86',
       "initialCurrentWork": '0,00',
       "currentWork": '13.820,98',
