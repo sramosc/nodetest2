@@ -134,6 +134,14 @@ router.get('/getActivity/:activityId', function (req, res) {
     },
     { $unwind: "$incomeType" },
     {
+      $lookup: {
+        from: "employees",
+        localField: "team.employeeId",
+        foreignField: "employeeId",
+        as: "team.employee"
+      }
+    },
+    {
       $project: {
         "_id": 0,
         "activityId": 1,
