@@ -10,6 +10,28 @@ router.get('/listActivityRoles', function (req, res) {
   });
 });
 
+// GET activityRoles Modal list
+router.get('/listActivityRolesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activityRoles');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$activityRoleId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
 // GET resetCollectionActivityRoles
 router.get('/resetCollectionActivityRoles', function (req, res) {
   var db = req.db;

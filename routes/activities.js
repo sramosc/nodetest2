@@ -5,6 +5,7 @@ var router = express.Router();
 router.get('/listActivities', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
+  console.log('hola')
   /*collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
@@ -39,10 +40,12 @@ router.get('/getActivity/:activityId', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
   var docToFind = req.params.activityId;
+  console.log(docToFind)
   collection.aggregate([
     {
       $match: { "activityId": docToFind }
     },
+    
     {
       $lookup: {
         from: "companies",
@@ -133,14 +136,6 @@ router.get('/getActivity/:activityId', function (req, res) {
       }
     },
     { $unwind: "$incomeType" },
-    {
-      $lookup: {
-        from: "employees",
-        localField: "team.employeeId",
-        foreignField: "employeeId",
-        as: "team.employee"
-      }
-    },
     {
       $project: {
         "_id": 0,

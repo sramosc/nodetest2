@@ -5,9 +5,42 @@ var router = express.Router();
 router.get('/listEmployees', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
-  collection.find({}, {}, function (e, docs) {
-    res.json(docs);
-  });
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+      }
+    },
+    { $sort: { _id: 1 } }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
+// GET employees para combo modal
+router.get('/listEmployeesModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employees');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$employeeId",
+        "name": "$employeeName"
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
 });
 
 // GET employee

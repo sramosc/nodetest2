@@ -10,6 +10,28 @@ router.get('/listEmployeeGroups', function (req, res) {
   });
 });
 
+// GET employeeGroups Modal list
+router.get('/listEmployeeGroupsModal', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employeeGroups');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": "$employeeGroupId",
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      res.json(docs)
+    }
+  })
+});
+
 // GET resetCollectionAccounts
 router.get('/resetCollectionEmployeeGroups', function (req, res) {
   var db = req.db;
