@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activityInvoicingTypes list
-router.get('/listActivityInvoicingTypes', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activityInvoicingTypes');
   collection.find({}, '-_id', function (e, docs) {
@@ -10,8 +10,8 @@ router.get('/listActivityInvoicingTypes', function (req, res) {
   });
 });
 
-// GET activityInvoicingTypes Modal list
-router.get('/listActivityInvoicingTypesModal', function (req, res) {
+// GET activityInvoicingTypes selection list
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('activityInvoicingTypes');
 
@@ -33,8 +33,8 @@ router.get('/listActivityInvoicingTypesModal', function (req, res) {
 });
 
 
-// GET resetCollectionActivityInvoicingTypes
-router.get('/resetCollectionActivityInvoicingTypes', function (req, res) {
+// GET reset Collection ActivityInvoicingTypes
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('activityInvoicingTypes');
   collection.remove({});

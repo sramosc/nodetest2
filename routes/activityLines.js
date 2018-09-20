@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activities lines list
-router.get('/listActivityLines', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');
   collection.aggregate([
@@ -22,7 +22,7 @@ router.get('/listActivityLines', function (req, res) {
 });
 
 // GET activities lines para combo modal
-router.get('/listActivityLinesModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');
 
@@ -47,7 +47,7 @@ router.get('/listActivityLinesModal', function (req, res) {
 
 
 // GET resetCollectionActivities
-router.get('/resetCollectionActivityLines', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('activityLines');
   collection.remove({});

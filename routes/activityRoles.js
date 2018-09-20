@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activityRoles list
-router.get('/listActivityRoles', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activityRoles');
   collection.find({}, '-_id', function (e, docs) {
@@ -11,7 +11,7 @@ router.get('/listActivityRoles', function (req, res) {
 });
 
 // GET activityRoles Modal list
-router.get('/listActivityRolesModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('activityRoles');
 
@@ -33,7 +33,7 @@ router.get('/listActivityRolesModal', function (req, res) {
 });
 
 // GET resetCollectionActivityRoles
-router.get('/resetCollectionActivityRoles', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('activityRoles');
   collection.remove({});

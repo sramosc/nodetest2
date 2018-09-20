@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET employeeGroups list
-router.get('/listEmployeeGroups', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('employeeGroups');
   collection.find({}, '-_id', function (e, docs) {
@@ -11,7 +11,7 @@ router.get('/listEmployeeGroups', function (req, res) {
 });
 
 // GET employeeGroups Modal list
-router.get('/listEmployeeGroupsModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('employeeGroups');
 
@@ -33,7 +33,7 @@ router.get('/listEmployeeGroupsModal', function (req, res) {
 });
 
 // GET resetCollectionAccounts
-router.get('/resetCollectionEmployeeGroups', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('employeeGroups');
   collection.remove({});

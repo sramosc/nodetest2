@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activityExpensesPermissionTypes list
-router.get('/listActivityExpensesPermissionTypes', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activityExpensesPermissionTypes');
   collection.find({}, '-_id', function (e, docs) {
@@ -10,8 +10,8 @@ router.get('/listActivityExpensesPermissionTypes', function (req, res) {
   });
 });
 
-// GET activityExpensesPermissionTypes Modal list
-router.get('/listActivityExpensesPermissionTypesModal', function (req, res) {
+// GET activityExpensesPermissionTypes selection list
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('activityExpensesPermissionTypes');
 
@@ -32,8 +32,8 @@ router.get('/listActivityExpensesPermissionTypesModal', function (req, res) {
   })
 });
 
-// GET resetCollectionActivityExpensesPermissionTypes
-router.get('/resetCollectionActivityExpensesPermissionTypes', function (req, res) {
+// GET reset Collection ActivityExpensesPermissionTypes
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('activityExpensesPermissionTypes');
   collection.remove({});

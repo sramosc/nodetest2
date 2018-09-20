@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET employees list
-router.get('/listEmployees', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   collection.aggregate([
@@ -22,7 +22,7 @@ router.get('/listEmployees', function (req, res) {
 });
 
 // GET employees para combo modal
-router.get('/listEmployeesModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
 
@@ -44,7 +44,7 @@ router.get('/listEmployeesModal', function (req, res) {
 });
 
 // GET employee
-router.get('/getEmployee/:employeeId', function (req, res) {
+router.get('/get/:employeeId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var docToFind = req.params.employeeId;
@@ -54,7 +54,7 @@ router.get('/getEmployee/:employeeId', function (req, res) {
 });
 
 // POST addEmployee.
-router.post('/addEmployee', function (req, res) {
+router.post('/add', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   collection.insert(req.body, function (err, result) {
@@ -65,7 +65,7 @@ router.post('/addEmployee', function (req, res) {
 });
 
 // DELETE delEmployee
-router.delete('/delEmployee/:employeeId', function (req, res) {
+router.delete('/del/:employeeId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var userToDelete = req.params.employeeId;
@@ -75,7 +75,7 @@ router.delete('/delEmployee/:employeeId', function (req, res) {
 });
 
 // PUT updateEmployee
-router.put('/updateEmployee/:employeeId', function (req, res) {
+router.put('/update/:employeeId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var userToUpdate = req.params.employeeId;
@@ -85,7 +85,7 @@ router.put('/updateEmployee/:employeeId', function (req, res) {
 });
 
 // PATCH updateEmployee/:employeeId/oUnitId/:oUnitId
-router.patch('/updateEmployee/:employeeId/oUnitId/:oUnitId', function (req, res) {
+router.patch('/update/:employeeId/oUnitId/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var userToUpdate = req.params.employeeId;
@@ -97,7 +97,7 @@ router.patch('/updateEmployee/:employeeId/oUnitId/:oUnitId', function (req, res)
 
 
 // GET resetCollectionEmployees
-router.get('/resetCollectionEmployees', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   collection.remove({});

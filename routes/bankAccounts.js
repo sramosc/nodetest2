@@ -1,41 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-// GET accounts list
-/* router.get('/listBankAccounts', function (req, res) {
-  var db = req.db;
-  var collection = db.get('accounts');
-  collection.aggregate([
-    {
-      $lookup: {
-        from: "companies",
-        localField: "enterpriseId",
-        foreignField: "enterpriseId",
-        as: "company"
-      }
-    },
-    {
-      $project: {
-        "_id": 0,
-        "id": 1,
-        "name": 1,
-        "number": 1,
-        "enterpriseId": 1,
-        "companyName": { $arrayElemAt: ["$company.companyName", 0] },
-        "ledgerAccount": 1
-      }
-    }
-  ], {}, function (e, docs) {
-    if (e != null) {
-      res.json(e)
-    } else {
-      res.json(docs)
-    }
-  })
-}); */
-
 // GET bank accounts list
-router.get('/listBankAccounts', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
   collection.aggregate([
@@ -58,13 +25,13 @@ router.get('/listBankAccounts', function (req, res) {
         "ledgerAccount": 1
       }
     },
-    {$unwind: "$enterprise" }
+    { $unwind: "$enterprise" }
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
     } else {
       let result = {
-        bankAccounts: docs
+        banksAccounts: docs
       }
       res.json(result)
     }
@@ -72,27 +39,50 @@ router.get('/listBankAccounts', function (req, res) {
 });
 
 // GET bank account (id = id)
-router.get('/getBankAccount/:id', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
   var docToFind = req.params.id;
-  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
+  /*collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
-  });
-});
-
-// GET bank account (id = id)
-router.get('/getBankAccount2/:id', function (req, res) {
-  var db = req.db;
-  var collection = db.get('bankaccounts');
-  var docToFind = req.params.id;
-  collection.findOne({ 'id': docToFind }, '-_id', function (e, docs) {
-    res.json(docs);
-  });
+  });*/
+  collection.aggregate([
+    {
+      $match: { 'id': docToFind }
+    },
+    {
+      $lookup: {
+        from: "enterprises",
+        localField: "enterpriseId",
+        foreignField: "enterpriseId",
+        as: "enterprise"
+      }
+    },
+    {
+      $project: {
+        "_id": 0,
+        "id": 1,
+        "name": 1,
+        "number": 1,
+        "enterprise.id": "$enterpriseId",
+        "ledgerAccount": 1
+      }
+    },
+    { $unwind: "$enterprise" }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      let result = {
+        bankAccount: docs[0]
+      }
+      res.json(result)
+    }
+  })
 });
 
 // POST add bank Account.
-router.post('/addBankAccount', function (req, res) {
+router.post('/add', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
   collection.insert(req.body, function (err, result) {
@@ -103,7 +93,7 @@ router.post('/addBankAccount', function (req, res) {
 });
 
 // DELETE del Bank Account (id = id)
-router.delete('/delBankAccount/:id', function (req, res) {
+router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
   var docToDelete = req.params.id;
@@ -113,7 +103,7 @@ router.delete('/delBankAccount/:id', function (req, res) {
 });
 
 // PUT updateAccount (id = id)
-router.put('/updateBankAccount/:id', function (req, res) {
+router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
   var docToUpdate = req.params.id;
@@ -123,7 +113,7 @@ router.put('/updateBankAccount/:id', function (req, res) {
 });
 
 // GET resetCollectionAccounts
-router.get('/resetCollectionBankAccounts', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
   collection.remove({});

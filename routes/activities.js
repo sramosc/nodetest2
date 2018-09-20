@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activities list
-router.get('/listActivities', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
   console.log('hola')
@@ -36,7 +36,7 @@ router.get('/listActivities', function (req, res) {
 });
 
 // GET activities list
-router.get('/getActivity/:activityId', function (req, res) {
+router.get('/get/:activityId', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
   var docToFind = req.params.activityId;
@@ -228,8 +228,8 @@ router.get('/listEmployeesInOUnit/:oUnitId', function (req, res) {
 
 // List employees activities by year
 
-// GET resetCollectionActivities
-router.get('/resetCollectionActivities', function (req, res) {
+// GET reset Collection Activities
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
   collection.remove({});

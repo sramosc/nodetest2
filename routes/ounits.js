@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activities lines list
-router.get('/listOUnits', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   collection.aggregate([
@@ -21,7 +21,7 @@ router.get('/listOUnits', function (req, res) {
 });
 
 // GET activities lines para combo modal
-router.get('/listOUnitsModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
 
@@ -44,7 +44,7 @@ router.get('/listOUnitsModal', function (req, res) {
 });
 
 // GET employee
-router.get('/getOUnit/:oUnitId', function (req, res) {
+router.get('/get/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   var docToFind = req.params.oUnitId;
@@ -54,7 +54,7 @@ router.get('/getOUnit/:oUnitId', function (req, res) {
 });
 
 // POST addEmployee.
-router.post('/addOUnit', function (req, res) {
+router.post('/add', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   collection.insert(req.body, function (err, result) {
@@ -65,7 +65,7 @@ router.post('/addOUnit', function (req, res) {
 });
 
 // DELETE delEmployee
-router.delete('/delOUnit/:oUnitId', function (req, res) {
+router.delete('/del/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   var docToDelete = req.params.oUnitId;
@@ -75,7 +75,7 @@ router.delete('/delOUnit/:oUnitId', function (req, res) {
 });
 
 // PUT updateEmployee
-router.put('/updateOUnit/:oUnitId', function (req, res) {
+router.put('/update/:oUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   var docToUpdate = req.params.oUnitId;
@@ -94,7 +94,7 @@ router.get('/listOUnitsFilter', function (req, res) {
 });
 
 // GET resetCollectionEmployees
-router.get('/resetCollectionOUnits', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
   collection.remove({});

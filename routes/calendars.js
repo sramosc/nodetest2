@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET calendars list
-router.get('/listCalendars', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   collection.find({}, '-_id', function (e, docs) {
@@ -29,7 +29,7 @@ router.get('/listCalendarTypes', function (req, res) {
 });
 
 // GET calendar
-router.get('/getCalendar/:id', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToFind = req.params.id;
@@ -39,7 +39,7 @@ router.get('/getCalendar/:id', function (req, res) {
 });
 
 // POST addCalendar.
-router.post('/addCalendar', function (req, res) {
+router.post('/add', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   collection.insert(req.body, function (err, result) {
@@ -50,7 +50,7 @@ router.post('/addCalendar', function (req, res) {
 });
 
 // DELETE delCalendar
-router.delete('/delCalendar/:id', function (req, res) {
+router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToDelete = req.params.id;
@@ -60,7 +60,7 @@ router.delete('/delCalendar/:id', function (req, res) {
 });
 
 // PUT updateCalendar
-router.put('/updateCalendar/:id', function (req, res) {
+router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToUpdate = req.params.id;
@@ -70,7 +70,7 @@ router.put('/updateCalendar/:id', function (req, res) {
 });
 
 // GET resetCollectionCalendars
-router.get('/resetCollectionCalendars', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   collection.remove({});

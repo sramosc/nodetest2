@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET vacations list
-router.get('/listVacations', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   collection.aggregate([
@@ -75,7 +75,7 @@ router.get('/listVacations', function (req, res) {
 });
 
 // GET vacation (id = id)
-router.get('/getVacation/:id', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   var docToFind = req.params.id;
@@ -94,7 +94,7 @@ router.get('/listVacationYears', function (req, res) {
 });
 
 // GET resetCollectionVacations
-router.get('/resetCollectionVacations', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   collection.remove({});

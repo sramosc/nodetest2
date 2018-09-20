@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET userList
-router.get('/listClients', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('clients');
   collection.find({}, '-_id', function (e, docs) {
@@ -11,7 +11,7 @@ router.get('/listClients', function (req, res) {
 });
 
 // GET clients Modal list
-router.get('/listClientsModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('clients');
 
@@ -33,7 +33,7 @@ router.get('/listClientsModal', function (req, res) {
 });
 
 // GET resetCollectionEmployees
-router.get('/resetCollectionClients', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('clients');
   collection.remove({});

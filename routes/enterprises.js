@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET enterprises list
-router.get('/listEnterprises', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
   collection.find({}, '-_id', function (e, docs) {
@@ -11,7 +11,7 @@ router.get('/listEnterprises', function (req, res) {
 });
 
 // GET enterprises Modal list
-router.get('/listEnterprisesModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
 
@@ -27,13 +27,16 @@ router.get('/listEnterprisesModal', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
 
 // GET enterprise (enterpriseId = id)
-router.get('/getEnterprise/:id', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
   var docToFind = req.params.id;
@@ -43,7 +46,7 @@ router.get('/getEnterprise/:id', function (req, res) {
 });
 
 // POST add enterprise.
-router.post('/addEnterprise', function (req, res) {
+router.post('/add', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
   collection.insert(req.body, function (err, result) {
@@ -54,7 +57,7 @@ router.post('/addEnterprise', function (req, res) {
 });
 
 // DELETE del Enterprise (enterpriseId = id)
-router.delete('/delEnterprise/:id', function (req, res) {
+router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
   var docToDelete = req.params.id;
@@ -64,7 +67,7 @@ router.delete('/delEnterprise/:id', function (req, res) {
 });
 
 // PUT updateEnterprise (enterpriseId = id)
-router.put('/updateEnterprise/:id', function (req, res) {
+router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
   var docToUpdate = req.params.id;
@@ -74,7 +77,7 @@ router.put('/updateEnterprise/:id', function (req, res) {
 });
 
 // GET resetCollectionEnterprises
-router.get('/resetCollectionEnterprises', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('enterprises');
   collection.remove({});

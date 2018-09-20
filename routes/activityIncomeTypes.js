@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET activityIncomeTypes list
-router.get('/listActivityIncomeTypes', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activityIncomeTypes');
   collection.find({}, '-_id', function (e, docs) {
@@ -10,8 +10,8 @@ router.get('/listActivityIncomeTypes', function (req, res) {
   });
 });
 
-// GET activityIncomeTypes Modal list
-router.get('/listActivityIncomeTypesModal', function (req, res) {
+// GET activityIncomeTypes selection list
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('activityIncomeTypes');
 
@@ -32,8 +32,8 @@ router.get('/listActivityIncomeTypesModal', function (req, res) {
   })
 });
 
-// GET resetCollectionActivityIncomeTypes
-router.get('/resetCollectionActivityIncomeTypes', function (req, res) {
+// GET reset Collection ActivityIncomeTypes
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('activityIncomeTypes');
   collection.remove({});
