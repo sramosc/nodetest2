@@ -2,12 +2,110 @@ var express = require('express');
 var router = express.Router();
 
 // GET calendars list
-router.get('/list', function (req, res) {
+/* router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
+}); */
+
+// GET bank calendars list
+router.get('/list', function (req, res) {
+  var db = req.db;
+  var collection = db.get('calendars');
+  let totalRecords = 0
+
+
+  collection.count({}).then((count) => {
+    totalRecords = count
+  })
+
+  let pipeline = [
+    {
+      $lookup: {
+        from: "calendarTypes",
+        localField: "calendarTypeId",
+        foreignField: "id",
+        as: "type"
+      }
+    },
+    {
+      $project: {
+        "_id": 0,
+        "id": 1,
+        "year": 1,
+        "type.id": "$calendarTypeId",
+        "type.name": { $arrayElemAt: ["$type.name", 0] },
+      }
+    },
+    { $unwind: "$type" }
+  ]
+
+  if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
+    console.log("sin query params")
+  } else {
+
+    let matchStage = {}
+    let sortStage = {}
+    let matchExists = false
+
+    // match stage
+    if ('typeId' in req.query) {
+      matchStage['type.id'] = req.query.typeId
+      matchExists = true
+    }
+
+    if ('year' in req.query) {
+      matchStage.year = req.query.year
+      matchExists = true
+    }
+
+    if (matchExists) {
+      collection.count({ matchStage }).then((count) => {
+        totalRecords = count
+      })
+    }
+
+
+    // sort stage
+    if ('pageSort' in req.query) {
+      let field = req.query.pageSort
+      let orderAsc = true
+      if (req.query.pageSort.indexOf('-')) {
+        orderAsc = false
+      }
+      field = field.replace('-', '')
+      if (orderAsc) {
+        sortStage[field] = -1
+      } else {
+        sortStage[field] = 1
+      }
+    }
+    pipeline.push({ $match: matchStage })
+    pipeline.push({ $sort: sortStage })
+
+    // skip and limit stage
+    if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
+
+      pipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      pipeline.push({ $limit: parseInt(req.query.pageSize) })
+    }
+  }
+
+  console.log(pipeline)
+  collection.aggregate(pipeline
+    , {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let result = {
+          calendars: docs,
+          totalRecords: totalRecords
+        }
+        res.json(result)
+      }
+    })
 });
 
 // LIST calendar years
@@ -20,10 +118,10 @@ router.get('/listCalendarYears', function (req, res) {
 });
 
 // LIST calendar types
-router.get('/listCalendarTypes', function (req, res) {
+router.get('/listtypes', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
-  collection.distinct('calendarType', function (e, docs) {
+  collection.distinct('type', function (e, docs) {
     res.json(docs);
   });
 });
@@ -33,7 +131,7 @@ router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToFind = req.params.id;
-  collection.findOne({ 'calendarId': docToFind }, {}, function (e, docs) {
+  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -54,7 +152,7 @@ router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToDelete = req.params.id;
-  collection.remove({ 'calendarId': docToDelete }, function (err) {
+  collection.remove({ 'id': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -64,7 +162,7 @@ router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   var docToUpdate = req.params.id;
-  collection.update({ 'calendarId': docToUpdate }, req.body, function (err) {
+  collection.update({ 'id': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -76,8 +174,8 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      'calendarId': '1',
-      'calendarType': 'Festivos nacionales',
+      'id': '1',
+      'calendarTypeId': '1',
       'year': '2018',
       'days': [
         {
@@ -95,8 +193,8 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      'calendarId': '2',
-      'calendarType': 'Festivos Comunidad Madrid',
+      'id': '2',
+      'calendarTypeId': '4',
       'year': '2018',
       'days': [
         {
@@ -114,8 +212,8 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      'calendarId': '3',
-      'calendarType': 'Festivos nacionales',
+      'id': '3',
+      'calendarTypeId': '1',
       'year': '2017',
       'days': [
         {
@@ -133,8 +231,8 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      'calendarId': '4',
-      'calendarType': 'Festivos Pais Vasco',
+      'id': '4',
+      'calendarTypeId': '2',
       'year': '2016',
       'days': [
         {
@@ -147,6 +245,25 @@ router.get('/reset', function (req, res) {
         },
         {
           'date': '2016-10-04',
+          'comment': 'dia 4 de octubre'
+        }
+      ]
+    },
+    {
+      'id': '5',
+      'calendarTypeId': '3',
+      'year': '2018',
+      'days': [
+        {
+          'date': '2018-10-02',
+          'comment': 'dia 2 de octubre'
+        },
+        {
+          'date': '2018-10-03',
+          'comment': 'dia 3 de octubre'
+        },
+        {
+          'date': '2018-10-04',
           'comment': 'dia 4 de octubre'
         }
       ]
