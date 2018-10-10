@@ -5,8 +5,14 @@ var router = express.Router();
 router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
+  let totalRecords = 0
+
+  collection.count({}).then((count) => {
+    totalRecords = count
+  })
+
   collection.aggregate([
-    {
+    /*{
       $addFields: {
         ounits: {
           $reduce: {
@@ -23,15 +29,24 @@ router.get('/list', function (req, res) {
           }
         }
       }
+    },*/
+    {
+      $lookup: {
+        from: "employees",
+        localField: "employeeId",
+        foreignField: "id",
+        as: "employee"
+      }
     },
     {
       $project: {
         _id: 0,
-        "vacation_id": 1,
-        "vacation_year": 1,
-        "employee_id": 1,
-        "total_days": 1,
-        "consumed_days": {
+        "id": 1,
+        "year": 1,
+        "employee.id": "$employeeId",
+        "employee.name": { $arrayElemAt: ["$employee.name", 0] },
+        "totalDays": 1,
+        "consumedDays": {
           $size: {
             $filter: {
               input: "$days",
@@ -40,55 +55,112 @@ router.get('/list', function (req, res) {
             }
           }
         },
-        "ounits": 1,
-        "activities": 1
+        //"ounits": 1,
+        //"activities": 1
       }
     },
-    {
-      $lookup: {
-        from: "employees",
-        localField: "employee_id",
-        foreignField: "code",
-        as: "employee_data"
-      }
-    },
-    {
-      $project: {
-        "vacation_id": 1,
-        "vacation_year": 1,
-        "employee_id": 1,
-        "employee_name": { $arrayElemAt: ["$employee_data.name", 0] },
-        "ounit_id": { $arrayElemAt: ["$employee_data.ounit", 0] },
-        "total_days": 1,
-        "consumed_days": 1,
-        "ounits": 1,
-        "activities": 1
-      }
-    }
+    { $unwind: "$employee" }
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        vacations: docs,
+        totalRecords: totalRecords
+      }
+      res.json(result)
     }
   })
 });
+
+// GET vacation (id = id)
+/*router.get('/get/:id', function (req, res) {
+  var db = req.db;
+  var collection = db.get('vacations');
+  var docToFind = req.params.id;
+  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
+    res.json(docs);
+  });
+});*/
 
 // GET vacation (id = id)
 router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   var docToFind = req.params.id;
-  collection.findOne({ 'vacation_id': docToFind }, {}, function (e, docs) {
-    res.json(docs);
-  });
+
+  collection.aggregate([
+
+    {
+      $match: {
+        "id": docToFind
+      }
+    },
+    {
+      $lookup: {
+        from: "employees",
+        localField: "employeeId",
+        foreignField: "id",
+        as: "employee"
+      }
+    },
+    { $unwind: "$employee" },
+    {
+      $lookup: {
+        from: "employees",
+        localField: "managerId",
+        foreignField: "id",
+        as: "manager"
+      }
+    },
+    { $unwind: "$manager" },
+    {
+      $lookup: {
+        from: "ounits",
+        localField: "oUnitId",
+        foreignField: "id",
+        as: "ounit"
+      }
+    },
+    { $unwind: "$ounit" },
+    {
+      $project: {
+        _id: 0,
+        "id": 1,
+        "year": 1,
+        "employee.id": "$employee.id",
+        "employee.name": "$employee.name",
+        "manager.id": "$manager.id",
+        "manager.name": "$manager.name",
+        "ounit.id": "$ounit.id",
+        "ounit.name": "$ounit.name",
+        "totalDays": 1,
+        "approvedDays": 1,
+        "consumedDays": 1,
+        "pendingDays": 1,
+        "totalAvailableDays": 1,
+        "requests": 1,
+        "days": 1,
+        "nonWorkingDays": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      let result = {
+        vacation: docs[0],
+      }
+      res.json(result)
+    }
+  })
 });
 
 // GET vacation years list
 router.get('/listVacationYears', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
-  collection.distinct('vacation_year', function (e, docs) {
+  collection.distinct('year', function (e, docs) {
     res.json(docs);
   });
 });
@@ -100,200 +172,155 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "vacation_id": "1",
-      "vacation_year": "2017",
-      "employee_id": "1",
-      "employee_name": "Jose Carlos Fernandez",
-      "manager_id": "30",
-      "manager_name": "Daniel Quesadille",
-      "ounit_id": "2",
-      "ounit_name": "UNIT2",
-      "total_days": "22",
-      "approved_days": "1",
-      "consumed_days": "1",
-      "pending_days": "1",
+      "id": "1",
+      "year": "2019",
+      "employeeId": "1",
+      "managerId": "30",
+      "oUnitId": "2",
+      "totalDays": "22",
+      "approvedDays": "1",
+      "consumedDays": "0",
+      "pendingDays": "1",
+      "totalAvailableDays": "20",
       "days": [
         {
-          "date": "2017-04-23T00:00:00.000Z",
+          "date": "2019-04-23",
           "comment": "vacacion1",
+          "requestDate": "2018-01-01",
           "status": "pending",
-          "ounits": [],
-          "activities": []
         },
         {
-          "date": "2017-03-15T00:00:00.000Z",
+          "date": "2019-03-15",
           "comment": "vacacion2",
+          "requestDate": "2018-01-01",
+          "responseDate": "2018-01-05",
           "status": "approved",
-          "ounits": [],
-          "activities": []
         },
         {
-          "date": "2017-02-01T00:00:00.000Z",
+          "date": "2019-02-01",
           "comment": "vacacion3",
+          "requestDate": "2018-01-07",
+          "responseDate": "2018-01-09",
           "status": "cancelled",
-          "ounits": [],
-          "activities": []
         }
       ],
-      "requests": [
-        {
-          "request_id":1,
-          "vacation_date": "2017-03-15T00:00:00.000Z",
-          "request_date": "2017-01-01T00:00:00.000Z",
-          "response_date": "2017-01-05T00:00:00.000Z",
-          "status": "approved",
-          "comments": [
-            {
-              "employee_id": "",
-              "date": "",
-              "message": ""
-            },
-            {
-              "employee_id": "",
-              "date": "",
-              "message": ""
-            },
-          ]
-        },
-        {
-          "request_id":2,
-          "vacation_date": "2017-04-23T00:00:00.000Z",
-          "request_date": "2017-01-07T00:00:00.000Z",
-          "response_date": "2017-01-09T00:00:00.000Z",
-          "status": "cancelled",
-          "comments": "porque no"
-        }
+      "nonWorkingDays": [
+        "2019-01-01",
+        "2019-01-06",
+        "2019-05-01",
+        "2019-08-15",
+        "2019-10-12",
+        "2019-11-01",
+        "2019-12-06",
+        "2019-12-08",
+        "2019-12-25"
       ]
     },
     {
-      "vacation_id": "2",
-      "vacation_year": "2018",
-      "employee_id": "1",
-      "total_days": "22",
+      "id": "2",
+      "year": "2018",
+      "employeeId": "1",
+      "totalDays": "22",
       "days": [
         {
-          "date": "2018-01-01T00:00:00.000Z",
+          "date": "2018-01-01",
           "comment": "vacacion1",
           "status": "pending",
-          "ounits": ["2"],
-          "activities": ["1"]
         },
         {
-          "date": "2018-03-15T00:00:00.000Z",
+          "date": "2018-03-15",
           "comment": "vacacion2",
           "status": "approved",
-          "ounits": [],
-          "activities": []
         },
         {
-          "date": "2018-05-01T00:00:00.000Z",
+          "date": "2018-05-01",
           "comment": "vacacion3",
           "status": "cancelled",
-          "ounits": [],
-          "activities": []
         }
       ]
     },
     {
-      "vacation_id": "7",
-      "vacation_year": "2016",
-      "employee_id": "2",
-      "total_days": "22",
+      "id": "7",
+      "year": "2016",
+      "employeeId": "2",
+      "totalDays": "22",
       "days": [
         {
-          "date": "2016-01-15T00:00:00.000Z",
+          "date": "2016-01-15",
           "comment": "vacacion1",
           "status": "pending",
-          "ounits": ["2"],
-          "activities": ["1"]
         },
         {
-          "date": "2016-01-16T00:00:00.000Z",
+          "date": "2016-01-16",
           "comment": "vacacion2",
           "status": "approved",
-          "ounits": ["2"],
-          "activities": ["1"]
         },
         {
-          "date": "2016-03-21T00:00:00.000Z",
+          "date": "2016-03-21",
           "comment": "vacacion3",
           "status": "cancelled",
-          "ounits": ["2"],
-          "activities": ["1"]
         }
       ]
     },
     {
-      "vacation_id": "3",
-      "vacation_year": "2017",
-      "employee_id": "2",
-      "total_days": "20",
+      "id": "3",
+      "year": "2017",
+      "employeeId": "2",
+      "totalDays": "20",
       "days": [
         {
-          "date": "2017-02-23T00:00:00.000Z",
+          "date": "2017-02-23",
           "comment": "vacacion1",
           "status": "approved",
-          "ounits": ["2"],
-          "activities": ["1"]
         },
         {
-          "date": "2017-02-15T00:00:00.000Z",
+          "date": "2017-02-15",
           "comment": "vacacion2",
           "status": "approved",
-          "ounits": ["2"],
-          "activities": ["1"]
         },
         {
-          "date": "2017-02-01T00:00:00.000Z",
+          "date": "2017-02-01",
           "comment": "vacacion3",
           "status": "cancelled",
-          "ounits": ["2"],
-          "activities": ["1"]
         }
       ]
     },
     {
-      "vacation_id": "4",
-      "vacation_year": "2017",
-      "employee_id": "3",
-      "total_days": "22",
+      "id": "4",
+      "year": "2017",
+      "employeeId": "3",
+      "totalDays": "22",
       "days": [
         {
-          "date": "2017-04-23T00:00:00.000Z",
+          "date": "2017-04-23",
           "comment": "vacacion",
           "status": "pending",
-          "ounits": ["1"],
-          "activities": ["2", "3"]
         }
       ]
     },
     {
-      "vacation_id": "5",
-      "vacation_year": "2017",
-      "employee_id": "4",
-      "total_days": "22",
+      "id": "5",
+      "year": "2017",
+      "employeeId": "4",
+      "totalDays": "22",
       "days": [
         {
-          "date": "2017-04-23T00:00:00.000Z",
+          "date": "2017-04-23",
           "comment": "vacacion",
           "status": "pending",
-          "ounits": [],
-          "activities": []
         }
       ]
     },
     {
-      "vacation_id": "6",
-      "vacation_year": "2017",
-      "employee_id": "5",
-      "total_days": "22",
+      "id": "6",
+      "year": "2017",
+      "employeeId": "5",
+      "totalDays": "22",
       "days": [
         {
-          "date": "2017-01-23T00:00:00.000Z",
+          "date": "2017-01-23",
           "comment": "vacacion",
           "status": "pending",
-          "ounits": ["1"],
-          "activities": ["3"]
         }
       ]
     },
@@ -301,7 +328,7 @@ router.get('/reset', function (req, res) {
 
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: '' } : { msg: err }
+      (err === null) ? { msg: 'OK: vacations collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });

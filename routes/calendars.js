@@ -128,12 +128,45 @@ router.get('/listtypes', function (req, res) {
 
 // GET calendar
 router.get('/get/:id', function (req, res) {
+  var docToFind = req.params.id;
   var db = req.db;
   var collection = db.get('calendars');
-  var docToFind = req.params.id;
-  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
-    res.json(docs);
-  });
+
+  let pipeline = [
+    {
+      $match:{"id":docToFind}
+    },
+    {
+      $lookup: {
+        from: "calendarTypes",
+        localField: "calendarTypeId",
+        foreignField: "id",
+        as: "type"
+      }
+    },
+    {
+      $project: {
+        "_id": 0,
+        "id": 1,
+        "year": 1,
+        "type.id": "$calendarTypeId",
+        "type.name": { $arrayElemAt: ["$type.name", 0] },
+        "days": 1
+      }
+    },
+    { $unwind: "$type" }
+  ]
+    collection.aggregate(pipeline
+    , {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let result = {
+          calendar: docs[0],
+        }
+        res.json(result)
+      }
+    })
 });
 
 // POST addCalendar.

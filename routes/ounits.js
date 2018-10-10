@@ -29,8 +29,8 @@ router.get('/selection', function (req, res) {
     {
       $project: {
         "_id": 0,
-        "id": "$oUnitId",
-        "name": "$oUnitName",
+        "id": "$id",
+        "name": "$name",
         "dept": 1
       }
     }
@@ -38,17 +38,20 @@ router.get('/selection', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
 
 // GET employee
-router.get('/get/:oUnitId', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  var docToFind = req.params.oUnitId;
-  collection.findOne({ 'oUnitId': docToFind }, {}, function (e, docs) {
+  var docToFind = req.params.id;
+  collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });
 });
@@ -65,21 +68,21 @@ router.post('/add', function (req, res) {
 });
 
 // DELETE delEmployee
-router.delete('/del/:oUnitId', function (req, res) {
+router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  var docToDelete = req.params.oUnitId;
-  collection.remove({ 'oUnitId': docToDelete }, function (err) {
+  var docToDelete = req.params.id;
+  collection.remove({ 'id': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
 
 // PUT updateEmployee
-router.put('/update/:oUnitId', function (req, res) {
+router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  var docToUpdate = req.params.oUnitId;
-  collection.update({ 'oUnitId': docToUpdate }, req.body, function (err) {
+  var docToUpdate = req.params.id;
+  collection.update({ 'id': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -88,7 +91,7 @@ router.put('/update/:oUnitId', function (req, res) {
 router.get('/listOUnitsFilter', function (req, res) {
   var db = req.db;
   var collection = db.get('ounits');
-  collection.find({}, { fields: { oUnitId: 1, oUnitName: 1 } }, function (e, docs) {
+  collection.find({}, { fields: { id: 1, name: 1 } }, function (e, docs) {
     res.json(docs);
   });
 });
@@ -100,9 +103,9 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      oUnitId: '1',
-      responsibleId: '1',
-      oUnitName: 'HIVERIA 04 MLA',
+      id: '1',
+      managerId: '1',
+      name: 'HIVERIA 04 MLA',
       description: '',
       oUnitTypeId: '1',
       dept: "1000/1000/ES0100",
@@ -112,9 +115,9 @@ router.get('/reset', function (req, res) {
       parentId: '#'
     },
     {
-      oUnitId: '2',
-      responsibleId: '12',
-      oUnitName: 'MANUAL ARCHITECTURE',
+      id: '2',
+      managerId: '12',
+      name: 'MANUAL ARCHITECTURE',
       description: '',
       oUnitTypeId: '2',
       dept: "2000/2000/ES0200",
@@ -124,9 +127,9 @@ router.get('/reset', function (req, res) {
       parentId: '1'
     },
     {
-      oUnitId: '3',
-      responsibleId: '23',
-      oUnitName: 'OGT-A2M-RIA',
+      id: '3',
+      managerId: '23',
+      name: 'OGT-A2M-RIA',
       description: '',
       oUnitTypeId: '3',
       dept: "3000/3000/ES0300",
@@ -136,9 +139,9 @@ router.get('/reset', function (req, res) {
       parentId: '1'
     },
     {
-      oUnitId: '4',
-      responsibleId: '24',
-      oUnitName: 'B&M AREA IT',
+      id: '4',
+      managerId: '24',
+      name: 'B&M AREA IT',
       description: '',
       oUnitTypeId: '2',
       dept: "5000/5000/ES0500",
@@ -148,9 +151,9 @@ router.get('/reset', function (req, res) {
       parentId: '2'
     },
     {
-      oUnitId: '5',
-      responsibleId: '25',
-      oUnitName: 'OFICINA DE PROYECTOS',
+      id: '5',
+      managerId: '25',
+      name: 'OFICINA DE PROYECTOS',
       description: '',
       oUnitTypeId: '2',
       dept: "4000/4000/ES0400",
@@ -160,9 +163,9 @@ router.get('/reset', function (req, res) {
       parentId: '3'
     },
     {
-      oUnitId: '6',
-      responsibleId: '26',
-      oUnitName: 'SOFTWARE LIBRE',
+      id: '6',
+      managerId: '26',
+      name: 'SOFTWARE LIBRE',
       description: '',
       oUnitTypeId: '1',
       dept: "3400/4000/ES0300",
@@ -172,9 +175,9 @@ router.get('/reset', function (req, res) {
       parentId: '3'
     },
     {
-      oUnitId: '7',
-      responsibleId: '27',
-      oUnitName: 'JANDERS KLANDERS',
+      id: '7',
+      managerId: '27',
+      name: 'JANDERS KLANDERS',
       description: '',
       oUnitTypeId: '1',
       dept: "4000/2343/ES0400",

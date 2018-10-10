@@ -5,45 +5,69 @@ var router = express.Router();
 router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
-  console.log('hola')
-  /*collection.find({}, '-_id', function (e, docs) {
-    res.json(docs);
-  });
-});*/
+  let totalRecords = 0
+
+  collection.count({}).then((count) => {
+    totalRecords = count
+  })
+
   collection.aggregate([
     {
       $project: {
         "_id": 0,
-        "activityId": 1,
-        "activityName": 1,
-        "activityCode": 1,
-        "startDate": 1,
-        "businessOunitId": 1,
-        "commertialOunitId": 1,
-        "clientId": 1,
-        "activitySubtypeId": 1,
-        "status": 1,
-        "registry": 1
+        "id": 1,
+        "name": 1,
+        "code": 1,
+        "startDate": 1
       }
     }
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        vacations: docs,
+        totalRecords: totalRecords
+      }
+      res.json(result)
+    }
+  })
+});
+
+// GET activities selection
+router.get('/selection', function (req, res) {
+  var db = req.db;
+  var collection = db.get('activities');
+
+  collection.aggregate([
+    {
+      $project: {
+        "_id": 0,
+        "id": 1,
+        "name": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
 
 // GET activities list
-router.get('/get/:activityId', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
-  var docToFind = req.params.activityId;
+  var docToFind = req.params.id;
   console.log(docToFind)
   collection.aggregate([
     {
-      $match: { "activityId": docToFind }
+      $match: { "id": docToFind }
     },
     
     {
@@ -139,9 +163,9 @@ router.get('/get/:activityId', function (req, res) {
     {
       $project: {
         "_id": 0,
-        "activityId": 1,
-        "activityName": 1,
-        "activityCode": 1,
+        "id": 1,
+        "name": 1,
+        "code": 1,
         "budget": 1,
         "efectiveHours": 1,
         "expenses": 1,
@@ -206,11 +230,11 @@ router.get('/get/:activityId', function (req, res) {
 
 // List employees by activity
 // devuelve el listado de los empleados que hayan estado vinculados a una actividad determinada
-router.get('/listEmployeesInActivity/:activityId', function (req, res) {
+router.get('/listEmployeesInActivity/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
-  var docToFind = req.params.activityId;
-  collection.find({ 'activityId': docToFind }, { 'team.employeeId': 1 }, function (e, docs) {
+  var docToFind = req.params.id;
+  collection.find({ 'id': docToFind }, { 'team.employeeId': 1 }, function (e, docs) {
     res.json(docs);
   });
 });
@@ -235,9 +259,9 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "activityId": "1",
-      "activityName": "FORMACION \"GPG\"",
-      "activityCode": "NF0001",
+      "id": "1",
+      "name": "FORMACION \"GPG\"",
+      "code": "NF0001",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -355,7 +379,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "2",
+      "id": "2",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -405,8 +429,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "1"
         }
       ],
-      "activityName": "AUSENCIA NO JUSTIFICADA",
-      "activityCode": "NF0002",
+      "name": "AUSENCIA NO JUSTIFICADA",
+      "code": "NF0002",
       "team": [
         {
           "groupId": "EMPLEADOS",
@@ -426,7 +450,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "3",
+      "id": "3",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -476,8 +500,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "1"
         }
       ],
-      "activityName": "AUSENCIA JUSTIFICADA",
-      "activityCode": "NF0003",
+      "name": "AUSENCIA JUSTIFICADA",
+      "code": "NF0003",
       "team": [
         {
           "groupId": "EMPLEADOS",
@@ -497,7 +521,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "4",
+      "id": "4",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -548,8 +572,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "3"
         }
       ],
-      "activityName": "POSTVENTA DE DIVERSOS",
-      "activityCode": "125001",
+      "name": "POSTVENTA DE DIVERSOS",
+      "code": "125001",
       "team": [
         {
           "employeeId": "4",
@@ -601,7 +625,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "5",
+      "id": "5",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -651,8 +675,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "1"
         }
       ],
-      "activityName": "INTRANET NUEVA",
-      "activityCode": "PI0006",
+      "name": "INTRANET NUEVA",
+      "code": "PI0006",
       "team": [
         {
           "employeeId": "6",
@@ -799,7 +823,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "6",
+      "id": "6",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -849,8 +873,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "4"
         }
       ],
-      "activityName": "GESTION / ESTRUCTURA",
-      "activityCode": "NF0004",
+      "name": "GESTION / ESTRUCTURA",
+      "code": "NF0004",
       "team": [
         {
           "groupId": "EMPLEADOS",
@@ -918,7 +942,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "7",
+      "id": "7",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -968,8 +992,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "2"
         }
       ],
-      "activityName": "VACACIONES",
-      "activityCode": "NF0005",
+      "name": "VACACIONES",
+      "code": "NF0005",
       "team": [
         {
           "groupId": "EMPLEADOS",
@@ -989,7 +1013,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "8",
+      "id": "8",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1039,8 +1063,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "2"
         }
       ],
-      "activityName": "REUNIONES INTERNAS",
-      "activityCode": "NF0006",
+      "name": "REUNIONES INTERNAS",
+      "code": "NF0006",
       "team": [
         {
           "groupId": "EMPLEADOS",
@@ -1060,7 +1084,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "9",
+      "id": "9",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1110,8 +1134,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "2"
         }
       ],
-      "activityName": "VACACIONES DEL AÑO ANTERIOR",
-      "activityCode": "NF0008",
+      "name": "VACACIONES DEL AÑO ANTERIOR",
+      "code": "NF0008",
       "team": [
         {
           "groupId": "EMPLEADOS",
@@ -1131,7 +1155,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "activityId": "10",
+      "id": "10",
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1181,8 +1205,8 @@ router.get('/reset', function (req, res) {
           "ounitId": "1"
         }
       ],
-      "activityName": "IMPLANTACIÓN ISO 9000",
-      "activityCode": "105003",
+      "name": "IMPLANTACIÓN ISO 9000",
+      "code": "105003",
       "team": []
     }
   ], function (err, result) {
