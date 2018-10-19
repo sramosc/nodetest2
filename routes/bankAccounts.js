@@ -8,9 +8,9 @@ router.get('/list', function (req, res) {
   let totalRecords = 0
 
 
-  collection.count({}).then((count) => {
+ /* collection.count({}).then((count) => {
     totalRecords = count
-  })
+  })*/
 
   let pipeline = [{
     $lookup: {
@@ -57,7 +57,7 @@ router.get('/list', function (req, res) {
 
     if (matchExists) {
       console.log(matchStage)
-      collection.count({matchStage}).then((count) => {
+      collection.count({ matchStage }).then((count) => {
         totalRecords = count
         console.log(totalRecords)
         console.log(count)
@@ -140,8 +140,9 @@ router.get('/get/:id', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
+      docs[0].version = '1'
       let result = {
-        bankAccount: docs[0]
+        bankAccount: docs[0]        
       }
       res.json(result)
     }
@@ -165,7 +166,7 @@ router.delete('/del/:id', function (req, res) {
   var collection = db.get('bankaccounts');
   var docToDelete = req.params.id;
   collection.remove({ 'id': docToDelete }, function (err) {
-    res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
+    res.send((err === null) ? { msg: 'La cuenta ha sido borrada con éxito' } : { msg: 'error: ' + err });
   });
 });
 
@@ -175,7 +176,7 @@ router.put('/update/:id', function (req, res) {
   var collection = db.get('bankaccounts');
   var docToUpdate = req.params.id;
   collection.update({ 'id': docToUpdate }, req.body, function (err) {
-    res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
+    res.send((err === null) ? { msg: 'La cuenta ha sido modificada con éxito' } : { msg: 'error: ' + err });
   });
 });
 

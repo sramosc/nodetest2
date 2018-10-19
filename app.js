@@ -17,6 +17,7 @@ var employeesRoutes = require('./routes/employees');
 var oUnitsRoutes = require('./routes/ounits');
 var calendarsRoutes = require('./routes/calendars');
 var calendarTypesRoutes = require('./routes/calendarTypes');
+var calendarYearsRoutes = require('./routes/calendarYears');
 var bankAccountsRoutes = require('./routes/bankAccounts');
 var enterprisesRoutes = require('./routes/enterprises');
 var vacationsRoutes = require('./routes/vacations');
@@ -30,6 +31,7 @@ var activitySubtypesRoutes = require('./routes/activitySubtypes');
 var activityIncomeTypesRoutes = require('./routes/activityIncomeTypes');
 var clientsRoutes = require('./routes/clients');
 var employeeGroupsRoutes = require('./routes/employeeGroups');
+var erroresRoutes = require('./routes/errores')
 
 
 var app = express();
@@ -57,6 +59,7 @@ app.use('/employees', employeesRoutes);
 app.use('/ounits', oUnitsRoutes);
 app.use('/calendars', calendarsRoutes);
 app.use('/calendarTypes', calendarTypesRoutes);
+app.use('/calendarYears', calendarYearsRoutes);
 app.use('/banksAccounts', bankAccountsRoutes);
 app.use('/enterprises', enterprisesRoutes);
 app.use('/vacations', vacationsRoutes);
@@ -70,6 +73,7 @@ app.use('/activitySubtypes', activitySubtypesRoutes);
 app.use('/activityIncomeTypes', activityIncomeTypesRoutes);
 app.use('/clients', clientsRoutes);
 app.use('/employeeGroups', employeeGroupsRoutes);
+app.use('/errores', erroresRoutes);
 
 
 
