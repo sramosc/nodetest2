@@ -51,7 +51,7 @@ router.get('/list', function (req, res) {
       matchExists = true
     }
     if ('enterpriseId' in req.query) {
-      matchStage['enterprise.id'] = req.query.enterpriseId
+      matchStage['enterprise.id'] = Number(req.query.enterpriseId)
       matchExists = true
     }
 
@@ -109,7 +109,7 @@ router.get('/list', function (req, res) {
 router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
-  var docToFind = req.params.id;
+  var docToFind = Number(req.params.id);
   /*collection.findOne({ 'id': docToFind }, {}, function (e, docs) {
     res.json(docs);
   });*/
@@ -164,7 +164,7 @@ router.post('/add', function (req, res) {
 router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
-  var docToDelete = req.params.id;
+  var docToDelete = Number(req.params.id);
   collection.remove({ 'id': docToDelete }, function (err) {
     res.send((err === null) ? { msg: 'La cuenta ha sido borrada con éxito' } : { msg: 'error: ' + err });
   });
@@ -174,10 +174,14 @@ router.delete('/del/:id', function (req, res) {
 router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
-  var docToUpdate = req.params.id;
+  var docToUpdate = Number(req.params.id);
   collection.update({ 'id': docToUpdate }, req.body, function (err) {
     res.send((err === null) ? { msg: 'La cuenta ha sido modificada con éxito' } : { msg: 'error: ' + err });
   });
+});
+
+router.get('/reports/pdf', function (req,res) {
+  res.download('./public/pdf.pdf')
 });
 
 // GET resetCollectionAccounts
@@ -187,80 +191,80 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "id": "1",
+      "id": 1,
       "name": "BANCO POPULAR",
       "number": "ES6621000418401234567891",
-      "enterpriseId": "1",
+      "enterpriseId": 1,
       "ledgerAccount": "57200001"
     },
     {
-      "id": "2",
+      "id": 2,
       "name": "CAIXA BANK",
       "number": "ES6000491500051234567892",
-      "enterpriseId": "1",
+      "enterpriseId": 1,
       "ledgerAccount": "57200005"
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "LA CAIXA",
       "number": "ES9420805801101234567891",
-      "enterpriseId": "2",
+      "enterpriseId": 2,
       "ledgerAccount": "57200002"
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "BANCO PEPE",
       "number": "ES9000246912501234567891",
-      "enterpriseId": "2",
+      "enterpriseId": 2,
       "ledgerAccount": "57200003"
     },
     {
-      "id": "5",
+      "id": 5,
       "name": "BANCO PACO",
       "number": "ES7100302053091234567895",
-      "enterpriseId": "3",
+      "enterpriseId": 3,
       "ledgerAccount": "57200005"
     },
     {
-      "id": "6",
+      "id": 6,
       "name": "BANCO JUAN",
       "number": "ES1000492352082414205416",
-      "enterpriseId": "3",
+      "enterpriseId": 3,
       "ledgerAccount": "57200003"
     },
     {
-      "id": "7",
+      "id": 7,
       "name": "BANCO MANOLO",
       "number": "ES1720852066623456789011",
-      "enterpriseId": "4",
+      "enterpriseId": 4,
       "ledgerAccount": "57200001"
     },
     {
-      "id": "8",
+      "id": 8,
       "name": "BANCO BARTOLO",
       "number": "ES1720852066623456789011",
-      "enterpriseId": "1",
+      "enterpriseId": 1,
       "ledgerAccount": "57200005"
     },
     {
-      "id": "9",
+      "id": 9,
       "name": "BANCO PEPI",
       "number": "ES1720852066623456789011",
-      "enterpriseId": "3",
+      "enterpriseId": 3,
       "ledgerAccount": "57200002"
     },
     {
-      "id": "10",
+      "id": 10,
       "name": "BANCO MAMERTO",
       "number": "ES1720852066623456789011",
-      "enterpriseId": "2",
+      "enterpriseId": 2,
       "ledgerAccount": "57200007"
     },
     {
-      "id": "11",
+      "id": 11,
       "name": "CAJA DE AHORROS PAULINO",
       "number": "ES1720852066623456789011",
-      "enterpriseId": "4",
+      "enterpriseId": 4,
       "ledgerAccount": "57200001"
     }
   ], function (err, result) {

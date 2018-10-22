@@ -212,6 +212,7 @@ router.get('/get/:id', function (req, res) {
       if (e != null) {
         res.json(e)
       } else {
+        docs[0].version = '1'
         let result = {
           calendar: docs[0],
         }
