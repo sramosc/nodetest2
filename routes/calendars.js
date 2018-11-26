@@ -16,11 +16,11 @@ router.get('/list', function (req, res) {
   var collection = db.get('calendars');
   let totalRecords = 0
 
-/*
-  collection.count({}).then((count) => {
-    totalRecords = count
-  })
-*/
+  /*
+    collection.count({}).then((count) => {
+      totalRecords = count
+    })
+  */
   let pipeline = [
     {
       $lookup: {
@@ -44,12 +44,13 @@ router.get('/list', function (req, res) {
       $project: {
         "_id": 0,
         "id": 1,
+        "name": 1,
         "year.id": 1,
-        "type.id":1,
-        "year.name":1,
+        "type.id": 1,
+        "year.name": 1,
         "type.name": 1,
-       // "type.name": { $arrayElemAt: ["$type.name", 0] },
-       // "year.name": { $arrayElemAt: ["$year.name", 0] },
+        // "type.name": { $arrayElemAt: ["$type.name", 0] },
+        // "year.name": { $arrayElemAt: ["$year.name", 0] },
       }
     }
   ]
@@ -63,25 +64,34 @@ router.get('/list', function (req, res) {
     let matchExists = false
 
     // match stage
+
+    if ('name' in req.query) {
+      matchStage.name = {
+        $regex: req.query.name,
+        $options: 'i'
+      }
+      matchExists = true
+    }
+
     if ('typeId' in req.query) {
-      matchStage['type.id'] = req.query.typeId
+      matchStage['type.id'] = Number(req.query.typeId)
       matchExists = true
     }
 
     if ('yearId' in req.query) {
-      matchStage['year.id'] = req.query.yearId
+      matchStage['year.id'] = Number(req.query.yearId)
       matchExists = true
     }
 
-    if(!matchExists){
+    if (!matchExists) {
       collection.count({}).then((count) => {
         totalRecords = count
-        
+
       })
-    }else{
-     totalRecords = 10
+    } else {
+      totalRecords = 10
     }
-      
+
 
     // sort stage
     if ('pageSort' in req.query) {
@@ -153,7 +163,7 @@ router.get('/selection', function (req, res) {
       let result = {
         options: docs
       }
-      res.json(result)      
+      res.json(result)
     }
   })
 });
@@ -169,13 +179,13 @@ router.get('/listtypes', function (req, res) {
 
 // GET calendar
 router.get('/get/:id', function (req, res) {
-  var docToFind = req.params.id;
+  var docToFind = Number(req.params.id);
   var db = req.db;
   var collection = db.get('calendars');
 
   let pipeline = [
     {
-      $match:{"id":docToFind}
+      $match: { "id": docToFind }
     },
     {
       $lookup: {
@@ -199,20 +209,21 @@ router.get('/get/:id', function (req, res) {
       $project: {
         "_id": 0,
         "id": 1,
-        "type.id": 1,        
-        "type.name": 1,        
-        "year.id": 1,        
-        "year.name": 1,                
-        "days": 1
+        "name": 1,
+        "type.id": 1,
+      //  "type.name": 1,
+        "year.id": 1,
+      //  "year.name": 1,
+        "dates": 1
       }
-    }    
+    }
   ]
-    collection.aggregate(pipeline
+  collection.aggregate(pipeline
     , {}, function (e, docs) {
       if (e != null) {
         res.json(e)
       } else {
-        docs[0].version = '1'
+        docs[0].version = 1
         let result = {
           calendar: docs[0],
         }
@@ -236,7 +247,7 @@ router.post('/add', function (req, res) {
 router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
-  var docToDelete = req.params.id;
+  var docToDelete = Number(req.params.id);
   collection.remove({ 'id': docToDelete }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
@@ -246,9 +257,9 @@ router.delete('/del/:id', function (req, res) {
 router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
-  var docToUpdate = req.params.id;
+  var docToUpdate = Number(req.params.id);
   collection.update({ 'id': docToUpdate }, req.body, function (err) {
-    res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
+    res.send((err === null) ? { msg: 'El calendario ha sido modificada con éxito' } : { msg: 'error: ' + err });
   });
 });
 
@@ -259,29 +270,34 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      'id': '1',
-      'typeId': '1',
-      'yearId': '5',
-      'days': [
+      'id': 1,
+      'name': 'calendario1',
+      'typeId': 1,
+      'yearId': 2018,
+      'dates': [
         {
+          'id':1,
           'date': '2018-01-01',
           'comment': 'dia 1 de enero'
         },
         {
+          'id':2,
           'date': '2018-02-01',
           'comment': 'dia 1 de febrero'
         },
         {
+          'id':3,
           'date': '2018-03-01',
           'comment': 'dia 1 de marzo'
         }
       ]
     },
     {
-      'id': '2',
-      'typeId': '4',
-      'yearId': '5',
-      'days': [
+      'id': 2,
+      'name': 'calendario2',
+      'typeId': 4,
+      'yearId': 2018,
+      'dates': [
         {
           'date': '2018-01-02',
           'comment': 'dia 2 de enero'
@@ -297,10 +313,11 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      'id': '3',
-      'typeId': '1',
-      'yearId': '4',
-      'days': [
+      'id': 3,
+      'name': 'calendario3',
+      'typeId': 1,
+      'yearId': 2017,
+      'dates': [
         {
           'date': '2017-01-02',
           'comment': 'dia 2 de enero'
@@ -316,10 +333,11 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      'id': '4',
-      'typeId': '2',
-      'yearId': '3',
-      'days': [
+      'id': 4,
+      'name': 'calendario4',
+      'typeId': 2,
+      'yearId': 2016,
+      'dates': [
         {
           'date': '2016-10-02',
           'comment': 'dia 2 de octubre'
@@ -335,10 +353,11 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      'id': '5',
-      'typeId': '3',
-      'yearId': '5',
-      'days': [
+      'id': 5,
+      'name': 'calendario5',
+      'typeId': 3,
+      'yearId': 2018,
+      'dates': [
         {
           'date': '2018-10-02',
           'comment': 'dia 2 de octubre'

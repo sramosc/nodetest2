@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET companies list
-router.get('/listCompanies', function (req, res) {
+router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   collection.find({}, '-_id', function (e, docs) {
@@ -11,7 +11,7 @@ router.get('/listCompanies', function (req, res) {
 });
 
 // GET companies Modal list
-router.get('/listCompaniesModal', function (req, res) {
+router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
 
@@ -27,13 +27,16 @@ router.get('/listCompaniesModal', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
 
 // GET company (companyId = id)
-router.get('/getCompany/:id', function (req, res) {
+router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   var docToFind = req.params.id;
@@ -43,7 +46,7 @@ router.get('/getCompany/:id', function (req, res) {
 });
 
 // POST addCompany.
-router.post('/addCompany', function (req, res) {
+router.post('/add', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   collection.insert(req.body, function (err, result) {
@@ -54,7 +57,7 @@ router.post('/addCompany', function (req, res) {
 });
 
 // DELETE delCompany (companyId = id)
-router.delete('/delCompany/:id', function (req, res) {
+router.delete('/del/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   var docToDelete = req.params.id;
@@ -64,7 +67,7 @@ router.delete('/delCompany/:id', function (req, res) {
 });
 
 // PUT updateCompany (companyId = id)
-router.put('/updateCompany/:id', function (req, res) {
+router.put('/update/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   var docToUpdate = req.params.id;
@@ -74,25 +77,25 @@ router.put('/updateCompany/:id', function (req, res) {
 });
 
 // GET resetCollectionCompanies
-router.get('/resetCollectionCompanies', function (req, res) {
+router.get('/reset', function (req, res) {
   var db = req.db;
   var collection = db.get('companies');
   collection.remove({});
   collection.insert([
     {
-      "companyId": "1",
+      "companyId": 1,
       "companyName": "NTL CONSULTING S.A"
     },
     {
-      "companyId": "2",
+      "companyId": 2,
       "companyName": "NTL QWER S.A"
     },
     {
-      "companyId": "3",
+      "companyId": 3,
       "companyName": "NTL DIGITAL"
     },
     {
-      "companyId": "4",
+      "companyId": 4,
       "companyName": "NTL S.A."
     }
   ], function (err, result) {

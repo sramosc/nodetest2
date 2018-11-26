@@ -30,6 +30,8 @@ var activityExpensesPermissionTypesRoutes = require('./routes/activityExpensesPe
 var activitySubtypesRoutes = require('./routes/activitySubtypes');
 var activityIncomeTypesRoutes = require('./routes/activityIncomeTypes');
 var clientsRoutes = require('./routes/clients');
+var companiesRoutes = require('./routes/companies');
+var tasksRoutes = require('./routes/tasks');
 var employeeGroupsRoutes = require('./routes/employeeGroups');
 var erroresRoutes = require('./routes/errores')
 
@@ -58,8 +60,8 @@ app.use('/users', usersRouter);
 app.use('/employees', employeesRoutes);
 app.use('/ounits', oUnitsRoutes);
 app.use('/calendars', calendarsRoutes);
-app.use('/calendarTypes', calendarTypesRoutes);
-app.use('/calendarYears', calendarYearsRoutes);
+app.use('/calendarsTypes', calendarTypesRoutes);
+app.use('/years', calendarYearsRoutes);
 app.use('/banksAccounts', bankAccountsRoutes);
 app.use('/enterprises', enterprisesRoutes);
 app.use('/vacations', vacationsRoutes);
@@ -72,6 +74,8 @@ app.use('/activityExpensesPermissionTypes', activityExpensesPermissionTypesRoute
 app.use('/activitySubtypes', activitySubtypesRoutes);
 app.use('/activityIncomeTypes', activityIncomeTypesRoutes);
 app.use('/clients', clientsRoutes);
+app.use('/companies', companiesRoutes);
+app.use('/tasks', tasksRoutes);
 app.use('/employeeGroups', employeeGroupsRoutes);
 app.use('/errores', erroresRoutes);
 

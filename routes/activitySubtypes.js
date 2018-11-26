@@ -37,7 +37,10 @@ router.get('/selection', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
@@ -50,43 +53,43 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       "name": "PROYECTO INTERNO",
-      "activityTypeId": "2",
-      "activitySubtypeId": "5"
+      "activityTypeId": 2,
+      "activitySubtypeId": 5
     },
     {
       "name": "PREVENTA",
-      "activityTypeId": "3",
-      "activitySubtypeId": "8"
+      "activityTypeId": 3,
+      "activitySubtypeId": 8
     },
     {
       "name": "FORMACION",
-      "activityTypeId": "2",
-      "activitySubtypeId": "9"
+      "activityTypeId": 2,
+      "activitySubtypeId": 9
     },
     {
       "name": "GESTION / ESTRUCTURA",
-      "activityTypeId": "2",
-      "activitySubtypeId": "12"
+      "activityTypeId": 2,
+      "activitySubtypeId": 12
     },
     {
       "name": "PENDIENTE DE ASIGNACIÓN",
-      "activityTypeId": "2",
-      "activitySubtypeId": "15"
+      "activityTypeId": 2,
+      "activitySubtypeId": 15
     },
     {
       "name": "HORAS SINDICALES",
-      "activityTypeId": "2",
-      "activitySubtypeId": "16"
+      "activityTypeId": 2,
+      "activitySubtypeId": 16
     },
     {
       "name": "AUSENCIA",
-      "activityTypeId": "4",
-      "activitySubtypeId": "24"
+      "activityTypeId": 4,
+      "activitySubtypeId": 24
     },
     {
       "name": "PROYECTO EXTERNO",
-      "activityTypeId": "1",
-      "activitySubtypeId": "25"
+      "activityTypeId": 1,
+      "activitySubtypeId": 25
     }
   ], function (err, result) {
     res.send(

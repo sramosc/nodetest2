@@ -34,19 +34,19 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       "name": "FESTIVOS NACIONALES",
-      "id": "1"
+      "id": 1
     },
     {
       "name": "FESTIVOS PAIS VASCO",
-      "id": "2"
+      "id": 2
     },
     {
       "name": "FESTIVOS MADRID",
-      "id": "3"
+      "id": 3
     },
     {
       "name": "FESTIVOS CATALUÑA",
-      "id": "4"
+      "id": 4
     }
   ], function (err, result) {
     res.send(

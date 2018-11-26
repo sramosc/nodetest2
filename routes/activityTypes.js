@@ -49,19 +49,19 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "activityTypeId": "1",
+      "activityTypeId": 1,
       "activityTypeName": "FACTURABLE"
     },
     {
-      "activityTypeId": "2",
+      "activityTypeId": 2,
       "activityTypeName": "NO FACTURABLE"
     },
     {
-      "activityTypeId": "3",
+      "activityTypeId": 3,
       "activityTypeName": "PREVENTA"
     },
     {
-      "activityTypeId": "4",
+      "activityTypeId": 4,
       "activityTypeName": "AUSENCIA"
     }
   ], function (err, result) {

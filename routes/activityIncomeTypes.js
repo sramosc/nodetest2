@@ -27,7 +27,10 @@ router.get('/selection', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
@@ -40,27 +43,27 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       "name": "SUELO",
-      "activityIncomeTypeId": "1"
+      "activityIncomeTypeId": 1
     },
     {
       "name": "RENOVACION",
-      "activityIncomeTypeId": "2"
+      "activityIncomeTypeId": 2
     },
     {
       "name": "CRECIMIENTO",
-      "activityIncomeTypeId": "3"
+      "activityIncomeTypeId": 3
     },
     {
       "name": "NUEVA VENTA",
-      "activityIncomeTypeId": "4"
+      "activityIncomeTypeId": 4
     },
     {
       "name": "NUEVO CLIENTE",
-      "activityIncomeTypeId": "5"
+      "activityIncomeTypeId": 5
     },
     {
       "name": "CARTERA PROXIMOS EJERCICIOS",
-      "activityIncomeTypeId": "6"
+      "activityIncomeTypeId": 6
     }
   ], function (err, result) {
     res.send(

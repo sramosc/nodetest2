@@ -27,7 +27,10 @@ router.get('/selection', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
@@ -39,23 +42,23 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "clientId": "1",
+      "clientId": 1,
       "clientName": "MODAS AMPARO",
     },
     {
-      "clientId": "2",
+      "clientId": 2,
       "clientName": "CHARCUTERIA PEPI",
     },
     {
-      "clientId": "3",
+      "clientId": 3,
       "clientName": "ULTRAMARINOS MANOLO",
     },
     {
-      "clientId": "4",
+      "clientId": 4,
       "clientName": "MERCERIA TOÑI",
     },
     {
-      "clientId": "5",
+      "clientId": 5,
       "clientName": "FABRICA DE MIGUELITOS",
     },
 

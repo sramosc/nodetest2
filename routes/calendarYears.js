@@ -34,35 +34,35 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       "name": "2014",
-      "id": "1"
+      "id": 2014
     },
     {
       "name": "2015",
-      "id": "2"
+      "id": 2015
     },
     {
       "name": "2016",
-      "id": "3"
+      "id": 2016
     },
     {
       "name": "2017",
-      "id": "4"
+      "id": 2017
     },
     {
       "name": "2018",
-      "id": "5"
+      "id": 2018
     },
     {
       "name": "2019",
-      "id": "6"
+      "id": 2019
     },
     {
       "name": "2020",
-      "id": "7"
+      "id": 2020
     },
     {
       "name": "2021",
-      "id": "8"
+      "id": 2021
     },
 
   ], function (err, result) {

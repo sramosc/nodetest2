@@ -11,27 +11,109 @@ router.get('/list', function (req, res) {
     totalRecords = count
   })
 
-  collection.aggregate([
-    {
-      $project: {
-        "_id": 0,
-        "id": 1,
-        "name": 1,
-        "code": 1,
-        "startDate": 1
+  let pipeline = []
+
+  if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
+    console.log("sin query params")
+  } else {
+
+    let matchStage = {}
+    let sortStage = {}
+    let matchExists = false
+
+    /*name: this.state.nameFilter,
+    oUnitId: this.state.oUnitFilter,
+    clientId: this.state.clientFilter,
+    activitySubTypeId: this.state.activitySubtypeFilter,
+    status: this.state.statusFilter,
+    registry: this.state.registryFilter,*/
+
+    // match stage
+    if ('name' in req.query) {
+      matchStage.name = {
+        $regex: req.query.name,
+        $options: 'i'
+      }
+      matchExists = true
+    }
+    if ('oUnitId' in req.query) {
+      matchStage['businessOunitId'] = req.query.oUnitId
+      matchExists = true
+    }
+
+    if ('clientId' in req.query) {
+      matchStage['clientId'] = req.query.clientId
+      matchExists = true
+    }
+
+    if ('activitySubTypeId' in req.query) {
+      matchStage['activitySubtypeId'] = req.query.activitySubTypeId
+      matchExists = true
+    }
+
+    if ('status' in req.query) {
+      matchStage['status'] = req.query.status
+      matchExists = true
+    }
+
+    if ('registry' in req.query) {
+      matchStage['registry'] = req.query.registry
+      matchExists = true
+    }
+
+    if (matchExists) {
+      console.log(matchStage)
+      collection.count({ matchStage }).then((count) => {
+        totalRecords = count
+        console.log(totalRecords)
+        console.log(count)
+      })
+    }
+
+
+    // sort stage
+    if ('pageSort' in req.query) {
+      let field = req.query.pageSort
+      let orderAsc = true
+      if (req.query.pageSort.indexOf('-')) {
+        orderAsc = false
+      }
+      field = field.replace('-', '')
+      if (orderAsc) {
+        sortStage[field] = -1
+      } else {
+        sortStage[field] = 1
       }
     }
-  ], {}, function (e, docs) {
-    if (e != null) {
-      res.json(e)
-    } else {
-      let result = {
-        vacations: docs,
-        totalRecords: totalRecords
-      }
-      res.json(result)
+    pipeline.push({ $match: matchStage })
+
+    pipeline.push({ $sort: sortStage })
+
+    // skip and limit stage
+    if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
+
+      pipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      pipeline.push({ $limit: parseInt(req.query.pageSize) })
     }
-  })
+
+
+
+  }
+  pipeline.push({ $project: { "_id": 0, "id": 1, "name": 1, "code": 1, "startDate": 1 } })
+  console.log(pipeline)
+  collection.aggregate(pipeline
+    , {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let result = {
+          activities: docs,
+          totalRecords: totalRecords
+        }
+        res.json(result)
+      }
+    })
+
 });
 
 // GET activities selection
@@ -54,7 +136,7 @@ router.get('/selection', function (req, res) {
       let result = {
         options: docs
       }
-      res.json(result)      
+      res.json(result)
     }
   })
 });
@@ -67,9 +149,9 @@ router.get('/get/:id', function (req, res) {
   console.log(docToFind)
   collection.aggregate([
     {
-      $match: { "id": docToFind }
+      $match: { "id": Number(docToFind) }
     },
-    
+
     {
       $lookup: {
         from: "companies",
@@ -119,7 +201,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: "ounits",
         localField: "commertialOunitId",
-        foreignField: "oUnitId",
+        foreignField: "id",
         as: "commertialOunit"
       }
     },
@@ -128,7 +210,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: "ounits",
         localField: "businessOunitId",
-        foreignField: "oUnitId",
+        foreignField: "id",
         as: "businessOunit"
       }
     },
@@ -194,10 +276,10 @@ router.get('/get/:id', function (req, res) {
         "activitySubtypeId": 1,
         "activitySubtype": "$activitySubtype.name",
         "businessOunitId": 1,
-        "businessOunit": "$businessOunit.oUnitName",
+        "businessOunit": "$businessOunit.name",
         "opDept": "$businessOunit.dept",
         "commertialOunitId": 1,
-        "commertialOunit": "$commertialOunit.oUnitName",
+        "commertialOunit": "$commertialOunit.name",
         "comDept": "$commertialOunit.dept",
         "expensesPermissionId": 1,
         "expensesPermission": "$expensesPermission.name",
@@ -211,8 +293,8 @@ router.get('/get/:id', function (req, res) {
         "watchHourFactor": 1,
         "nightHolidayHourFactor": 1,
         "watchHolidayHourFactor": 1,
-        "intervectionInWatchHourFactor": 1,
-        "intervectionInHolidayWatchHourFactor": 1,
+        "interventionInWatchHourFactor": 1,
+        "interventionInHolidayWatchHourFactor": 1,
         "extraHourFactor": 1,
         "status": 1,
         "registry": 1,
@@ -221,9 +303,12 @@ router.get('/get/:id', function (req, res) {
     }
   ], {}, function (e, docs) {
     if (e != null) {
-      res.json(e[0])
+      res.json(e)
     } else {
-      res.json(docs[0])
+      let result = {
+        activity: docs[0]
+      }
+      res.json(result)
     }
   })
 });
@@ -259,7 +344,7 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "id": "1",
+      "id": 1,
       "name": "FORMACION \"GPG\"",
       "code": "NF0001",
       "budget": '747.692,00',
@@ -272,9 +357,9 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
@@ -282,13 +367,13 @@ router.get('/reset', function (req, res) {
       "mBFinan": '0,00%',
       "startDate": "2010-01-01",
       "endDate": "2020-12-31",
-      "activityLineId": "11",
-      "activitySubtypeId": "9",
-      "commertialOunitId": "1",
-      "businessOunitId": "1",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 11,
+      "activitySubtypeId": 9,
+      "commertialOunitId": 1,
+      "businessOunitId": 1,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -297,25 +382,25 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -329,8 +414,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "1",
-          "roleId": "1",
+          "employeeId": 1,
+          "roleId": 1,
           "startDate": "2010-04-26",
           "endDate": "2018-12-31",
           "hours": {
@@ -345,8 +430,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "2",
-          "roleId": "1",
+          "employeeId": 2,
+          "roleId": 1,
           "startDate": "2010-04-27",
           "endDate": "2018-12-31",
           "hours": {
@@ -361,8 +446,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "3",
-          "roleId": "1",
+          "employeeId": 3,
+          "roleId": 1,
           "startDate": "2011-01-24",
           "endDate": "2018-12-31",
           "hours": {
@@ -379,7 +464,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "2",
+      "id": 2,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -390,22 +475,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2012-09-06",
-      "activityLineId": "11",
-      "activitySubtypeId": "24",
-      "commertialOunitId": "1",
-      "businessOunitId": "1",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 11,
+      "activitySubtypeId": 24,
+      "commertialOunitId": 1,
+      "businessOunitId": 1,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -414,19 +499,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "name": "AUSENCIA NO JUSTIFICADA",
@@ -434,7 +519,7 @@ router.get('/reset', function (req, res) {
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -450,7 +535,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "3",
+      "id": 3,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -461,22 +546,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2012-09-04",
-      "activityLineId": "11",
-      "activitySubtypeId": "24",
-      "commertialOunitId": "1",
-      "businessOunitId": "1",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "2",
+      "activityLineId": 11,
+      "activitySubtypeId": 24,
+      "commertialOunitId": 1,
+      "businessOunitId": 1,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 2,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -485,19 +570,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "name": "AUSENCIA JUSTIFICADA",
@@ -505,7 +590,7 @@ router.get('/reset', function (req, res) {
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -521,7 +606,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "4",
+      "id": 4,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -532,9 +617,9 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
@@ -542,13 +627,13 @@ router.get('/reset', function (req, res) {
       "mBFinan": '0,00%',
       "startDate": "2006-04-01",
       "endDate": "2008-12-12",
-      "activityLineId": "1",
-      "activitySubtypeId": "25",
-      "commertialOunitId": "2",
-      "businessOunitId": "3",
-      "expensesPermissionId": "3",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 1,
+      "activitySubtypeId": 25,
+      "commertialOunitId": 2,
+      "businessOunitId": 3,
+      "expensesPermissionId": 3,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "status": "CLOSED",
       "registry": "ACTIVE",
@@ -557,27 +642,27 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": "3"
+          "ounitId": 3
         }
       ],
       "name": "POSTVENTA DE DIVERSOS",
       "code": "125001",
       "team": [
         {
-          "employeeId": "4",
-          "roleId": "1",
+          "employeeId": 4,
+          "roleId": 1,
           "startDate": "2008-06-28",
           "endDate": "2008-12-12",
           "hours": {
@@ -588,8 +673,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "5",
-          "roleId": "2",
+          "employeeId": 5,
+          "roleId": 2,
           "startDate": "2008-10-09",
           "hours": {
             "type1": "false",
@@ -599,8 +684,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "6",
-          "roleId": "1",
+          "employeeId": 6,
+          "roleId": 1,
           "startDate": "2008-11-04",
           "endDate": "2008-12-12",
           "hours": {
@@ -611,8 +696,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "2",
-          "roleId": "3",
+          "employeeId": 2,
+          "roleId": 3,
           "startDate": "2008-11-26",
           "endDate": "2008-12-12",
           "hours": {
@@ -625,7 +710,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "5",
+      "id": 5,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -636,22 +721,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2005-11-24",
-      "activityLineId": "1",
-      "activitySubtypeId": "5",
-      "commertialOunitId": "1",
-      "businessOunitId": "1",
-      "expensesPermissionId": "3",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "3",
+      "activityLineId": 1,
+      "activitySubtypeId": 5,
+      "commertialOunitId": 1,
+      "businessOunitId": 1,
+      "expensesPermissionId": 3,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 3,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -660,27 +745,27 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "name": "INTRANET NUEVA",
       "code": "PI0006",
       "team": [
         {
-          "employeeId": "6",
-          "roleId": "1",
+          "employeeId": 6,
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -694,24 +779,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "7",
-          "roleId": "1",
-          "startDate": "2008-06-28",
-          "endDate": "2008-06-28",
-          "hours": {
-            "type1": "false",
-            "type2": "false",
-            "type3": "false",
-            "type4": "false",
-            "type5": "false",
-            "type6": "false",
-            "type7": "false",
-            "type8": "false"
-          }
-        },
-        {
-          "employeeId": "8",
-          "roleId": "1",
+          "employeeId": 7,
+          "roleId": 1,
           "startDate": "2008-06-28",
           "endDate": "2008-06-28",
           "hours": {
@@ -726,8 +795,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "9",
-          "roleId": "1",
+          "employeeId": 8,
+          "roleId": 1,
           "startDate": "2008-06-28",
           "endDate": "2008-06-28",
           "hours": {
@@ -742,8 +811,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "10",
-          "roleId": "1",
+          "employeeId": 9,
+          "roleId": 1,
           "startDate": "2008-06-28",
           "endDate": "2008-06-28",
           "hours": {
@@ -758,8 +827,24 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "11",
-          "roleId": "1",
+          "employeeId": 10,
+          "roleId": 1,
+          "startDate": "2008-06-28",
+          "endDate": "2008-06-28",
+          "hours": {
+            "type1": "false",
+            "type2": "false",
+            "type3": "false",
+            "type4": "false",
+            "type5": "false",
+            "type6": "false",
+            "type7": "false",
+            "type8": "false"
+          }
+        },
+        {
+          "employeeId": 11,
+          "roleId": 1,
           "startDate": "2008-03-03",
           "endDate": "2008-06-28",
           "hours": {
@@ -774,8 +859,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "12",
-          "roleId": "1",
+          "employeeId": 12,
+          "roleId": 1,
           "startDate": "2008-06-28",
           "endDate": "2008-06-28",
           "hours": {
@@ -790,8 +875,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "13",
-          "roleId": "1",
+          "employeeId": 13,
+          "roleId": 1,
           "startDate": "2008-10-08",
           "endDate": "2008-06-28",
           "hours": {
@@ -806,8 +891,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "14",
-          "roleId": "1",
+          "employeeId": 14,
+          "roleId": 1,
           "startDate": "2008-10-15",
           "hours": {
             "type1": "false",
@@ -823,7 +908,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "6",
+      "id": 6,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -834,22 +919,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2010-01-01",
-      "activityLineId": "11",
-      "activitySubtypeId": "12",
-      "commertialOunitId": "4",
-      "businessOunitId": "4",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 11,
+      "activitySubtypeId": 12,
+      "commertialOunitId": 4,
+      "businessOunitId": 4,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -858,19 +943,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "4"
+          "ounitId": 4
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "4"
+          "ounitId": 4
         }
       ],
       "name": "GESTION / ESTRUCTURA",
@@ -878,7 +963,7 @@ router.get('/reset', function (req, res) {
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -892,8 +977,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "15",
-          "roleId": "1",
+          "employeeId": 15,
+          "roleId": 1,
           "startDate": "2010-03-29",
           "endDate": "2008-06-28",
           "hours": {
@@ -908,8 +993,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "16",
-          "roleId": "1",
+          "employeeId": 16,
+          "roleId": 1,
           "startDate": "2011-09-19",
           "endDate": "2008-06-28",
           "hours": {
@@ -924,8 +1009,8 @@ router.get('/reset', function (req, res) {
           }
         },
         {
-          "employeeId": "17",
-          "roleId": "1",
+          "employeeId": 17,
+          "roleId": 1,
           "startDate": "2011-09-19",
           "endDate": "2008-06-28",
           "hours": {
@@ -942,7 +1027,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "7",
+      "id": 7,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -953,22 +1038,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2008-06-28",
-      "activityLineId": "1",
-      "activitySubtypeId": "24",
-      "commertialOunitId": "2",
-      "businessOunitId": "2",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 1,
+      "activitySubtypeId": 24,
+      "commertialOunitId": 2,
+      "businessOunitId": 2,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "DELETED",
       "status": "OPEN",
@@ -977,19 +1062,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "name": "VACACIONES",
@@ -997,7 +1082,7 @@ router.get('/reset', function (req, res) {
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -1013,7 +1098,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "8",
+      "id": 8,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1024,22 +1109,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2008-06-28",
-      "activityLineId": "1",
-      "activitySubtypeId": "12",
-      "commertialOunitId": "2",
-      "businessOunitId": "2",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 1,
+      "activitySubtypeId": 12,
+      "commertialOunitId": 2,
+      "businessOunitId": 2,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -1048,19 +1133,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "name": "REUNIONES INTERNAS",
@@ -1068,7 +1153,7 @@ router.get('/reset', function (req, res) {
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2008-06-28",
           "hours": {
             "type1": "false",
@@ -1084,7 +1169,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "9",
+      "id": 9,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1095,22 +1180,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2008-06-28",
-      "activityLineId": "1",
-      "activitySubtypeId": "24",
-      "commertialOunitId": "2",
-      "businessOunitId": "2",
-      "expensesPermissionId": "1",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 1,
+      "activitySubtypeId": 24,
+      "commertialOunitId": 2,
+      "businessOunitId": 2,
+      "expensesPermissionId": 1,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "CLOSED",
@@ -1119,19 +1204,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": "2"
+          "ounitId": 2
         }
       ],
       "name": "VACACIONES DEL AÑO ANTERIOR",
@@ -1139,7 +1224,7 @@ router.get('/reset', function (req, res) {
       "team": [
         {
           "groupId": "EMPLEADOS",
-          "roleId": "1",
+          "roleId": 1,
           "startDate": "2009-03-13",
           "hours": {
             "type1": "false",
@@ -1155,7 +1240,7 @@ router.get('/reset', function (req, res) {
       ]
     },
     {
-      "id": "10",
+      "id": 10,
       "budget": '747.692,00',
       "efectiveHours": '1.120,00',
       "expenses": '0,00',
@@ -1166,22 +1251,22 @@ router.get('/reset', function (req, res) {
       "currentWork": '13.820,98',
       "pending": '713.366,14',
       "cumulativeDatayear": '2018',
-      "invoiceCompanyId": '1',
-      "anCompanyId": '1',
-      "clientId": '1',
+      "invoiceCompanyId": 1,
+      "anCompanyId": 1,
+      "clientId": 1,
       "plannedHours": '0,00',
       "finanCost": '0,00',
       "plannedCost": '0,00',
       "mBSale": '2.455,00',
       "mBFinan": '0,00%',
       "startDate": "2006-05-01",
-      "activityLineId": "1",
-      "activitySubtypeId": "25",
-      "commertialOunitId": "1",
-      "businessOunitId": "1",
-      "expensesPermissionId": "3",
-      "invoicingTypeId": "2",
-      "incomeTypeId": "1",
+      "activityLineId": 1,
+      "activitySubtypeId": 25,
+      "commertialOunitId": 1,
+      "businessOunitId": 1,
+      "expensesPermissionId": 3,
+      "invoicingTypeId": 2,
+      "incomeTypeId": 1,
       "doubleBooking": "false",
       "registry": "ACTIVE",
       "status": "OPEN",
@@ -1190,19 +1275,19 @@ router.get('/reset', function (req, res) {
       "watchHourFactor": "1",
       "nightHolidayHourFactor": "1",
       "watchHolidayHourFactor": "1",
-      "intervectionInWatchHourFactor": "1",
-      "intervectionInHolidayWatchHourFactor": "1",
+      "interventionInWatchHourFactor": "1",
+      "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
       "historicalCommertialOunits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "historicalBusinessOunits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": "1"
+          "ounitId": 1
         }
       ],
       "name": "IMPLANTACIÓN ISO 9000",

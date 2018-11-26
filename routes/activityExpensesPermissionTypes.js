@@ -27,7 +27,10 @@ router.get('/selection', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
@@ -40,11 +43,11 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       "name": "NO PERMITIDO",
-      "activityExpensesPermissionTypeId": "1"
+      "activityExpensesPermissionTypeId": 1
     },
     {
       "name": "SÓLO AL EQUIPO",
-      "activityExpensesPermissionTypeId": "3"
+      "activityExpensesPermissionTypeId": 3
     }
   ], function (err, result) {
     res.send(

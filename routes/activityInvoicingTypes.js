@@ -27,7 +27,10 @@ router.get('/selection', function (req, res) {
     if (e != null) {
       res.json(e)
     } else {
-      res.json(docs)
+      let result = {
+        options: docs
+      }
+      res.json(result)      
     }
   })
 });
@@ -41,11 +44,11 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       "name": "TARIFA",
-      "activityInvoicingTypeId": "1"
+      "activityInvoicingTypeId": 1
     },
     {
       "name": "PROYECTO CERRADO",
-      "activityInvoicingTypeId": "2"
+      "activityInvoicingTypeId": 2
     }
   ], function (err, result) {
     res.send(

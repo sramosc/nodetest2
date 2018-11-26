@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // GET employees list
-router.get('/list', function (req, res) {
+/*router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   collection.aggregate([
@@ -19,7 +19,43 @@ router.get('/list', function (req, res) {
       res.json(docs)
     }
   })
-});
+});*/
+router.get('/list', function (req, res) {
+  let docs  = [
+    {
+      id: 1,
+      name: 'empleado1',
+      mail: 'empleado1@mail.com',
+      ounit: {
+        id: 1,
+        name: 'ounit1'
+      }
+    },
+    {
+      id: 2,
+      name: 'empleado2',
+      mail: 'empleado2@mail.com',
+      ounit: {
+        id: 2,
+        name: 'ounit2'
+      }
+    },
+    {
+      id: 3,
+      name: 'empleado3',
+      mail: 'empleado3@mail.com',
+      ounit: {
+        id: 3,
+        name: 'ounit3'
+      }
+    }]
+    let result = {
+      employees: docs,
+      totalRecords: "3"
+    }
+    res.json(result)
+    
+})
 
 // GET employees para combo modal
 router.get('/selection', function (req, res) {
