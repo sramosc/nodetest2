@@ -31,6 +31,7 @@ router.get('/list', function (req, res) {
   ]
     let result = {
       tasks: docs,
+      totalRecords: 6
     }
     res.json(result)
 });

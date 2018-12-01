@@ -6,7 +6,11 @@ router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('employeeGroups');
   collection.find({}, '-_id', function (e, docs) {
-    res.json(docs);
+    let result = {
+      groups: docs,
+      totalRecords: 12
+    }
+    res.json(result);
   });
 });
 
@@ -19,7 +23,7 @@ router.get('/selection', function (req, res) {
     {
       $project: {
         "_id": 0,
-        "id": "$employeeGroupId",
+        "id": "$id",
         "name": 1
       }
     }
@@ -30,7 +34,7 @@ router.get('/selection', function (req, res) {
       let result = {
         options: docs
       }
-      res.json(result)      
+      res.json(result)
     }
   })
 });
@@ -42,94 +46,94 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "employeeGroupId" : "1",
-      "name" : "EMPLEADOS",
+      "id": 1,
+      "name": "EMPLEADOS",
       "description": "GRUPO GENERICO DE EMPLEADOS"
     },
     {
-      "employeeGroupId" : "2",
-      "name" : "DIRECTORES_RRHH",
+      "id": 2,
+      "name": "DIRECTORES_RRHH",
       "description": "DIRECTORES DE RECURSOS HUMANOS"
     },
     {
-      "employeeGroupId" : "3",
-      "name" : "TECNICOS_RRHH",
+      "id": 3,
+      "name": "TECNICOS_RRHH",
       "description": "TECNICOS DE RECURSOS HUMANOS"
     },
     {
-      "employeeGroupId" : "4",
-      "name" : "PREVENTAS",
+      "id": 4,
+      "name": "PREVENTAS",
       "description": "GRUPO GENERICO DE PREVENTAS"
     },
     {
-      "employeeGroupId" : "5",
-      "name" : "JEFES_PROYECTO",
+      "id": 5,
+      "name": "JEFES_PROYECTO",
       "description": "GRUPO GENERICO DE JEFES DE PROYECTO"
     },
     {
-      "employeeGroupId" : "6",
-      "name" : "FINANCIERO",
+      "id": 6,
+      "name": "FINANCIERO",
       "description": "GRUPO GENERICO DE FINANCIERO"
     },
     {
-      "employeeGroupId" : "7",
-      "name" : "ADMINISTRADORES",
+      "id": 7,
+      "name": "ADMINISTRADORES",
       "description": "GRUPO GENERICO DE ADMINISTRADORES"
     },
     {
-      "employeeGroupId" : "8",
-      "name" : "DIRECTORES",
+      "id": 8,
+      "name": "DIRECTORES",
       "description": "GRUPO GENERICO DE DIRECTORES"
     },
     {
-      "employeeGroupId" : "9",
-      "name" : "GERENTES",
+      "id": 9,
+      "name": "GERENTES",
       "description": "GRUPO GENERICO DE GERENTES"
     },
     {
-      "employeeGroupId" : "10",
-      "name" : "DIRECTORES_GENERALES",
+      "id": 10,
+      "name": "DIRECTORES_GENERALES",
       "description": "GRUPO GENERICO DE DIRECTORES GENERALES"
     },
     {
-      "employeeGroupId" : "11",
-      "name" : "DIRECTORES_NEGOCIO",
+      "id": 11,
+      "name": "DIRECTORES_NEGOCIO",
       "description": "GRUPO GENERICO DE DIRECTORES DE NEGOCIO"
     },
     {
-      "employeeGroupId" : "12",
-      "name" : "SECRETARIAS",
+      "id": 12,
+      "name": "SECRETARIAS",
       "description": "GRUPO GENERICO DE SECRETARIAS"
     },
     {
-      "employeeGroupId" : "13",
-      "name" : "TECNICOS_SISTEMAS",
+      "id": 13,
+      "name": "TECNICOS_SISTEMAS",
       "description": "GRUPO GENERICO DE TECNICOS DE SISTEMAS"
     },
     {
-      "employeeGroupId" : "14",
-      "name" : "GERENTES_SISTEMAS",
+      "id": 14,
+      "name": "GERENTES_SISTEMAS",
       "description": "GRUPO GENERICO DE GERENTES DE SISTEMAS"
     },
     {
-      "employeeGroupId" : "15",
-      "name" : "JEFES_EQUIPO",
+      "id": 15,
+      "name": "JEFES_EQUIPO",
       "description": "GRUPO GENERICO DE JEFES DE EQUIPO"
     },
     {
-      "employeeGroupId" : "16",
-      "name" : "CONSEJEROS",
+      "id": 16,
+      "name": "CONSEJEROS",
       "description": "GRUPO GENERICO DE CONSEJEROS"
     },
 
     {
-      "employeeGroupId" : "17",
-      "name" : "CONSEJERO_DELEGADO",
+      "id": 17,
+      "name": "CONSEJERO_DELEGADO",
       "description": "CONSEJERO DELEGADO"
     },
     {
-      "employeeGroupId" : "18",
-      "name" : "FINANCIERO_ALTAS",
+      "id": 18,
+      "name": "FINANCIERO_ALTAS",
       "description": "FINANCIERO ALTAS"
     }
   ], function (err, result) {
