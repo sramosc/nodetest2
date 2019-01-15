@@ -14,8 +14,8 @@ var db = monk('mongodb://localhost:27017/entelgyservices');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var employeesRoutes = require('./routes/employees');
-var oUnitsRoutes = require('./routes/ounits');
-var oUnitsTypesRoutes = require('./routes/ounitsTypes');
+var orgsUnitsRoutes = require('./routes/orgsUnits');
+var orgsUnitsTypesRoutes = require('./routes/orgsUnitsTypes');
 var calendarsRoutes = require('./routes/calendars');
 var calendarTypesRoutes = require('./routes/calendarTypes');
 var calendarYearsRoutes = require('./routes/calendarYears');
@@ -34,7 +34,11 @@ var clientsRoutes = require('./routes/clients');
 var companiesRoutes = require('./routes/companies');
 var tasksRoutes = require('./routes/tasks');
 var employeeGroupsRoutes = require('./routes/employeeGroups');
+var salariesRoutes = require('./routes/salaries');
+var notificationsRoutes = require('./routes/notifications');
+var notificationTypesRoutes = require('./routes/notificationTypes');
 var erroresRoutes = require('./routes/errores')
+var permissionsRoutes = require('./routes/permissions')
 
 
 var app = express();
@@ -59,8 +63,8 @@ app.use(function (req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/employees', employeesRoutes);
-app.use('/ounits', oUnitsRoutes);
-app.use('/ounitsTypes', oUnitsTypesRoutes);
+app.use('/orgsUnits', orgsUnitsRoutes);
+app.use('/orgsUnitsTypes', orgsUnitsTypesRoutes);
 app.use('/calendars', calendarsRoutes);
 app.use('/calendarsTypes', calendarTypesRoutes);
 app.use('/years', calendarYearsRoutes);
@@ -79,6 +83,10 @@ app.use('/clients', clientsRoutes);
 app.use('/companies', companiesRoutes);
 app.use('/tasks', tasksRoutes);
 app.use('/employeeGroups', employeeGroupsRoutes);
+app.use('/salaries', salariesRoutes);
+app.use('/notifications', notificationsRoutes);
+app.use('/notificationTypes', notificationTypesRoutes);
+app.use('/permissions', permissionsRoutes);
 app.use('/errores', erroresRoutes);
 
 

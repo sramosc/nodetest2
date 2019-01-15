@@ -14,9 +14,9 @@ router.get('/list', function (req, res) {
   collection.aggregate([
     /*{
       $addFields: {
-        ounits: {
+        orgsUnits: {
           $reduce: {
-            input: { $setUnion: ["$days.ounits"] },
+            input: { $setUnion: ["$days.orgsUnits"] },
             initialValue: [],
             in: { $concatArrays: ["$$value", "$$this"] }
           }
@@ -55,7 +55,7 @@ router.get('/list', function (req, res) {
             }
           }
         },
-        //"ounits": 1,
+        //"orgsUnits": 1,
         //"activities": 1
       }
     },
@@ -116,13 +116,13 @@ router.get('/get/:id', function (req, res) {
     { $unwind: "$manager" },
     {
       $lookup: {
-        from: "ounits",
-        localField: "oUnitId",
+        from: "orgsUnits",
+        localField: "orgUnitId",
         foreignField: "id",
-        as: "ounit"
+        as: "orgUnit"
       }
     },
-    { $unwind: "$ounit" },
+    { $unwind: "$orgUnit" },
     {
       $project: {
         _id: 0,
@@ -132,8 +132,8 @@ router.get('/get/:id', function (req, res) {
         "employee.name": "$employee.name",
         "manager.id": "$manager.id",
         "manager.name": "$manager.name",
-        "ounit.id": "$ounit.id",
-        "ounit.name": "$ounit.name",
+        "orgUnit.id": "$orgUnit.id",
+        "orgUnit.name": "$orgUnit.name",
         "totalDays": 1,
         "approvedDays": 1,
         "consumedDays": 1,
@@ -176,7 +176,7 @@ router.get('/reset', function (req, res) {
       "year": "2019",
       "employeeId": "1",
       "managerId": "30",
-      "oUnitId": "2",
+      "orgUnitId": "2",
       "totalDays": "22",
       "approvedDays": "1",
       "consumedDays": "0",

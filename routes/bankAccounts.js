@@ -125,13 +125,15 @@ router.get('/get/:id', function (req, res) {
         as: "enterprise"
       }
     },
+    { $unwind: "$enterprise" },
     {
       $project: {
         "_id": 0,
         "id": 1,
         "name": 1,
         "number": 1,
-        "enterprise.id": "$enterpriseId",
+        "enterprise.id": "$enterprise.enterpriseId",
+        "enterprise.name":"$enterprise.enterpriseName",
         "ledgerAccount": 1
       }
     },

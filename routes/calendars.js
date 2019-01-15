@@ -210,9 +210,13 @@ router.get('/get/:id', function (req, res) {
         "_id": 0,
         "id": 1,
         "name": 1,
-        "type.id": 1,
+        //"type.id": 1,
+        "type.id": "$type.id",
+        "type.name":"$type.name",
+        "year.id": "$year.id",
+        "year.name":"$year.name",
       //  "type.name": 1,
-        "year.id": 1,
+        //"year.id": 1,
       //  "year.name": 1,
         "dates": 1
       }

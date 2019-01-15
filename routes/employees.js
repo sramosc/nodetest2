@@ -6,18 +6,20 @@ router.get('/list', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   let totalRecords = 0
+  let employeesPipeline = []
+  let countPipeline = []
 
   let pipeline = [{
     $lookup: {
-      from: "ounits",
-      localField: "oUnitId",
+      from: "orgsUnits",
+      localField: "orgUnitId",
       foreignField: "id",
-      as: "ounit"
+      as: "orgUnit"
     }
   },
   {
     $unwind: {
-      path: "$ounit",
+      path: "$orgUnit",
       "preserveNullAndEmptyArrays": true
     }
   },
@@ -26,9 +28,9 @@ router.get('/list', function (req, res) {
       "_id": 0,
       "id": 1,
       "name": 1,
-      "ounit.id": 1,
-      "ounit.name": 1,
-      "mail": 1
+      "orgUnit.id": 1,
+      "orgUnit.name": 1,
+      "email": 1
     }
   }]
 
@@ -50,19 +52,16 @@ router.get('/list', function (req, res) {
     }
     if ('assigned' in req.query) {
       if (Number(req.query.assigned) === 1) {
-        if ('oUnitId' in req.query) {
-          matchStage['ounit.id'] = Number(req.query.oUnitId)
+        if ('orgUnitId' in req.query) {
+          matchStage['orgUnit.id'] = Number(req.query.orgUnitId)
           matchExists = true
         }
       }
       else {
-        matchStage['ounit.id'] = {$exists: false}
+        matchStage['orgUnit.id'] = { $exists: false }
         matchExists = true
       }
     }
-    collection.find(matchStage, '-_id', function (e, docs) {
-      totalRecords = docs.length
-    })
 
     // sort stage
     if ('pageSort' in req.query) {
@@ -78,26 +77,132 @@ router.get('/list', function (req, res) {
         sortStage[field] = 1
       }
     }
-    pipeline.push({ $match: matchStage })
+    if (matchExists) {
+      pipeline.push({ $match: matchStage })
+    }
+
     pipeline.push({ $sort: sortStage })
+
 
     // skip and limit stage
     if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
-
-      pipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
-      pipeline.push({ $limit: parseInt(req.query.pageSize) })
+      employeesPipeline = pipeline.slice()
+      employeesPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      employeesPipeline.push({ $limit: parseInt(req.query.pageSize) })
     }
   }
 
-  console.log(pipeline)
-  collection.aggregate(pipeline
+  countPipeline = pipeline.slice()
+  countPipeline.push({ $count: 'count' })
+
+  let pipeline2 = [
+    {
+      $facet: {
+        employees: employeesPipeline,
+        totalRecords: countPipeline
+      }
+    }
+  ]
+
+  console.log(pipeline2)
+  collection.aggregate(pipeline2
     , {}, function (e, docs) {
       if (e != null) {
         res.json(e)
       } else {
         let result = {
-          employees: docs,
-          totalRecords: totalRecords
+          employees: docs[0].employees,
+          totalRecords: docs[0].totalRecords[0].count
+        }
+        res.json(result)
+      }
+    })
+});
+
+// GET employees selection v.2
+router.get('/selection', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employees');
+  let totalRecords = 0
+  let employeesPipeline = []
+  let countPipeline = []
+
+  let pipeline = [
+  {
+    $project: {
+      "_id": 0,
+      "id": 1,
+      "name": 1,
+    }
+  }]
+
+  if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
+    console.log("sin query params")
+  } else {
+
+    let matchStage = {}
+    let sortStage = {}
+    let matchExists = false
+
+    // match stage
+    if ('find' in req.query) {
+      matchStage.name = {
+        $regex: req.query.find,
+        $options: 'i'
+      }
+      matchExists = true
+    }
+
+    // sort stage
+    if ('pageSort' in req.query) {
+      let field = req.query.pageSort
+      let orderAsc = true
+      if (req.query.pageSort.indexOf('-')) {
+        orderAsc = false
+      }
+      field = field.replace('-', '')
+      if (orderAsc) {
+        sortStage[field] = -1
+      } else {
+        sortStage[field] = 1
+      }
+    }
+    if (matchExists) {
+      pipeline.push({ $match: matchStage })
+    }
+
+    pipeline.push({ $sort: sortStage })
+
+
+    // skip and limit stage
+    if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
+      employeesPipeline = pipeline.slice()
+      employeesPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      employeesPipeline.push({ $limit: parseInt(req.query.pageSize) })
+    }
+  }
+
+  countPipeline = pipeline.slice()
+  countPipeline.push({ $count: 'count' })
+
+  let pipeline2 = [
+    {
+      $facet: {
+        employees: employeesPipeline,
+        totalRecords: countPipeline
+      }
+    }
+  ]
+
+  console.log(pipeline2)
+  collection.aggregate(pipeline2
+    , {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let result = {
+          options: docs[0].employees,
+          totalRecords: docs[0].totalRecords[0].count
         }
         res.json(result)
       }
@@ -105,7 +210,7 @@ router.get('/list', function (req, res) {
 });
 
 // GET employees para combo modal
-router.get('/selection', function (req, res) {
+router.get('/selectionv1', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
 
@@ -170,13 +275,13 @@ router.put('/update/:id', function (req, res) {
   });
 });
 
-// PATCH updateEmployee/:id/oUnitId/:oUnitId
-router.patch('/update/:id/oUnitId/:oUnitId', function (req, res) {
+// PATCH updateEmployee/:id/orgUnitId/:orgUnitId
+router.patch('/update/:id/orgUnitId/:orgUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('employees');
   var userToUpdate = req.params.id;
-  var newoUnitId = req.params.oUnitId;
-  collection.findOneAndUpdate({ 'id': userToUpdate }, { $set: { "oUnitId": newoUnitId } }, function (err) {
+  var neworgUnitId = req.params.orgUnitId;
+  collection.findOneAndUpdate({ 'id': userToUpdate }, { $set: { "orgUnitId": neworgUnitId } }, function (err) {
     res.send((err === null) ? { msg: '' } : { msg: 'error: ' + err });
   });
 });
@@ -191,194 +296,194 @@ router.get('/reset', function (req, res) {
     {
       "id": 1,
       "name": "Jose Carlos Fernandez",
-      "mail": "jcf@entelgy.com",
-      "oUnitId": 2
+      "email": "jcf@entelgy.com",
+      "orgUnitId": 2
     },
     {
       "id": 2,
       "name": "Manuel Pérez Vena",
-      "mail": "mpv@entelgy.com",
-      "oUnitId": 2
+      "email": "mpv@entelgy.com",
+      "orgUnitId": 2
     },
     {
       "id": 3,
       "name": "Maria Jesús Corrillo",
-      "mail": "mjc@entelgy.com",
-      "oUnitId": 1
+      "email": "mjc@entelgy.com",
+      "orgUnitId": 1
     },
     {
       "id": 4,
       "name": "Almudena Duero",
-      "mail": "ad@entelgy.com",
-      "oUnitId": 1
+      "email": "ad@entelgy.com",
+      "orgUnitId": 1
     },
     {
       "id": 5,
       "name": "Rafael Montañez",
-      "mail": "rm@entelgy.com",
-      "oUnitId": 1
+      "email": "rm@entelgy.com",
+      "orgUnitId": 1
     },
     {
       "id": 6,
       "name": "Sergio Ramirez",
-      "mail": "sr@entelgy.com",
-      "oUnitId": 5
+      "email": "sr@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 7,
       "name": "Alfonso Sanchez",
-      "mail": "as@entelgy.com",
-      "oUnitId": 5
+      "email": "as@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 8,
       "name": "Yolanda Soltero",
-      "mail": "ys@entelgy.com",
-      "oUnitId": 3
+      "email": "ys@entelgy.com",
+      "orgUnitId": 3
     },
     {
       "id": 9,
       "name": "Alvaro Noviciado",
-      "mail": "an@entelgy.com",
-      "oUnitId": 7
+      "email": "an@entelgy.com",
+      "orgUnitId": 7
     },
     {
       "id": 10,
       "name": "Trinidad Pueblo",
-      "mail": "tp@entelgy.com",
-      "oUnitId": 7
+      "email": "tp@entelgy.com",
+      "orgUnitId": 7
     },
     {
       "id": 11,
       "name": "Ivan de la Sierra",
-      "mail": "idls@entelgy.com",
-      "oUnitId": -1
+      "email": "idls@entelgy.com",
+      "orgUnitId": -1
     },
     {
       "id": 12,
       "name": "Antonio Alfarero",
-      "mail": "aa@entelgy.com",
-      "oUnitId": 6
+      "email": "aa@entelgy.com",
+      "orgUnitId": 6
     },
     {
       "id": 13,
       "name": "Fernando Duque",
-      "mail": "fd@entelgy.com",
-      "oUnitId": -1
+      "email": "fd@entelgy.com",
+      "orgUnitId": -1
     },
     {
       "id": 14,
       "name": "Luis Pared",
-      "mail": "lp@entelgy.com",
-      "oUnitId": -1
+      "email": "lp@entelgy.com",
+      "orgUnitId": -1
     },
     {
       "id": 15,
       "name": "Maria de los Ángeles Frasco",
-      "mail": "maf@entelgy.com",
-      "oUnitId": 3
+      "email": "maf@entelgy.com",
+      "orgUnitId": 3
     },
     {
       "id": 16,
       "name": "Rosa Cinesal",
-      "mail": "rs@entelgy.com",
-      "oUnitId": 3
+      "email": "rs@entelgy.com",
+      "orgUnitId": 3
     },
     {
       "id": 17,
       "name": "Javier Orilla",
-      "mail": "jo@entelgy.com",
-      "oUnitId": 7
+      "email": "jo@entelgy.com",
+      "orgUnitId": 7
     },
     {
       "id": 18,
       "name": "Manuel Fajardo",
-      "mail": "mf@entelgy.com",
-      "oUnitId": 7
+      "email": "mf@entelgy.com",
+      "orgUnitId": 7
     },
     {
       "id": 19,
       "name": "Nieves Pichu",
-      "mail": "np@entelgy.com",
-      "oUnitId": 6
+      "email": "np@entelgy.com",
+      "orgUnitId": 6
     },
     {
       "id": 20,
       "name": "Marcos Balseros",
-      "mail": "mb@entelgy.com",
-      "oUnitId": 6
+      "email": "mb@entelgy.com",
+      "orgUnitId": 6
     },
     {
       "id": 21,
       "name": "Alejandro Hades",
-      "mail": "ah@entelgy.com",
-      "oUnitId": 2
+      "email": "ah@entelgy.com",
+      "orgUnitId": 2
     },
     {
       "id": 22,
       "name": "Carlos Pego",
-      "mail": "cp@entelgy.com",
-      "oUnitId": 2
+      "email": "cp@entelgy.com",
+      "orgUnitId": 2
     },
     {
       "id": 23,
       "name": "Ana Ferrero",
-      "mail": "af@entelgy.com",
-      "oUnitId": 1
+      "email": "af@entelgy.com",
+      "orgUnitId": 1
     },
     {
       "id": 24,
       "name": "Oscar Montoro",
-      "mail": "om@entelgy.com",
-      "oUnitId": 1
+      "email": "om@entelgy.com",
+      "orgUnitId": 1
     },
     {
       "id": 25,
       "name": "Ernesto Diaz Isai",
-      "mail": "edi@entelgy.com",
-      "oUnitId": 1
+      "email": "edi@entelgy.com",
+      "orgUnitId": 1
     },
     {
       "id": 26,
       "name": "Oscar Cristobal",
-      "mail": "oc@entelgy.com",
-      "oUnitId": 5
+      "email": "oc@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 27,
       "name": "Alberto Farra",
-      "mail": "af@entelgy.com",
-      "oUnitId": 5
+      "email": "af@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 28,
       "name": "Daniel Guerrero",
-      "mail": "dg@entelgy.com",
-      "oUnitId": 5
+      "email": "dg@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 29,
       "name": "Ruben Olmos",
-      "mail": "ro@entelgy.com",
-      "oUnitId": 5
+      "email": "ro@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 30,
       "name": "Daniel Quesadilla",
-      "mail": "dq@entelgy.com",
-      "oUnitId": 5
+      "email": "dq@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 31,
       "name": "Javier Carmena",
-      "mail": "jc@entelgy.com",
-      "oUnitId": 5
+      "email": "jc@entelgy.com",
+      "orgUnitId": 5
     },
     {
       "id": 32,
       "name": "Raul Valorallanos",
-      "mail": "rv@entelgy.com",
-      "oUnitId": 6
+      "email": "rv@entelgy.com",
+      "orgUnitId": 6
     }
   ], function (err, result) {
     res.send(

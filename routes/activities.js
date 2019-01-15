@@ -21,13 +21,6 @@ router.get('/list', function (req, res) {
     let sortStage = {}
     let matchExists = false
 
-    /*name: this.state.nameFilter,
-    oUnitId: this.state.oUnitFilter,
-    clientId: this.state.clientFilter,
-    activitySubTypeId: this.state.activitySubtypeFilter,
-    status: this.state.statusFilter,
-    registry: this.state.registryFilter,*/
-
     // match stage
     if ('name' in req.query) {
       matchStage.name = {
@@ -36,8 +29,8 @@ router.get('/list', function (req, res) {
       }
       matchExists = true
     }
-    if ('oUnitId' in req.query) {
-      matchStage['businessOunitId'] = req.query.oUnitId
+    if ('orgUnitId' in req.query) {
+      matchStage['businessOrgUnitId'] = req.query.orgUnitId
       matchExists = true
     }
 
@@ -199,22 +192,22 @@ router.get('/get/:id', function (req, res) {
     { $unwind: "$activitySubtype" },
     {
       $lookup: {
-        from: "ounits",
-        localField: "commertialOunitId",
+        from: "orgsUnits",
+        localField: "commertialOrgUnitId",
         foreignField: "id",
-        as: "commertialOunit"
+        as: "commertialOrgUnit"
       }
     },
-    { $unwind: "$commertialOunit" },
+    { $unwind: "$commertialOrgUnit" },
     {
       $lookup: {
-        from: "ounits",
-        localField: "businessOunitId",
+        from: "orgsUnits",
+        localField: "businessOrgUnitId",
         foreignField: "id",
-        as: "businessOunit"
+        as: "businessOrgUnit"
       }
     },
-    { $unwind: "$businessOunit" },
+    { $unwind: "$businessOrgUnit" },
     {
       $lookup: {
         from: "activityExpensesPermissionTypes",
@@ -265,28 +258,40 @@ router.get('/get/:id', function (req, res) {
         "mBFinan": 1,
         "startDate": 1,
         "endDate": 1,
-        "activityLineId": 1,
-        "activityLine": "$activityLine.name",
-        "invoiceCompanyId": 1,
-        "invoiceCompany": "$invoiceCompany.companyName",
-        "anCompanyId": 1,
-        "anCompany": "$anCompany.companyName",
-        "clientId": 1,
-        "client": "$client.clientName",
-        "activitySubtypeId": 1,
-        "activitySubtype": "$activitySubtype.name",
-        "businessOunitId": 1,
-        "businessOunit": "$businessOunit.name",
-        "opDept": "$businessOunit.dept",
-        "commertialOunitId": 1,
-        "commertialOunit": "$commertialOunit.name",
-        "comDept": "$commertialOunit.dept",
-        "expensesPermissionId": 1,
-        "expensesPermission": "$expensesPermission.name",
-        "invoicingTypeId": 1,
-        "invoicingType": "$invoicingType.name",
-        "incomeTypeId": 1,
-        "incomeType": "$incomeType.name",
+        "activityLine.id":"$activityLine.activityLineId",
+        "activityLine.name":"$activityLine.name",
+        
+        "invoiceCompany.id": "$invoiceCompany.companyId",
+        "invoiceCompany.name": "$invoiceCompany.companyName",
+
+        "anCompany.id": "$anCompany.companyId",        
+        "anCompany.name": "$anCompany.companyName",        
+                        
+        "client.id": "$client.clientId",
+        "client.name": "$client.clientName",
+        
+        "activitySubtype.id": "$activitySubtype.activitySubtypeId",
+        "activitySubtype.name": "$activitySubtype.name",
+        
+        "businessOrgUnit.id": "$businessOrgUnit.id",
+        "businessOrgUnit.name": "$businessOrgUnit.name",
+        "opDept": "$businessOrgUnit.erpId",
+        
+        "commertialOrgUnit.id": "$commertialOrgUnit.id",
+        "commertialOrgUnit.name": "$commertialOrgUnit.name",
+        "comDept": "$commertialOrgUnit.erpId",
+        
+        "expensesPermission.id": "$expensesPermission.activityExpensesPermissionTypeId",
+        "expensesPermission.name": "$expensesPermission.name",
+
+        
+        "invoicingType.id": "$invoicingType.activityInvoicingTypeId",
+        "invoicingType.name": "$invoicingType.name",
+
+        
+        "incomeType.id": "$incomeType.activityIncomeTypeId",
+        "incomeType.name": "$incomeType.name",
+
         "doubleBooking": 1,
         "nightHourFactor": 1,
         "holidayHourFactor": 1,
@@ -300,7 +305,7 @@ router.get('/get/:id', function (req, res) {
         "registry": 1,
         "team": 1
       }
-    }
+    } 
   ], {}, function (e, docs) {
     if (e != null) {
       res.json(e)
@@ -324,13 +329,13 @@ router.get('/listEmployeesInActivity/:id', function (req, res) {
   });
 });
 
-// List employees by ounits
+// List employees by orgsUnits
 // devuelve el listado de los empleados que hayan estado vinculados a una unidad organizativa determinada y hayan realizado actividades en ella
-router.get('/listEmployeesInOUnit/:oUnitId', function (req, res) {
+router.get('/listEmployeesInOrgUnit/:orgUnitId', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
-  var docToFind = req.params.oUnitId;
-  collection.find({ 'ounit': docToFind }, { 'team.employeeId': 1 }, function (e, docs) {
+  var docToFind = req.params.orgUnitId;
+  collection.find({ 'orgUnit': docToFind }, { 'team.employeeId': 1 }, function (e, docs) {
     res.json(docs);
   });
 });
@@ -369,8 +374,8 @@ router.get('/reset', function (req, res) {
       "endDate": "2020-12-31",
       "activityLineId": 11,
       "activitySubtypeId": 9,
-      "commertialOunitId": 1,
-      "businessOunitId": 1,
+      "commertialOrgUnitId": 1,
+      "businessOrgUnitId": 1,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -385,16 +390,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
       "team": [
@@ -486,8 +491,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2012-09-06",
       "activityLineId": 11,
       "activitySubtypeId": 24,
-      "commertialOunitId": 1,
-      "businessOunitId": 1,
+      "commertialOrgUnitId": 1,
+      "businessOrgUnitId": 1,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -502,16 +507,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
       "name": "AUSENCIA NO JUSTIFICADA",
@@ -557,8 +562,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2012-09-04",
       "activityLineId": 11,
       "activitySubtypeId": 24,
-      "commertialOunitId": 1,
-      "businessOunitId": 1,
+      "commertialOrgUnitId": 1,
+      "businessOrgUnitId": 1,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 2,
@@ -573,16 +578,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
       "name": "AUSENCIA JUSTIFICADA",
@@ -629,8 +634,8 @@ router.get('/reset', function (req, res) {
       "endDate": "2008-12-12",
       "activityLineId": 1,
       "activitySubtypeId": 25,
-      "commertialOunitId": 2,
-      "businessOunitId": 3,
+      "commertialOrgUnitId": 2,
+      "businessOrgUnitId": 3,
       "expensesPermissionId": 3,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -645,16 +650,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": 3
+          "orgUnitId": 3
         }
       ],
       "name": "POSTVENTA DE DIVERSOS",
@@ -732,8 +737,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2005-11-24",
       "activityLineId": 1,
       "activitySubtypeId": 5,
-      "commertialOunitId": 1,
-      "businessOunitId": 1,
+      "commertialOrgUnitId": 1,
+      "businessOrgUnitId": 1,
       "expensesPermissionId": 3,
       "invoicingTypeId": 2,
       "incomeTypeId": 3,
@@ -748,16 +753,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
       "name": "INTRANET NUEVA",
@@ -930,8 +935,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2010-01-01",
       "activityLineId": 11,
       "activitySubtypeId": 12,
-      "commertialOunitId": 4,
-      "businessOunitId": 4,
+      "commertialOrgUnitId": 4,
+      "businessOrgUnitId": 4,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -946,16 +951,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 4
+          "orgUnitId": 4
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 4
+          "orgUnitId": 4
         }
       ],
       "name": "GESTION / ESTRUCTURA",
@@ -1049,8 +1054,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2008-06-28",
       "activityLineId": 1,
       "activitySubtypeId": 24,
-      "commertialOunitId": 2,
-      "businessOunitId": 2,
+      "commertialOrgUnitId": 2,
+      "businessOrgUnitId": 2,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -1065,16 +1070,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
       "name": "VACACIONES",
@@ -1120,8 +1125,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2008-06-28",
       "activityLineId": 1,
       "activitySubtypeId": 12,
-      "commertialOunitId": 2,
-      "businessOunitId": 2,
+      "commertialOrgUnitId": 2,
+      "businessOrgUnitId": 2,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -1136,16 +1141,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
       "name": "REUNIONES INTERNAS",
@@ -1191,8 +1196,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2008-06-28",
       "activityLineId": 1,
       "activitySubtypeId": 24,
-      "commertialOunitId": 2,
-      "businessOunitId": 2,
+      "commertialOrgUnitId": 2,
+      "businessOrgUnitId": 2,
       "expensesPermissionId": 1,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -1207,16 +1212,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-05-28",
-          "ounitId": 2
+          "orgUnitId": 2
         }
       ],
       "name": "VACACIONES DEL AÑO ANTERIOR",
@@ -1262,8 +1267,8 @@ router.get('/reset', function (req, res) {
       "startDate": "2006-05-01",
       "activityLineId": 1,
       "activitySubtypeId": 25,
-      "commertialOunitId": 1,
-      "businessOunitId": 1,
+      "commertialOrgUnitId": 1,
+      "businessOrgUnitId": 1,
       "expensesPermissionId": 3,
       "invoicingTypeId": 2,
       "incomeTypeId": 1,
@@ -1278,16 +1283,16 @@ router.get('/reset', function (req, res) {
       "interventionInWatchHourFactor": "1",
       "interventionInHolidayWatchHourFactor": "1",
       "extraHourFactor": "1",
-      "historicalCommertialOunits": [
+      "historicalCommertialorgsUnits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
-      "historicalBusinessOunits": [
+      "historicalBusinessorgsUnits": [
         {
           "startDate": "2008-06-28",
-          "ounitId": 1
+          "orgUnitId": 1
         }
       ],
       "name": "IMPLANTACIÓN ISO 9000",

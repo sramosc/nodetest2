@@ -4,7 +4,7 @@ var router = express.Router();
 // GET calendar Types list
 router.get('/list', function (req, res) {
   var db = req.db;
-  var collection = db.get('oUnitsTypes');
+  var collection = db.get('orgsUnitsTypes');
   collection.find({}, '-_id', function (e, docs) {
     res.json(docs);
   });
@@ -13,7 +13,7 @@ router.get('/list', function (req, res) {
 // GET calendarTypes Modal list
 router.get('/selection', function (req, res) {
   var db = req.db;
-  var collection = db.get('oUnitsTypes');
+  var collection = db.get('orgsUnitsTypes');
   collection.find({}, '-_id', function (e, docs) {
     if (e != null) {
       res.json(e)
@@ -29,7 +29,7 @@ router.get('/selection', function (req, res) {
 // GET reset
 router.get('/reset', function (req, res) {
   var db = req.db;
-  var collection = db.get('oUnitsTypes');
+  var collection = db.get('orgsUnitsTypes');
   collection.remove({});
   collection.insert([
     {
@@ -50,7 +50,7 @@ router.get('/reset', function (req, res) {
     }
   ], function (err, result) {
     res.send(
-      (err === null) ? { msg: 'OK: oUnitsTypes collection has been correctly initialized' } : { msg: 'KO: ' + err }
+      (err === null) ? { msg: 'OK: orgsUnitsTypes collection has been correctly initialized' } : { msg: 'KO: ' + err }
     );
   });
 });
