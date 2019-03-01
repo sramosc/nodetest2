@@ -4,7 +4,7 @@ var router = express.Router();
 router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('orgsUnits');
-  collection.find({}, { fields: { id: 1, name: 1, _id: 0 } }, function (e, docs) {
+  collection.find({}, { fields: { id: 1, name: 1,erpId:1, _id: 0 } }, function (e, docs) {
     if (e != null) {
       res.json(e)
     } else {
@@ -100,9 +100,9 @@ router.get('/get/:id', function (req, res) {
         "orgUnitType.id": 1,
         "orgUnitType.name": 1,
         "erpId": 1,
-        "noticeToManagerHoliday": 1,
-        "noticeToManagerExpenditure": 1,
-        "noticeToManagerWorkReport": 1,
+        "noticeToManagerHolidays": 1,
+        "noticeToManagerExpenditures": 1,
+        "noticeToManagerWorkReports": 1,
         "orgUnitParent.id": 1,
         "orgUnitParent.name": 1
       }
@@ -164,10 +164,10 @@ router.get('/reset', function (req, res) {
       name: 'HIVERIA 04 MLA',
       description: '',
       orgUnitTypeId: 1,
-      erpId: "1000/1000/ES0100",
-      noticeToManagerHoliday: true,
-      noticeToManagerExpenditure: false,
-      noticeToManagerWorkReport: true,
+      erpId: "100000/100000/ES010000",
+      noticeToManagerHolidays: true,
+      noticeToManagerExpenditures: false,
+      noticeToManagerWorkReports: true,
       orgUnitParentId: 0
     },
     {
@@ -176,10 +176,10 @@ router.get('/reset', function (req, res) {
       name: 'MANUAL ARCHITECTURE',
       description: '',
       orgUnitTypeId: 2,
-      erpId: "2000/2000/ES0200",
-      noticeToManagerHoliday: false,
-      noticeToManagerExpenditure: true,
-      noticeToManagerWorkReport: true,
+      erpId: "200000/200000/ES020000",
+      noticeToManagerHolidays: false,
+      noticeToManagerExpenditures: true,
+      noticeToManagerWorkReports: true,
       orgUnitParentId: 1
     },
     {
@@ -188,10 +188,10 @@ router.get('/reset', function (req, res) {
       name: 'OGT-A2M-RIA',
       description: '',
       orgUnitTypeId: 3,
-      erpId: "3000/3000/ES0300",
-      noticeToManagerHoliday: true,
-      noticeToManagerExpenditure: false,
-      noticeToManagerWorkReport: false,
+      erpId: "300000/300000/ES030000",
+      noticeToManagerHolidays: true,
+      noticeToManagerExpenditures: false,
+      noticeToManagerWorkReports: false,
       orgUnitParentId: 1
     },
     {
@@ -200,10 +200,10 @@ router.get('/reset', function (req, res) {
       name: 'B&M AREA IT',
       description: '',
       orgUnitTypeId: 2,
-      erpId: "5000/5000/ES0500",
-      noticeToManagerHoliday: false,
-      noticeToManagerExpenditure: true,
-      noticeToManagerWorkReport: true,
+      erpId: "500000/500000/ES050000",
+      noticeToManagerHolidays: false,
+      noticeToManagerExpenditures: true,
+      noticeToManagerWorkReports: true,
       orgUnitParentId: 2
     },
     {
@@ -212,10 +212,10 @@ router.get('/reset', function (req, res) {
       name: 'OFICINA DE PROYECTOS',
       description: '',
       orgUnitTypeId: 2,
-      erpId: "4000/4000/ES0400",
-      noticeToManagerHoliday: true,
-      noticeToManagerExpenditure: false,
-      noticeToManagerWorkReport: true,
+      erpId: "400000/400000/ES040000",
+      noticeToManagerHolidays: true,
+      noticeToManagerExpenditures: false,
+      noticeToManagerWorkReports: true,
       orgUnitParentId: 3
     },
     {
@@ -224,10 +224,10 @@ router.get('/reset', function (req, res) {
       name: 'SOFTWARE LIBRE',
       description: '',
       orgUnitTypeId: 1,
-      erpId: "3400/4000/ES0300",
-      noticeToManagerHoliday: true,
-      noticeToManagerExpenditure: true,
-      noticeToManagerWorkReport: true,
+      erpId: "340000/400000/ES030000",
+      noticeToManagerHolidays: true,
+      noticeToManagerExpenditures: true,
+      noticeToManagerWorkReports: true,
       orgUnitParentId: 3
     },
     {
@@ -236,10 +236,10 @@ router.get('/reset', function (req, res) {
       name: 'JANDERS KLANDERS',
       description: '',
       orgUnitTypeId: 1,
-      erpId: "4000/2343/ES0400",
-      noticeToManagerHoliday: true,
-      noticeToManagerExpenditure: false,
-      noticeToManagerWorkReport: true,
+      erpId: "400000/230043/ES040000",
+      noticeToManagerHolidays: true,
+      noticeToManagerExpenditures: false,
+      noticeToManagerWorkReports: true,
       orgUnitParentId: 6
     }
   ], function (err, result) {

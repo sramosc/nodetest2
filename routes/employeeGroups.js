@@ -39,6 +39,36 @@ router.get('/selection', function (req, res) {
   })
 });
 
+// GET group
+router.get('/get/:id', function (req, res) {
+  var db = req.db;
+  var collection = db.get('employeeGroups');
+  var docToFind = Number(req.params.id);
+  collection.aggregate([
+    {
+      $match: { 'id': docToFind }
+    },
+    {
+      $project: {
+        "_id": 0,
+        "id": 1,
+        "name": 1,
+        "description": 1
+      }
+    }
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      docs[0].version = 1
+      let result = {
+        group: docs[0]        
+      }
+      res.json(result)
+    }
+  })
+});
+
 // GET resetCollectionAccounts
 router.get('/reset', function (req, res) {
   var db = req.db;

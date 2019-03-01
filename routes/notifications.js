@@ -45,7 +45,7 @@ router.get('/list', function (req, res) {
     }
 
     if ('read' in req.query) {
-      matchStage['read'] = (req.query.read=='true')?true:false
+      matchStage['read'] = (req.query.read == 'true') ? true : false
       matchExists = true
     }
 
@@ -69,20 +69,6 @@ router.get('/list', function (req, res) {
     }
 
 
-    // sort stage
-    if ('pageSort' in req.query) {
-      let field = req.query.pageSort
-      let orderAsc = true
-      if (req.query.pageSort.indexOf('-')) {
-        orderAsc = false
-      }
-      field = field.replace('-', '')
-      if (orderAsc) {
-        sortStage[field] = -1
-      } else {
-        sortStage[field] = 1
-      }
-    }
     pipeline.push({ $match: matchStage })
 
     pipeline.push({
@@ -95,8 +81,20 @@ router.get('/list', function (req, res) {
     })
     pipeline.push({ $unwind: "$type" })
 
-
-    pipeline.push({ $sort: sortStage })
+    if ('pageSort' in req.query) {
+      let field = req.query.pageSort
+      let orderAsc = true
+      if (req.query.pageSort.indexOf('-')) {
+        orderAsc = false
+      }
+      field = field.replace('-', '')
+      if (orderAsc) {
+        sortStage[field] = -1
+      } else {
+        sortStage[field] = 1
+      }
+      pipeline.push({ $sort: sortStage })
+    }
 
     // skip and limit stage
     if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
@@ -106,7 +104,19 @@ router.get('/list', function (req, res) {
     }
 
   }
-  pipeline.push({ $project: { "_id": 0, "id": 1, "date": 1, "read": 1, "message": 1, "type.name": 1, "type.id": 1 } })
+  pipeline.push(
+    {
+      $project:
+      {
+        "_id": 0,
+        "id": 1,
+        "date": 1,
+        "readNotification": "$read",
+        "description": 1,
+        "typeNotification.name": "$type.name",
+        "typeNotification.id": "$type.id"
+      }
+    })
   console.log(pipeline)
   collection.aggregate(pipeline
     , {}, function (e, docs) {
@@ -122,6 +132,10 @@ router.get('/list', function (req, res) {
     })
 
 });
+
+router.get('/getNumber', function (req,res){
+  res.json(3)
+})
 
 // GET activities selection
 router.get('/selection', function (req, res) {
@@ -160,49 +174,49 @@ router.get('/reset', function (req, res) {
       typeId: 1,
       date: '2018-03-01',
       read: true,
-      message: 'El usuario PEPE RUIZ ha enviado su parte de actividad'
+      description: 'El usuario PEPE RUIZ ha enviado su parte de actividad'
     },
     {
       id: 2,
       typeId: 2,
       date: '2018-03-04',
       read: false,
-      message: 'El/la usuario/a JUANA SANCHEZ ha solicitado días de vacaciones'
+      description: 'El/la usuario/a JUANA SANCHEZ ha solicitado días de vacaciones'
     },
     {
       id: 3,
       typeId: 3,
       date: '2018-11-04',
       read: false,
-      message: 'Se ha generado una hoja de gastos para la actividad 234'
+      description: 'Se ha generado una hoja de gastos para la actividad 234'
     },
     {
       id: 4,
       typeId: 2,
       date: '2018-03-04',
       read: false,
-      message: 'El/la usuario/a LUCAS MARTINEZ ha solicitado días de vacaciones'
+      description: 'El/la usuario/a LUCAS MARTINEZ ha solicitado días de vacaciones'
     },
     {
       id: 5,
       typeId: 2,
       date: '2018-03-16',
       read: true,
-      message: 'El/la usuario/a PILAR MARTIN ha rechazado sus vacaciones'
+      description: 'El/la usuario/a PILAR MARTIN ha rechazado sus vacaciones'
     },
     {
       id: 6,
       typeId: 1,
       date: '2017-03-16',
       read: true,
-      message: 'Se ha aprobado su parte de actividad'
+      description: 'Se ha aprobado su parte de actividad'
     },
     {
       id: 7,
       typeId: 4,
       date: '2018-05-06',
       read: false,
-      message: 'Ya está disponible su nómina correspondiente a 2018/04'
+      description: 'Ya está disponible su nómina correspondiente a 2018/04'
     },
   ], function (err, result) {
     res.send(
