@@ -114,7 +114,9 @@ router.get('/list', function (req, res) {
         "readNotification": "$read",
         "description": 1,
         "typeNotification.name": "$type.name",
-        "typeNotification.id": "$type.id"
+        "typeNotification.id": "$type.id",
+        "urlNotification":1,
+        "erasableNotification":1
       }
     })
   console.log(pipeline)
@@ -133,7 +135,7 @@ router.get('/list', function (req, res) {
 
 });
 
-router.get('/getNumber', function (req,res){
+router.get('/getNumber', function (req, res) {
   res.json(3)
 })
 
@@ -174,49 +176,63 @@ router.get('/reset', function (req, res) {
       typeId: 1,
       date: '2018-03-01',
       read: true,
-      description: 'El usuario PEPE RUIZ ha enviado su parte de actividad'
+      erasableNotification: true,
+      description: 'El usuario PEPE RUIZ ha enviado su parte de actividad',
+      urlNotification: '/employee/workreports'
     },
     {
       id: 2,
       typeId: 2,
       date: '2018-03-04',
       read: false,
-      description: 'El/la usuario/a JUANA SANCHEZ ha solicitado días de vacaciones'
+      erasableNotification: true,
+      description: 'El/la usuario/a JUANA SANCHEZ ha solicitado días de vacaciones',
+      urlNotification: '/employee/vacations'
     },
     {
       id: 3,
       typeId: 3,
       date: '2018-11-04',
       read: false,
-      description: 'Se ha generado una hoja de gastos para la actividad 234'
+      erasableNotification: true,
+      description: 'Se ha generado una hoja de gastos para la actividad 234',
+      urlNotification: ''
     },
     {
       id: 4,
       typeId: 2,
       date: '2018-03-04',
       read: false,
-      description: 'El/la usuario/a LUCAS MARTINEZ ha solicitado días de vacaciones'
+      erasableNotification: true,
+      description: 'El/la usuario/a LUCAS MARTINEZ ha solicitado días de vacaciones',
+      urlNotification: '/employee/vacations'
     },
     {
       id: 5,
       typeId: 2,
       date: '2018-03-16',
       read: true,
-      description: 'El/la usuario/a PILAR MARTIN ha rechazado sus vacaciones'
+      erasableNotification: true,
+      description: 'El/la usuario/a PILAR MARTIN ha rechazado sus vacaciones',
+      urlNotification: '/employee/vacations'
     },
     {
       id: 6,
       typeId: 1,
       date: '2017-03-16',
       read: true,
-      description: 'Se ha aprobado su parte de actividad'
+      erasableNotification: true,
+      description: 'Se ha aprobado su parte de actividad',
+      urlNotification: '/employee/workreports'
     },
     {
       id: 7,
       typeId: 4,
       date: '2018-05-06',
       read: false,
-      description: 'Ya está disponible su nómina correspondiente a 2018/04'
+      erasableNotification: true,
+      description: 'Ya está disponible su nómina correspondiente a 2018/04',
+      urlNotification: '/employee/salaries'
     },
   ], function (err, result) {
     res.send(

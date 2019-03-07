@@ -57,7 +57,7 @@ router.get('/list', function (req, res) {
         "year.id": 1,
         "year.name": 1,
         "month.id": 1,
-        "month.name":1,
+        "month.name": 1,
         "employee.id": 1,
         "employee.name": 1
       },
@@ -76,6 +76,93 @@ router.get('/list', function (req, res) {
   })
 });
 
+router.get('/get/:id', function (req, res) {
+  var db = req.db;
+  var collection = db.get('workreports');
+  var docToFind = req.params.id;
+
+  collection.count({}).then((count) => {
+    totalRecords = count
+  })
+
+  collection.aggregate([
+
+    {
+      $match: { 'id': Number(docToFind) }
+    },
+
+    {
+      $lookup: {
+        from: "calendarYears",
+        localField: "yearId",
+        foreignField: "id",
+        as: "year"
+      }
+    },
+
+    {
+      $unwind: {
+        path: "$year",
+        "preserveNullAndEmptyArrays": true
+      }
+    },
+
+    {
+      $lookup: {
+        from: "calendarMonths",
+        localField: "monthId",
+        foreignField: "id",
+        as: "month"
+      }
+    },
+
+    {
+      $unwind: {
+        path: "$month",
+        "preserveNullAndEmptyArrays": true
+      }
+    },
+
+    {
+      $lookup: {
+        from: "employees",
+        localField: "employeeId",
+        foreignField: "id",
+        as: "employee"
+      }
+    },
+
+    { $unwind: "$employee" },
+
+    {
+      $project: {
+        _id: 0,
+        id: 1,
+        "year.id": 1,
+        "year.name": 1,
+        "month.id": 1,
+        "month.name": 1,
+        "employee.id": 1,
+        "employee.name": 1,
+        "rows": 1,
+        "columns": 1,
+        "status": 1
+      },
+    },
+
+  ], {}, function (e, docs) {
+    if (e != null) {
+      res.json(e)
+    } else {
+      let workReport = docs[0]
+      workReport.version = 1
+      let result = {
+        workReport: workReport,
+      }
+      res.json(result)
+    }
+  })
+});
 
 // GET resetCollectionVacations
 router.get('/reset', function (req, res) {
@@ -88,7 +175,218 @@ router.get('/reset', function (req, res) {
       employeeId: 1,
       yearId: 2018,
       monthId: 1,
-      activities: [1, 2, 3]
+      activities: [1, 2, 3],
+      status: "APPROVED",
+      rows: [
+        {
+          id: 1,
+          name: 'TOTAL',
+          expandable: true,
+          editable: false,
+          children: [2, 3],
+          values: []
+        },
+        {
+          id: 2,
+          name: 'AUSENCIA',
+          expandable: true,
+          editable: false,
+          children: [4],
+          values: []
+        },
+        {
+          id: 3,
+          name: 'NO FACTURABLE',
+          expandable: true,
+          editable: false,
+          children: [6],
+          values: []
+        },
+        {
+          id: 4,
+          name: 'NF002 - AUSENCIA NO JUSTIFICADA',
+          expandable: true,
+          editable: false,
+          children: [5],
+          values: []
+        },
+        {
+          id: 5,
+          name: 'HORAS LABORABLES',
+          expandable: false,
+          editable: true,
+          children: [],
+          values: [
+            { day: 1, value: 5 },
+            { day: 2, value: 0 },
+            { day: 3, value: 2 },
+            { day: 4, value: 4 },
+            { day: 5, value: 0 },
+            { day: 6, value: 0 },
+            { day: 7, value: 0 },
+            { day: 8, value: 0 },
+            { day: 9, value: 0 },
+            { day: 10, value: 0 },
+            { day: 11, value: 0 },
+            { day: 12, value: 0 },
+            { day: 13, value: 0 },
+            { day: 14, value: 0 },
+            { day: 15, value: 0 },
+            { day: 16, value: 0 },
+            { day: 17, value: 0 },
+            { day: 18, value: 0 },
+            { day: 19, value: 0 },
+            { day: 20, value: 0 },
+            { day: 21, value: 0 },
+            { day: 22, value: 0 },
+            { day: 23, value: 0 },
+            { day: 24, value: 0 },
+            { day: 25, value: 0 },
+            { day: 26, value: 0 },
+            { day: 27, value: 0 },
+            { day: 28, value: 0 },
+            { day: 29, value: 0 },
+            { day: 30, value: 0 },
+            { day: 31, value: 0 }
+          ]
+        },
+        {
+          id: 6,
+          name: 'PI006 - INTRANET',
+          expandable: true,
+          editable: false,
+          children: [7],
+          values: []
+        },
+        {
+          id: 7,
+          name: 'HORAS LABORALES',
+          expandable: true,
+          editable: false,
+          children: [8, 9, 10],
+          values: []
+        },
+        {
+          id: 8,
+          name: 'HORAS DE DESARROLLO',
+          expandable: false,
+          editable: true,
+          children: [],
+          values: [
+            { day: 1, value: 0 },
+            { day: 2, value: 0 },
+            { day: 3, value: 0 },
+            { day: 4, value: 0 },
+            { day: 5, value: 0 },
+            { day: 6, value: 0 },
+            { day: 7, value: 0 },
+            { day: 8, value: 0 },
+            { day: 9, value: 0 },
+            { day: 10, value: 0 },
+            { day: 11, value: 0 },
+            { day: 12, value: 0 },
+            { day: 13, value: 1 },
+            { day: 14, value: 1 },
+            { day: 15, value: 1 },
+            { day: 16, value: 1 },
+            { day: 17, value: 1 },
+            { day: 18, value: 1 },
+            { day: 19, value: 1 },
+            { day: 20, value: 1 },
+            { day: 21, value: 1 },
+            { day: 22, value: 1 },
+            { day: 23, value: 1 },
+            { day: 24, value: 1 },
+            { day: 25, value: 0 },
+            { day: 26, value: 0 },
+            { day: 27, value: 1 },
+            { day: 28, value: 1 },
+            { day: 29, value: 1 },
+            { day: 30, value: 1 },
+            { day: 31, value: 1 }
+          ]
+        },
+        {
+          id: 9,
+          name: 'HORAS DE DOCUMENTACION',
+          expandable: false,
+          editable: true,
+          children: [],
+          values: [
+            { day: 1, value: 0 },
+            { day: 2, value: 0 },
+            { day: 3, value: 0 },
+            { day: 4, value: 0 },
+            { day: 5, value: 0 },
+            { day: 6, value: 0 },
+            { day: 7, value: 0 },
+            { day: 8, value: 0 },
+            { day: 9, value: 0 },
+            { day: 10, value: 0 },
+            { day: 11, value: 0 },
+            { day: 12, value: 0 },
+            { day: 13, value: 3 },
+            { day: 14, value: 3 },
+            { day: 15, value: 3 },
+            { day: 16, value: 3 },
+            { day: 17, value: 3 },
+            { day: 18, value: 3 },
+            { day: 19, value: 3 },
+            { day: 20, value: 3 },
+            { day: 21, value: 3 },
+            { day: 22, value: 3 },
+            { day: 23, value: 3 },
+            { day: 24, value: 3 },
+            { day: 25, value: 0 },
+            { day: 26, value: 0 },
+            { day: 27, value: 3 },
+            { day: 28, value: 3 },
+            { day: 29, value: 3 },
+            { day: 30, value: 3 },
+            { day: 31, value: 3 }
+          ]
+        },
+        {
+          id: 10,
+          name: 'HORAS DE ANALISIS',
+          expandable: false,
+          editable: true,
+          children: [],
+          values: [
+            { day: 1, value: 0 },
+            { day: 2, value: 0 },
+            { day: 3, value: 0 },
+            { day: 4, value: 0 },
+            { day: 5, value: 0 },
+            { day: 6, value: 0 },
+            { day: 7, value: 0 },
+            { day: 8, value: 0 },
+            { day: 9, value: 0 },
+            { day: 10, value: 0 },
+            { day: 11, value: 0 },
+            { day: 12, value: 0 },
+            { day: 13, value: 4 },
+            { day: 14, value: 4 },
+            { day: 15, value: 4 },
+            { day: 16, value: 4 },
+            { day: 17, value: 4 },
+            { day: 18, value: 4 },
+            { day: 19, value: 4 },
+            { day: 20, value: 4 },
+            { day: 21, value: 4 },
+            { day: 22, value: 4 },
+            { day: 23, value: 4 },
+            { day: 24, value: 4 },
+            { day: 25, value: 0 },
+            { day: 26, value: 0 },
+            { day: 27, value: 4 },
+            { day: 28, value: 4 },
+            { day: 29, value: 4 },
+            { day: 30, value: 4 },
+            { day: 31, value: 4 }
+          ]
+        }
+      ]
     },
     {
       id: 2,

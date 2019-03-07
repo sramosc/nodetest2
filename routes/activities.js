@@ -137,7 +137,7 @@ router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
   var docToFind = req.params.id;
-  console.log(docToFind)
+
   collection.aggregate([
     {
       $match: { 'id': Number(docToFind) }

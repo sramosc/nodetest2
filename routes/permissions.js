@@ -15,6 +15,7 @@ router.get('/get', function (req, res) {
         {
             $project: {
                 "_id": 0,
+
                 "id": 1,
                 "employeeId": 1,
                 "permissions": 1
@@ -154,377 +155,488 @@ router.get('/resetEmployees', function (req, res) {
     collection.remove({});
     collection.insert([
         {
+
             "id": 1,
             "employeeId": 1,
             "userId": '79000002374',
             "permissions": [
                 {
                     "subject": "banksAccounts",
+                    "id": 1,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": true
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "calendars",
+                    "id": 2,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": true
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "orgsUnits",
+                    "id": 3,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_lst",
+                            "id": 16,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": true
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "activities",
+                    "id": 4,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "notifications",
+                    "id": 5,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "financialsDocuments",
+                    "id": 6,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "vacations",
+                    "id": 7,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "edit_btn_lst",
-                            "actionState": true
+                            "id": 15,
+                            "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
-                            "actionName": "cancel_btn_edit",
+                            "actionName": "clear_btn_edit",
+                            "id": 18,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_conf",
+                            "id": 17,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "tasks",
+                    "id": 8,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "workReports",
+                    "id": 9,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },                        
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 3,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 4,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "users",
+                    "id": 10,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "groups",
+                    "id": 11,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
@@ -538,371 +650,481 @@ router.get('/resetEmployees', function (req, res) {
             "permissions": [
                 {
                     "subject": "banksAccounts",
+                    "id": 1,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "calendars",
+                    "id": 2,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "orgsUnits",
+                    "id": 3,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_lst",
+                            "id": 16,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "activities",
+                    "id": 4,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "notifications",
+                    "id": 5,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "financialsDocuments",
+                    "id": 6,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "vacations",
+                    "id": 7,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
-                            "actionName": "cancel_btn_edit",
+                            "actionName": "clear_btn_edit",
+                            "id": 18,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_conf",
+                            "id": 17,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "tasks",
+                    "id": 8,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "workReports",
+                    "id": 9,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },                        
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 3,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 4,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "users",
+                    "id": 10,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "groups",
+                    "id": 11,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
@@ -923,377 +1145,488 @@ router.get('/resetGroups', function (req, res) {
     collection.remove({});
     collection.insert([
         {
+
             "id": 1,
             "groupId": 1,
             "groupName": "EMPLEADOS",
             "permissions": [
                 {
                     "subject": "banksAccounts",
+                    "id": 1,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": true
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "calendars",
+                    "id": 2,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": true
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": true
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "orgsUnits",
+                    "id": 3,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_lst",
+                            "id": 16,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "activities",
+                    "id": 4,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "notifications",
+                    "id": 5,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "financialsDocuments",
+                    "id": 6,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "vacations",
+                    "id": 7,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
-                            "actionName": "cancel_btn_edit",
+                            "actionName": "clear_btn_edit",
+                            "id": 18,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_conf",
+                            "id": 17,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "tasks",
+                    "id": 8,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "workReports",
+                    "id": 9,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },                        
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 3,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 4,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "users",
+                    "id": 10,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "groups",
+                    "id": 11,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
@@ -1301,377 +1634,488 @@ router.get('/resetGroups', function (req, res) {
             ]
         },
         {
+
             "id": 2,
             "groupId": 2,
             "groupName": "FINANCIERO",
             "permissions": [
                 {
                     "subject": "banksAccounts",
+                    "id": 1,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "calendars",
+                    "id": 2,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "orgsUnits",
+                    "id": 3,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_lst",
+                            "id": 16,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_new",
+                            "id": 5,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_new",
+                            "id": 6,
                             "actionState": false
                         },
                         {
                             "actionName": "clear_btn_new",
+                            "id": 7,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_new",
+                            "id": 8,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "activities",
+                    "id": 4,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": false
                         },
                         {
                             "actionName": "delete_btn_edit",
+                            "id": 11,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "notifications",
+                    "id": 5,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "financialsDocuments",
+                    "id": 6,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "vacations",
+                    "id": 7,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": false
                         },
                         {
                             "actionName": "edit_btn_lst",
+                            "id": 15,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": false
                         },
                         {
-                            "actionName": "cancel_btn_edit",
+                            "actionName": "clear_btn_edit",
+                            "id": 18,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_conf",
+                            "id": 17,
                             "actionState": false
                         }
                     ]
                 },
                 {
                     "subject": "tasks",
+                    "id": 8,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "workReports",
+                    "id": 9,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },                        
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 3,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 4,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "users",
+                    "id": 10,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
                 },
                 {
                     "subject": "groups",
+                    "id": 11,
                     "actions": [
                         {
                             "actionName": "browse_lst",
+                            "id": 1,
                             "actionState": false
                         },
                         {
                             "actionName": "print_report_lst",
+                            "id": 3,
                             "actionState": false
                         },
                         {
                             "actionName": "export_xls_lst",
+                            "id": 4,
                             "actionState": false
                         },
                         {
                             "actionName": "browse_edit",
+                            "id": 9,
                             "actionState": false
                         },
                         {
                             "actionName": "confirm_btn_edit",
+                            "id": 10,
                             "actionState": true
                         },
                         {
                             "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         },
                         {
                             "actionName": "print_report_edit",
+                            "id": 12,
                             "actionState": true
                         },
                         {
                             "actionName": "export_xls_edit",
+                            "id": 13,
                             "actionState": true
                         }
                     ]
