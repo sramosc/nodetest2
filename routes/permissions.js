@@ -68,15 +68,53 @@ router.get('/get/employees/:id', function (req, res) {
         if (e != null) {
             res.json(e)
         } else {
-
             let permissions = docs[0].permissions
 
-            let result = {
-                permissions: permissions,
-            }
-            res.json(result)
+            var db2 = req.db
+            var collection2 = db2.get('groupsPermissions')
+
+            let pipeline2 = [
+                {
+                    $project: {
+                        "_id": 0,
+                        "id": 1,
+                        "id": "$groupId",
+                        "name": "$groupName",
+                        "permissions": 1
+                    }
+                }]
+
+            collection2.aggregate(pipeline2, {}, function (e, docs2) {
+                if (e != null) {
+                    res.json(e)
+                } else {
+                    let groups = docs2
+
+                    if (docToFind == 1) {
+                        groups[0].assigned = false
+                        groups[1].assigned = false
+                    } else {
+                        groups[0].assigned = true
+                        groups[1].assigned = false
+                    }
+
+                    let result = {
+                        acl: {
+                            permissions: permissions,
+                            groups: groups
+                        }
+                    }
+                    res.json(result)
+                }
+            })
         }
     })
+
+
+
+
+
+
 })
 
 router.get('/get/groups/:id', function (req, res) {
@@ -107,7 +145,9 @@ router.get('/get/groups/:id', function (req, res) {
             let permissions = docs[0].permissions
 
             let result = {
-                permissions: permissions,
+                acl: {
+                    permissions: permissions
+                }
             }
             res.json(result)
         }
@@ -157,7 +197,7 @@ router.get('/resetEmployees', function (req, res) {
         {
 
             "id": 1,
-            "employeeId": 1,
+            "employeeId": 6,
             "userId": '79000002374',
             "permissions": [
                 {
@@ -496,6 +536,11 @@ router.get('/resetEmployees', function (req, res) {
                             "actionState": true
                         },
                         {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": true
+                        },
+                        {
                             "actionName": "clear_btn_edit",
                             "id": 18,
                             "actionState": true
@@ -531,7 +576,7 @@ router.get('/resetEmployees', function (req, res) {
                             "actionName": "create_btn_lst",
                             "id": 2,
                             "actionState": true
-                        },                        
+                        },
                         {
                             "actionName": "print_report_lst",
                             "id": 3,
@@ -640,12 +685,84 @@ router.get('/resetEmployees', function (req, res) {
                             "actionState": true
                         }
                     ]
+                },
+                {
+                    "subject": "sepa",
+                    "id": 12,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "confirm_btn_edit",
+                            "id": 10,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_sepa_edit",
+                            "id": 18,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_new",
+                            "id": 5,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "confirm_btn_new",
+                            "id": 6,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "cancel_btn_new",
+                            "id": 8,
+                            "actionState": true
+                        }
+                    ]
+                },
+                {
+                    "subject": "substitutions",
+                    "id": 13,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        }
+                    ]
                 }
             ]
         },
         {
             "id": 2,
-            "employeeId": 2,
+            "employeeId": 1,
             "userId": "79000000112",
             "permissions": [
                 {
@@ -981,12 +1098,17 @@ router.get('/resetEmployees', function (req, res) {
                         {
                             "actionName": "confirm_btn_edit",
                             "id": 10,
-                            "actionState": false
+                            "actionState": true
                         },
                         {
                             "actionName": "clear_btn_edit",
                             "id": 18,
-                            "actionState": false
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": true
                         },
                         {
                             "actionName": "browse_conf",
@@ -1019,7 +1141,7 @@ router.get('/resetEmployees', function (req, res) {
                             "actionName": "create_btn_lst",
                             "id": 2,
                             "actionState": true
-                        },                        
+                        },
                         {
                             "actionName": "print_report_lst",
                             "id": 3,
@@ -1125,6 +1247,78 @@ router.get('/resetEmployees', function (req, res) {
                         {
                             "actionName": "export_xls_edit",
                             "id": 13,
+                            "actionState": true
+                        }
+                    ]
+                },
+                {
+                    "subject": "sepa",
+                    "id": 12,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "confirm_btn_edit",
+                            "id": 10,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "print_sepa_edit",
+                            "id": 18,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "browse_new",
+                            "id": 5,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "confirm_btn_new",
+                            "id": 6,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "cancel_btn_new",
+                            "id": 8,
+                            "actionState": false
+                        }
+                    ]
+                },
+                {
+                    "subject": "substitutions",
+                    "id": 13,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
                             "actionState": true
                         }
                     ]
@@ -1491,6 +1685,11 @@ router.get('/resetGroups', function (req, res) {
                             "actionState": false
                         },
                         {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": true
+                        },
+                        {
                             "actionName": "browse_conf",
                             "id": 17,
                             "actionState": false
@@ -1521,7 +1720,7 @@ router.get('/resetGroups', function (req, res) {
                             "actionName": "create_btn_lst",
                             "id": 2,
                             "actionState": true
-                        },                        
+                        },
                         {
                             "actionName": "print_report_lst",
                             "id": 3,
@@ -1628,6 +1827,78 @@ router.get('/resetGroups', function (req, res) {
                             "actionName": "export_xls_edit",
                             "id": 13,
                             "actionState": true
+                        }
+                    ]
+                },
+                {
+                    "subject": "sepa",
+                    "id": 12,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "confirm_btn_edit",
+                            "id": 10,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "print_sepa_edit",
+                            "id": 18,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "browse_new",
+                            "id": 5,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "confirm_btn_new",
+                            "id": 6,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "cancel_btn_new",
+                            "id": 8,
+                            "actionState": false
+                        }
+                    ]
+                },
+                {
+                    "subject": "substitutions",
+                    "id": 13,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": false
                         }
                     ]
                 }
@@ -1980,6 +2251,11 @@ router.get('/resetGroups', function (req, res) {
                             "actionState": false
                         },
                         {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": true
+                        },
+                        {
                             "actionName": "browse_conf",
                             "id": 17,
                             "actionState": false
@@ -2010,7 +2286,7 @@ router.get('/resetGroups', function (req, res) {
                             "actionName": "create_btn_lst",
                             "id": 2,
                             "actionState": true
-                        },                        
+                        },
                         {
                             "actionName": "print_report_lst",
                             "id": 3,
@@ -2117,6 +2393,78 @@ router.get('/resetGroups', function (req, res) {
                             "actionName": "export_xls_edit",
                             "id": 13,
                             "actionState": true
+                        }
+                    ]
+                },
+                {
+                    "subject": "sepa",
+                    "id": 12,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "confirm_btn_edit",
+                            "id": 10,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "print_sepa_edit",
+                            "id": 18,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "browse_new",
+                            "id": 5,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "confirm_btn_new",
+                            "id": 6,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "cancel_btn_new",
+                            "id": 8,
+                            "actionState": false
+                        }
+                    ]
+                },
+                {
+                    "subject": "substitutions",
+                    "id": 13,
+                    "actions": [
+                        {
+                            "actionName": "browse_lst",
+                            "id": 1,
+                            "actionState": false
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": false
                         }
                     ]
                 }

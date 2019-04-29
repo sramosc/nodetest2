@@ -8,9 +8,9 @@ router.get('/list', function (req, res) {
   let totalRecords = 0
 
 
- /* collection.count({}).then((count) => {
-    totalRecords = count
-  })*/
+  /* collection.count({}).then((count) => {
+     totalRecords = count
+   })*/
 
   let pipeline = [{
     $lookup: {
@@ -105,6 +105,93 @@ router.get('/list', function (req, res) {
     })
 });
 
+// GET selection
+router.get('/selection', function (req, res) {
+  var db = req.db;
+  var collection = db.get('bankaccounts');
+  let totalRecords = 0
+  let bankAccountPipeline = []
+  let countPipeline = []
+  let pipeline = []
+
+  if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
+    console.log("sin query params")
+  } else {
+
+    let matchStage = {}
+    let sortStage = {}
+    let matchExists = false
+
+    // match stage
+    if ('find' in req.query) {
+      matchStage.name = {
+        $regex: req.query.find,
+        $options: 'i'
+      }
+      matchExists = true
+    }
+
+    if ('enterpriseId' in req.query) {
+      matchStage['enterpriseId'] = Number(req.query.enterpriseId)
+      matchExists = true
+    }
+
+    // sort stage
+    if ('pageSort' in req.query) {
+      let field = req.query.pageSort
+      let orderAsc = true
+      if (req.query.pageSort.indexOf('-')) {
+        orderAsc = false
+      }
+      field = field.replace('-', '')
+      if (orderAsc) {
+        sortStage[field] = -1
+      } else {
+        sortStage[field] = 1
+      }
+    }
+    if (matchExists) {
+      pipeline.push({ $match: matchStage })
+    }
+    pipeline.push({ $project: { "_id": 0, "id": 1, "name": 1, } })
+    pipeline.push({ $sort: sortStage })
+
+
+    // skip and limit stage
+    if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
+      bankAccountPipeline = pipeline.slice()
+      bankAccountPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      bankAccountPipeline.push({ $limit: parseInt(req.query.pageSize) })
+    }
+  }
+
+  countPipeline = pipeline.slice()
+  countPipeline.push({ $count: 'count' })
+
+  let pipeline2 = [
+    {
+      $facet: {
+        bankAccounts: bankAccountPipeline,
+        totalRecords: countPipeline
+      }
+    }
+  ]
+
+  console.log(pipeline2)
+  collection.aggregate(pipeline2
+    , {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let result = {
+          options: docs[0].bankAccounts,
+          totalRecords: docs[0].totalRecords[0].count
+        }
+        res.json(result)
+      }
+    })
+});
+
 // GET bank account (id = id)
 router.get('/get/:id', function (req, res) {
   var db = req.db;
@@ -133,7 +220,7 @@ router.get('/get/:id', function (req, res) {
         "name": 1,
         "number": 1,
         "enterprise.id": "$enterprise.enterpriseId",
-        "enterprise.name":"$enterprise.enterpriseName",
+        "enterprise.name": "$enterprise.enterpriseName",
         "ledgerAccount": 1
       }
     },
@@ -144,7 +231,7 @@ router.get('/get/:id', function (req, res) {
     } else {
       docs[0].version = '1'
       let result = {
-        bankAccount: docs[0]        
+        bankAccount: docs[0]
       }
       res.json(result)
     }
@@ -182,7 +269,7 @@ router.put('/update/:id', function (req, res) {
   });
 });
 
-router.get('/reports/pdf', function (req,res) {
+router.get('/reports/pdf', function (req, res) {
   res.download('./public/pdf.pdf')
 });
 

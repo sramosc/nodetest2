@@ -79,87 +79,196 @@ router.get('/list', function (req, res) {
 router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('workreports');
-  var docToFind = req.params.id;
-
-  collection.count({}).then((count) => {
-    totalRecords = count
-  })
-
-  collection.aggregate([
-
-    {
-      $match: { 'id': Number(docToFind) }
-    },
-
-    {
-      $lookup: {
-        from: "calendarYears",
-        localField: "yearId",
-        foreignField: "id",
-        as: "year"
-      }
-    },
-
-    {
-      $unwind: {
-        path: "$year",
-        "preserveNullAndEmptyArrays": true
-      }
-    },
-
-    {
-      $lookup: {
-        from: "calendarMonths",
-        localField: "monthId",
-        foreignField: "id",
-        as: "month"
-      }
-    },
-
-    {
-      $unwind: {
-        path: "$month",
-        "preserveNullAndEmptyArrays": true
-      }
-    },
-
-    {
-      $lookup: {
-        from: "employees",
-        localField: "employeeId",
-        foreignField: "id",
-        as: "employee"
-      }
-    },
-
-    { $unwind: "$employee" },
-
-    {
-      $project: {
-        _id: 0,
-        id: 1,
-        "year.id": 1,
-        "year.name": 1,
-        "month.id": 1,
-        "month.name": 1,
-        "employee.id": 1,
-        "employee.name": 1,
-        "rows": 1,
-        "columns": 1,
-        "status": 1
+  /*  var docToFind = req.params.id;
+  
+    collection.count({}).then((count) => {
+      totalRecords = count
+    })
+  
+    collection.aggregate([
+  
+      {
+        $match: { 'id': Number(docToFind) }
       },
-    },
-
-  ], {}, function (e, docs) {
-    if (e != null) {
-      res.json(e)
-    } else {
-      let workReport = docs[0]
-      workReport.version = 1
-      let result = {
-        workReport: workReport,
+  
+      {
+        $lookup: {
+          from: "calendarYears",
+          localField: "yearId",
+          foreignField: "id",
+          as: "year"
+        }
+      },
+  
+      {
+        $unwind: {
+          path: "$year",
+          "preserveNullAndEmptyArrays": true
+        }
+      },
+  
+      {
+        $lookup: {
+          from: "calendarMonths",
+          localField: "monthId",
+          foreignField: "id",
+          as: "month"
+        }
+      },
+  
+      {
+        $unwind: {
+          path: "$month",
+          "preserveNullAndEmptyArrays": true
+        }
+      },
+  
+      {
+        $lookup: {
+          from: "employees",
+          localField: "employeeId",
+          foreignField: "id",
+          as: "employee"
+        }
+      },
+  
+      { $unwind: "$employee" },
+  
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          "year.id": 1,
+          "year.name": 1,
+          "month.id": 1,
+          "month.name": 1,
+          "employee.id": 1,
+          "employee.name": 1,
+          "rows": 1,
+          "columns": 1,
+          "status": 1
+        },
+      },
+  
+    ], {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let workReport = docs[0]
+        workReport.version = 1
+        let result = {
+          workReport: workReport,
+        }
+        res.json(result)
       }
-      res.json(result)
+    })*/
+  res.json({
+    workReport: {
+      year: {
+        id: 2019,
+        name: '2019'
+      },
+      month: {
+        id: 1,
+        name: 'ENERO'
+      },
+      employee: {
+        id: 1,
+        name: 'EMPLEADO'
+      },
+      status: {
+        id: 1,
+        name: 'APROBADO'
+      },
+      version: 1,
+      days: 31,
+      nonWorkingDays: [1,5,6,7,12,13,19,20,26,27],
+      activities: [
+        {
+          id: 1,
+          name: 'TOTAL',
+          editable: false,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [2, 6],
+          sum: 0,
+          depth: 0
+        }, {
+          id: 2,
+          name: 'AUSENCIA',
+          editable: false,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [3],
+          sum: 0,
+          depth: 1
+        }, {
+          id: 3,
+          name: 'NF001 - AUSENCIA NO JUSTIFICADA',
+          editable: false,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [4, 5],
+          sum: 0,
+          depth: 2
+        }, {
+          id: 4,
+          name: 'HORAS LABORALES',
+          editable: true,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [],
+          day11: 8,
+          day02: 8,
+          day03: 8,
+          day16: 2,
+          sum: 0,
+          depth: 3
+        }, {
+          id: 5,
+          name: 'HORAS DE DESARROLLO',
+          editable: true,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [],
+          day21: 3,
+          day22: 1,
+          day23: 2,
+          sum: 0,
+          depth: 3
+        }, {
+          id: 6,
+          name: 'NO FACTURABLE',
+          editable: false,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [7],
+          sum: 0,
+          depth: 1
+        }, {
+          id: 7,
+          name: 'NF003 - FORMACION',
+          editable: false,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [8],
+          sum: 0,
+          depth: 2
+        }, {
+          id: 8,
+          name: 'HORAS LABORALES',
+          editable: true,
+          visible: true,
+          childrenAction: 'HIDE',
+          children: [],
+          day15: 3,
+          day22: 2,
+          day28: 7,
+          day29: 2.5,
+          sum: 0,
+          depth: 3
+        }
+      ]
     }
   })
 });

@@ -42,8 +42,10 @@ var erroresRoutes = require('./routes/errores')
 var permissionsRoutes = require('./routes/permissions')
 var financialsDocumentsRoutes = require('./routes/financialsDocuments');
 var workReportsRoutes = require('./routes/workReports');
-
-
+var sepaRoutes = require('./routes/sepa');
+var sepaStatusRoutes = require('./routes/sepaStatus');
+var substitutionsRoutes = require('./routes/substitutions');
+var expenditureSheetsRoutes = require('./routes/expenditureSheets');
 
 var app = express();
 app.use(cors());
@@ -53,8 +55,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.set('port', 8000);
-var port=8000;
-app.listen(port,function () {
+var port = 8000;
+app.listen(port, function () {
   console.log('App listening on port ' + port + '!');
 });
 
@@ -104,7 +106,10 @@ app.use('/api/acl', permissionsRoutes);
 app.use('/api/errores', erroresRoutes);
 app.use('/api/financialsDocuments', financialsDocumentsRoutes);
 app.use('/api/workReports', workReportsRoutes);
-
+app.use('/api/sepa', sepaRoutes);
+app.use('/api/sepaStatus', sepaStatusRoutes);
+app.use('/api/substitutions', substitutionsRoutes);
+app.use('/api/expenditureSheets', expenditureSheetsRoutes);
 
 
 

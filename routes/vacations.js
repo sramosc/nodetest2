@@ -38,13 +38,16 @@ router.get('/list', function (req, res) {
         as: "employee"
       }
     },
+    { $unwind: "$employee" },
     {
       $project: {
         _id: 0,
         id: 1,
         year: 1,
-        "employee.id": "$employeeId",
-        "employee.name": { $arrayElemAt: ["$employee.name", 0] },
+        "employee.id": "$employee.id",
+        "employee.name": "$employee.name",
+        "employee.code": "$employee.code",
+
         totalDays: 1,
         "consumedDays": {
           $size: {
@@ -57,7 +60,7 @@ router.get('/list', function (req, res) {
         },
         //"orgsUnits": 1,
         //"activities": 1
-      }
+      },
     },
     { $unwind: "$employee" }
   ], {}, function (e, docs) {
@@ -130,6 +133,7 @@ router.get('/get/:id', function (req, res) {
         year: 1,
         "employee.id": "$employee.id",
         "employee.name": "$employee.name",
+        "employee.code": "$employee.code",
         "manager.id": "$manager.id",
         "manager.name": "$manager.name",
         "orgUnit.id": "$orgUnit.id",
@@ -142,7 +146,7 @@ router.get('/get/:id', function (req, res) {
         "requests": 1,
         vacationDates: "$days",
         "nonWorkingDays": 1,
-        version:1
+        version: 1
       }
     }
   ], {}, function (e, docs) {
@@ -164,7 +168,7 @@ router.get('/get/:id', function (req, res) {
             manager: { name: "Gerardo Pérez González" },
             vacationDates: [{ comment: "Navidad", date: "2019-12-27", status: "CONSUMED", requestDate: "2018-12-28" }],
             nonWorkingDays: ["2019-02-19", "2019-02-20", "2019-02-17", "2019-02-18", "2019-02-12", "2019-02-13", "2019-02-14", "2019-02-15"],
-            version:1
+            version: 1
           }
         }
       }
@@ -266,7 +270,7 @@ router.get('/requests/list', function (req, res) {
 });
 
 router.put('/update/:id', function (req, res) {
-  res.send({ msg: 'La actividad ha sido modificada con éxito - MOCK' })  
+  res.send({ msg: 'La actividad ha sido modificada con éxito - MOCK' })
 });
 
 // GET resetCollectionVacations
@@ -277,7 +281,7 @@ router.get('/reset', function (req, res) {
   collection.insert([
     {
       id: 1,
-      version:1,
+      version: 1,
       year: 2019,
       employeeId: 1,
       managerId: 30,
@@ -289,14 +293,32 @@ router.get('/reset', function (req, res) {
       totalAvailableDays: 20,
       days: [
         {
-          id:1,
+          id: 1,
           date: "2019-04-23",
           comment: "vacacion1",
           requestDate: "2018-01-01",
-          status: "pending",
+          status: "PENDING",
+          validations: [
+            {
+              status: "REJECTED",
+              employeeCode: "79000001500"
+            },
+            {
+              status: "APPROVED",
+              employeeCode: "79000000004"
+            },
+            {
+              status: "APPROVED",
+              employeeCode: "79000002374"
+            },
+            {
+              status: "APPROVED",
+              employeeCode: "79000000007"
+            }
+          ]
         },
         {
-          id:2,
+          id: 2,
           date: "2019-03-15",
           comment: "vacacion2",
           requestDate: "2018-01-01",
@@ -304,7 +326,7 @@ router.get('/reset', function (req, res) {
           status: "approved",
         },
         {
-          id:3,
+          id: 3,
           date: "2019-02-01",
           comment: "vacacion3",
           requestDate: "2018-01-07",
@@ -326,7 +348,7 @@ router.get('/reset', function (req, res) {
     },
     {
       id: 2,
-      version:3,
+      version: 3,
       year: 2018,
       employeeId: 1,
       totalDays: 22,
