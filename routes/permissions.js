@@ -154,7 +154,7 @@ router.get('/get/groups/:id', function (req, res) {
     })
 })
 
-router.get('/get/empGroups/:id', function (req, res) {
+router.get('/get/empgroups/:id', function (req, res) {
     var db = req.db
     var collection = db.get('groupsPermissions')
     var docToFind = Number(req.params.id)

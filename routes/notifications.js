@@ -135,7 +135,7 @@ router.get('/list', function (req, res) {
 
 });
 
-router.get('/getNumber', function (req, res) {
+router.get('/getnumber', function (req, res) {
   res.json(3)
 })
 

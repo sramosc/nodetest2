@@ -179,7 +179,7 @@ router.get('/get/:id', function (req, res) {
 });
 
 // GET vacation years list
-router.get('/listVacationYears', function (req, res) {
+router.get('/listvacationyears', function (req, res) {
   var db = req.db;
   var collection = db.get('vacations');
   collection.distinct('year', function (e, docs) {

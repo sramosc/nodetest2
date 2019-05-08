@@ -135,7 +135,7 @@ router.get('/list', function (req, res) {
 });
 
 // LIST calendar years
-router.get('/listCalendarYears', function (req, res) {
+router.get('/listcalendaryears', function (req, res) {
   var db = req.db;
   var collection = db.get('calendars');
   collection.distinct('year', function (e, docs) {
