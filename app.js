@@ -46,6 +46,8 @@ var sepaRoutes = require('./routes/sepa');
 var sepaStatusRoutes = require('./routes/sepaStatus');
 var substitutionsRoutes = require('./routes/substitutions');
 var expenditureSheetsRoutes = require('./routes/expenditureSheets');
+var expensesRoutes = require('./routes/expenses');
+var securityRouter = require('./routes/security');
 
 var app = express();
 app.use(cors());
@@ -73,6 +75,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', indexRouter);
+app.use('/authorized', securityRouter)
 app.use('/api/users', usersRouter);
 app.use('/api/employees', employeesRoutes);
 app.use('/api/orgsunits', orgsUnitsRoutes);
@@ -106,11 +109,11 @@ app.use('/api/acl', permissionsRoutes);
 app.use('/api/errores', erroresRoutes);
 app.use('/api/financialsdocuments', financialsDocumentsRoutes);
 app.use('/api/workreports', workReportsRoutes);
-app.use('/api/sepa', sepaRoutes);
-app.use('/api/sepastatus', sepaStatusRoutes);
+app.use('/api/expendituresbanksclosings', sepaRoutes);
+app.use('/api/expendituresbanksclosingsstates', sepaStatusRoutes);
 app.use('/api/substitutions', substitutionsRoutes);
 app.use('/api/expendituresheets', expenditureSheetsRoutes);
-
+app.use('/api/expenses', expensesRoutes);
 
 
 // catch 404 and forward to error handler

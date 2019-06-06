@@ -83,20 +83,20 @@ router.get('/reset', function (req, res) {
   collection.remove({});
   collection.insert([
     {
-      "companyId": 1,
-      "companyName": "NTL CONSULTING S.A"
+      "id": 1,
+      "name": "NTL CONSULTING S.A"
     },
     {
-      "companyId": 2,
-      "companyName": "NTL QWER S.A"
+      "id": 2,
+      "name": "NTL QWER S.A"
     },
     {
-      "companyId": 3,
-      "companyName": "NTL DIGITAL"
+      "id": 3,
+      "name": "NTL DIGITAL"
     },
     {
-      "companyId": 4,
-      "companyName": "NTL S.A."
+      "id": 4,
+      "name": "NTL S.A."
     }
   ], function (err, result) {
     res.send(

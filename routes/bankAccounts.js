@@ -1,4 +1,5 @@
 var express = require('express');
+const fs = require('fs');
 var router = express.Router();
 
 // GET bank accounts list
@@ -16,22 +17,22 @@ router.get('/list', function (req, res) {
     $lookup: {
       from: "enterprises",
       localField: "enterpriseId",
-      foreignField: "enterpriseId",
+      foreignField: "id",
       as: "enterprise"
     }
   },
+  { $unwind: "$enterprise" },
   {
     $project: {
       "_id": 0,
       "id": 1,
       "name": 1,
       "number": 1,
-      "enterprise.id": "$enterpriseId",
-      "enterprise.name": { $arrayElemAt: ["$enterprise.enterpriseName", 0] },
+      "enterprise.id": "$enterprise.id",
+      "enterprise.name": "$enterprise.name",
       "ledgerAccount": 1
     }
-  },
-  { $unwind: "$enterprise" }
+  }
   ]
 
   if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
@@ -109,10 +110,18 @@ router.get('/list', function (req, res) {
 router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('bankaccounts');
-  let totalRecords = 0
-  let bankAccountPipeline = []
+
+  let recordsPipeline = []
   let countPipeline = []
-  let pipeline = []
+
+  let pipeline = [
+    {
+      $project: {
+        "_id": 0,
+        "id": 1,
+        "name": 1,
+      }
+    }]
 
   if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
     console.log("sin query params")
@@ -128,11 +137,6 @@ router.get('/selection', function (req, res) {
         $regex: req.query.find,
         $options: 'i'
       }
-      matchExists = true
-    }
-
-    if ('enterpriseId' in req.query) {
-      matchStage['enterpriseId'] = Number(req.query.enterpriseId)
       matchExists = true
     }
 
@@ -153,15 +157,15 @@ router.get('/selection', function (req, res) {
     if (matchExists) {
       pipeline.push({ $match: matchStage })
     }
-    pipeline.push({ $project: { "_id": 0, "id": 1, "name": 1, } })
+
     pipeline.push({ $sort: sortStage })
 
 
     // skip and limit stage
     if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
-      bankAccountPipeline = pipeline.slice()
-      bankAccountPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
-      bankAccountPipeline.push({ $limit: parseInt(req.query.pageSize) })
+      recordsPipeline = pipeline.slice()
+      recordsPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      recordsPipeline.push({ $limit: parseInt(req.query.pageSize) })
     }
   }
 
@@ -171,7 +175,7 @@ router.get('/selection', function (req, res) {
   let pipeline2 = [
     {
       $facet: {
-        bankAccounts: bankAccountPipeline,
+        records: recordsPipeline,
         totalRecords: countPipeline
       }
     }
@@ -184,7 +188,7 @@ router.get('/selection', function (req, res) {
         res.json(e)
       } else {
         let result = {
-          options: docs[0].bankAccounts,
+          options: docs[0].records,
           totalRecords: docs[0].totalRecords[0].count
         }
         res.json(result)
@@ -270,7 +274,29 @@ router.put('/update/:id', function (req, res) {
 });
 
 router.get('/reports/pdf', function (req, res) {
-  res.download('./public/pdf.pdf')
+  //res.download('./public/pdf.pdf')
+  
+  var file = fs.createReadStream('./public/pdf.pdf');
+  var stat = fs.statSync('./public/pdf.pdf');
+  res.setHeader('Content-Length', stat.size);
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition')
+  res.setHeader('Content-Disposition', 'attachment; filename="quote.pdf"')
+  file.pipe(res);
+  
+  /*
+  var stream = fs.readStream('./public/pdf.pdf');
+  var filename = "cosa.pdf";
+  // Be careful of special characters
+
+  filename = encodeURIComponent(filename);
+  // Ideally this should strip them
+
+  res.setHeader('Content-disposition', 'inline; filename="' + filename + '"');
+  res.setHeader('Content-type', 'application/pdf');
+
+  stream.pipe(res);
+  */
 });
 
 // GET resetCollectionAccounts

@@ -111,25 +111,90 @@ router.get('/list', function (req, res) {
 router.get('/selection', function (req, res) {
   var db = req.db;
   var collection = db.get('activities');
+  let totalRecords = 0
+  let activitiesPipeline = []
+  let countPipeline = []
 
-  collection.aggregate([
+  let pipeline = [
+  {
+    $project: {
+      "_id": 0,
+      "id": 1,
+      "name": 1,
+    }
+  }]
+
+  if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
+    console.log("sin query params")
+  } else {
+
+    let matchStage = {}
+    let sortStage = {}
+    let matchExists = false
+
+    // match stage
+    if ('find' in req.query) {
+      matchStage.name = {
+        $regex: req.query.find,
+        $options: 'i'
+      }
+      matchExists = true
+    }
+
+    // sort stage
+    if ('pageSort' in req.query) {
+      let field = req.query.pageSort
+      let orderAsc = true
+      if (req.query.pageSort.indexOf('-')) {
+        orderAsc = false
+      }
+      field = field.replace('-', '')
+      if (orderAsc) {
+        sortStage[field] = -1
+      } else {
+        sortStage[field] = 1
+      }
+    }
+    if (matchExists) {
+      pipeline.push({ $match: matchStage })
+    }
+
+    pipeline.push({ $sort: sortStage })
+
+
+    // skip and limit stage
+    if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
+      activitiesPipeline = pipeline.slice()
+      activitiesPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+      activitiesPipeline.push({ $limit: parseInt(req.query.pageSize) })
+    }
+  }
+
+  countPipeline = pipeline.slice()
+  countPipeline.push({ $count: 'count' })
+
+  let pipeline2 = [
     {
-      $project: {
-        '_id': 0,
-        'id': 1,
-        'name': 1
+      $facet: {
+        activities: activitiesPipeline,
+        totalRecords: countPipeline
       }
     }
-  ], {}, function (e, docs) {
-    if (e != null) {
-      res.json(e)
-    } else {
-      let result = {
-        options: docs
+  ]
+
+  console.log(pipeline2)
+  collection.aggregate(pipeline2
+    , {}, function (e, docs) {
+      if (e != null) {
+        res.json(e)
+      } else {
+        let result = {
+          options: docs[0].activities,
+          totalRecords: docs[0].totalRecords[0].count
+        }
+        res.json(result)
       }
-      res.json(result)
-    }
-  })
+    })
 });
 
 // GET activities list
@@ -145,18 +210,18 @@ router.get('/get/:id', function (req, res) {
 
     {
       $lookup: {
-        from: 'companies',
+        from: 'enterprises',
         localField: 'invoiceCompanyId',
-        foreignField: 'companyId',
+        foreignField: 'id',
         as: 'invoiceCompany'
       }
     },
     { $unwind: '$invoiceCompany' },
     {
       $lookup: {
-        from: 'companies',
+        from: 'enterprises',
         localField: 'anCompanyId',
-        foreignField: 'companyId',
+        foreignField: 'id',
         as: 'anCompany'
       }
     },
@@ -165,7 +230,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: 'clients',
         localField: 'clientId',
-        foreignField: 'clientId',
+        foreignField: 'id',
         as: 'customer'
       }
     },
@@ -174,7 +239,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: 'activityLines',
         localField: 'activityLineId',
-        foreignField: 'activityLineId',
+        foreignField: 'id',
         as: 'activityLine'
       }
     },
@@ -183,7 +248,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: 'activitySubtypes',
         localField: 'activitySubtypeId',
-        foreignField: 'activitySubtypeId',
+        foreignField: 'id',
         as: 'activitySubtype'
       }
     },
@@ -210,7 +275,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: 'activityExpensesPermissionTypes',
         localField: 'expensesPermissionId',
-        foreignField: 'activityExpensesPermissionTypeId',
+        foreignField: 'id',
         as: 'activityExpensePermissionType'
       }
     },
@@ -219,7 +284,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: 'activityInvoicingTypes',
         localField: 'invoicingTypeId',
-        foreignField: 'activityInvoicingTypeId',
+        foreignField: 'id',
         as: 'activityInvoicingType'
       }
     },
@@ -228,7 +293,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: 'activityIncomeTypes',
         localField: 'incomeTypeId',
-        foreignField: 'activityIncomeTypeId',
+        foreignField: 'id',
         as: 'activityIncomeType'
       }
     },
@@ -273,10 +338,10 @@ router.get('/get/:id', function (req, res) {
         //---------------------------------------------------------
         // CAMPOS DE DATOS GENERALES
         // Linea de actividad
-        'generalData.activityLine.id': '$activityLine.activityLineId',
+        'generalData.activityLine.id': '$activityLine.id',
         'generalData.activityLine.name': '$activityLine.name',
         // Subtipo de actividad
-        'generalData.activitySubtype.id': '$activitySubtype.activitySubtypeId',
+        'generalData.activitySubtype.id': '$activitySubtype.id',
         'generalData.activitySubtype.name': '$activitySubtype.name',
         // Unidad Operativa de negocio
         'generalData.businessOrgUnit.id': '$businessOrgUnit.id',
@@ -287,22 +352,22 @@ router.get('/get/:id', function (req, res) {
         'generalData.commertialOrgUnit.name': '$commertialOrgUnit.name',
         'generalData.commertialOrgUnit.erpId': '$commertialOrgUnit.erpId',
         // Cliente
-        'generalData.customer.id': '$customer.clientId',
-        'generalData.customer.name': '$customer.clientName',
+        'generalData.customer.id': '$customer.id',
+        'generalData.customer.name': '$customer.name',
         // Tipo de facturación
-        'generalData.activityInvoicingType.id': '$activityInvoicingType.activityInvoicingTypeId',
+        'generalData.activityInvoicingType.id': '$activityInvoicingType.id',
         'generalData.activityInvoicingType.name': '$activityInvoicingType.name',
         // Tipo de ingreso
-        'generalData.activityIncomeType.id': '$activityIncomeType.activityIncomeTypeId',
+        'generalData.activityIncomeType.id': '$activityIncomeType.id',
         'generalData.activityIncomeType.name': '$activityIncomeType.name',
         // Empresa de facturación
-        'generalData.invoiceEnterprise.id': '$invoiceCompany.companyId',
-        'generalData.invoiceEnterprise.name': '$invoiceCompany.companyName',
+        'generalData.invoiceEnterprise.id': '$invoiceCompany.id',
+        'generalData.invoiceEnterprise.name': '$invoiceCompany.name',
         // Empresa analítica
-        'generalData.analyticalEnterprise.id': '$anCompany.companyId',
-        'generalData.analyticalEnterprise.name': '$anCompany.companyName',
+        'generalData.analyticalEnterprise.id': '$anCompany.id',
+        'generalData.analyticalEnterprise.name': '$anCompany.name',
         // Permitir cargar gastos
-        'generalData.activityExpensePermissionType.id': '$activityExpensePermissionType.activityExpensesPermissionTypeId',
+        'generalData.activityExpensePermissionType.id': '$activityExpensePermissionType.id',
         'generalData.activityExpensePermissionType.name': '$activityExpensePermissionType.name',
         // Fecha de inicio
         'generalData.startedOn': '$startedOn',

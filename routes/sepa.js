@@ -12,7 +12,7 @@ router.get('/list', function (req, res) {
     $lookup: {
       from: "enterprises",
       localField: "enterpriseId",
-      foreignField: "enterpriseId",
+      foreignField: "id",
       as: "enterprise"
     }
   },
@@ -31,8 +31,8 @@ router.get('/list', function (req, res) {
       "_id": 0,
       "id": 1,
       "description": 1,
-      "enterprise.id": "$enterprise.enterpriseId",
-      "enterprise.name": "$enterprise.enterpriseName",
+      "enterprise.id": "$enterprise.id",
+      "enterprise.name": "$enterprise.name",
       "status.id": 1,
       "status.name": 1,
       "sendingDate": 1,
@@ -142,7 +142,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: "enterprises",
         localField: "enterpriseId",
-        foreignField: "enterpriseId",
+        foreignField: "id",
         as: "enterprise"
       }
     },
@@ -170,8 +170,8 @@ router.get('/get/:id', function (req, res) {
         "_id": 0,
         "id": 1,
         "description": 1,
-        "enterprise.id": "$enterprise.enterpriseId",
-        "enterprise.name": "$enterprise.enterpriseName",
+        "enterprise.id": "$enterprise.id",
+        "enterprise.name": "$enterprise.name",
         "status.id": "$status.id",
         "status.name": "$status.name",
         "iban":"$bankaccount.number",
