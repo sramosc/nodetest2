@@ -15,7 +15,6 @@ router.get('/get', function (req, res) {
         {
             $project: {
                 "_id": 0,
-
                 "id": 1,
                 "employeeId": 1,
                 "permissions": 1
@@ -189,180 +188,180 @@ router.get('/substitutions/list', function (req, res) {
     var collection = db.get('substitutions');
     let substitutionsPipeline = []
     let countPipeline = []
-  
+
     let pipeline = [
-      {
-        $lookup: {
-          from: "employees",
-          localField: "employeeSubstituteId",
-          foreignField: "id",
-          as: "employeeSubstitute"
-        }
-      },
-      {
-        $unwind: {
-          path: "$employeeSubstitute",
-          "preserveNullAndEmptyArrays": true
-        }
-      },
-      {
-        $lookup: {
-          from: "employees",
-          localField: "employeeReplacedId",
-          foreignField: "id",
-          as: "employeeReplaced"
-        }
-      },
-      {
-        $unwind: {
-          path: "$employeeReplaced",
-          "preserveNullAndEmptyArrays": true
-        }
-      },
-      {
-        $project: {
-          "_id": 0,
-          id: 1,
-          "employeeSubstitute.name": 1,
-          "employeeSubstitute.id": 1,
-          "employeeReplaced.name": 1,
-          "employeeReplaced.id": 1,
-          startedOn: 1,
-          finishedOn: 1,
-          checkSubstitution: "$active",
-        }
-      }]
-  
+        {
+            $lookup: {
+                from: "employees",
+                localField: "employeeSubstituteId",
+                foreignField: "id",
+                as: "employeeSubstitute"
+            }
+        },
+        {
+            $unwind: {
+                path: "$employeeSubstitute",
+                "preserveNullAndEmptyArrays": true
+            }
+        },
+        {
+            $lookup: {
+                from: "employees",
+                localField: "employeeReplacedId",
+                foreignField: "id",
+                as: "employeeReplaced"
+            }
+        },
+        {
+            $unwind: {
+                path: "$employeeReplaced",
+                "preserveNullAndEmptyArrays": true
+            }
+        },
+        {
+            $project: {
+                "_id": 0,
+                id: 1,
+                "employeeSubstitute.name": 1,
+                "employeeSubstitute.id": 1,
+                "employeeReplaced.name": 1,
+                "employeeReplaced.id": 1,
+                startedOn: 1,
+                finishedOn: 1,
+                checkSubstitution: "$active",
+            }
+        }]
+
     if (Object.keys(req.query).length === 0 && req.query.constructor === Object) {
-      console.log("sin query params")
+        console.log("sin query params")
     } else {
-  
-      let matchStage = {}
-      let sortStage = {}
-      let matchExists = false
-  
-      // match stage
-      if ('id' in req.query) {
-        matchStage.id = Number(req.query.id)
-        matchExists = true
-      }
-  
-      if (Number(req.query.employeeSubstituteId)) {
-        if ('employeeSubstituteId' in req.query) {
-          matchStage['employeeSubstitute.id'] = Number(req.query.employeeSubstituteId)
-          matchExists = true
+
+        let matchStage = {}
+        let sortStage = {}
+        let matchExists = false
+
+        // match stage
+        if ('id' in req.query) {
+            matchStage.id = Number(req.query.id)
+            matchExists = true
         }
-      }
-  
-      if (Number(req.query.employeeReplacedId)) {
-        if ('employeeReplacedId' in req.query) {
-          matchStage['employeeReplaced.id'] = Number(req.query.employeeReplacedId)
-          matchExists = true
+
+        if (Number(req.query.employeeSubstituteId)) {
+            if ('employeeSubstituteId' in req.query) {
+                matchStage['employeeSubstitute.id'] = Number(req.query.employeeSubstituteId)
+                matchExists = true
+            }
         }
-      }
-  
-  
-      // sort stage
-      if ('pageSort' in req.query) {
-        let field = req.query.pageSort
-        let orderAsc = true
-        if (req.query.pageSort.indexOf('-')) {
-          orderAsc = false
+
+        if (Number(req.query.employeeReplacedId)) {
+            if ('employeeReplacedId' in req.query) {
+                matchStage['employeeReplaced.id'] = Number(req.query.employeeReplacedId)
+                matchExists = true
+            }
         }
-        field = field.replace('-', '')
-        if (orderAsc) {
-          sortStage[field] = -1
-        } else {
-          sortStage[field] = 1
+
+
+        // sort stage
+        if ('pageSort' in req.query) {
+            let field = req.query.pageSort
+            let orderAsc = true
+            if (req.query.pageSort.indexOf('-')) {
+                orderAsc = false
+            }
+            field = field.replace('-', '')
+            if (orderAsc) {
+                sortStage[field] = -1
+            } else {
+                sortStage[field] = 1
+            }
         }
-      }
-      if (matchExists) {
-        pipeline.push({ $match: matchStage })
-      }
-  
-      pipeline.push({ $sort: sortStage })
-  
-  
-      // skip and limit stage
-      if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
-        substitutionsPipeline = pipeline.slice()
-        substitutionsPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
-        substitutionsPipeline.push({ $limit: parseInt(req.query.pageSize) })
-      }
+        if (matchExists) {
+            pipeline.push({ $match: matchStage })
+        }
+
+        pipeline.push({ $sort: sortStage })
+
+
+        // skip and limit stage
+        if (('pageNumber' in req.query) && ('pageSize' in req.query)) {
+            substitutionsPipeline = pipeline.slice()
+            substitutionsPipeline.push({ $skip: (req.query.pageNumber - 1) * req.query.pageSize })
+            substitutionsPipeline.push({ $limit: parseInt(req.query.pageSize) })
+        }
     }
-  
+
     countPipeline = pipeline.slice()
     countPipeline.push({ $count: 'count' })
-  
+
     console.log(substitutionsPipeline)
     console.log(countPipeline)
-  
+
     let pipeline2 = [
-      {
-        $facet: {
-          substitutions: substitutionsPipeline,
-          totalRecords: countPipeline
+        {
+            $facet: {
+                substitutions: substitutionsPipeline,
+                totalRecords: countPipeline
+            }
         }
-      }
     ]
-  
+
     console.log(pipeline2)
     collection.aggregate(pipeline2
-      , {}, function (e, docs) {
-        if (e != null) {
-          res.json(e)
-        } else {
-          let result = {
-            substitutions: docs[0].substitutions,
-            totalRecords: docs[0].totalRecords[0].count
-          }
-          res.json(result)
-        }
-      })
-  });
+        , {}, function (e, docs) {
+            if (e != null) {
+                res.json(e)
+            } else {
+                let result = {
+                    substitutions: docs[0].substitutions,
+                    totalRecords: docs[0].totalRecords[0].count
+                }
+                res.json(result)
+            }
+        })
+});
 
-  router.get('/resetSubstitutions', function (req, res) {
+router.get('/resetSubstitutions', function (req, res) {
     var db = req.db;
     var collection = db.get('substitutions');
     collection.remove({});
     collection.insert([
-      {
-        id: 1,
-        employeeSubstituteId: 3,
-        employeeReplacedId: 5,
-        startedOn: '2019-01-01',
-        finishedOn: '2019-04-06',
-        active: true
-      },
-      {
-        id: 2,
-        employeeSubstituteId: 4,
-        employeeReplacedId: 8,
-        startedOn: '2019-01-01',
-        finishedOn: '2019-04-06',
-        active: false
-      },
-      {
-        id: 3,
-        employeeSubstituteId: 5,
-        employeeReplacedId: 6,
-        startedOn: '2019-01-01',
-        active: true
-      },
-      {
-        id: 4,
-        employeeSubstituteId: 5,
-        employeeReplacedId: 7,
-        startedOn: '2019-02-01',
-        finishedOn: '2019-07-06',
-        active: true
-      }
+        {
+            id: 1,
+            employeeSubstituteId: 3,
+            employeeReplacedId: 5,
+            startedOn: '2019-01-01',
+            finishedOn: '2019-04-06',
+            active: true
+        },
+        {
+            id: 2,
+            employeeSubstituteId: 4,
+            employeeReplacedId: 8,
+            startedOn: '2019-01-01',
+            finishedOn: '2019-04-06',
+            active: false
+        },
+        {
+            id: 3,
+            employeeSubstituteId: 5,
+            employeeReplacedId: 6,
+            startedOn: '2019-01-01',
+            active: true
+        },
+        {
+            id: 4,
+            employeeSubstituteId: 5,
+            employeeReplacedId: 7,
+            startedOn: '2019-02-01',
+            finishedOn: '2019-07-06',
+            active: true
+        }
     ], function (err, result) {
-      res.send(
-        (err === null) ? { msg: 'OK: substitutions collection has been correctly initialized' } : { msg: 'KO: ' + err }
-      );
+        res.send(
+            (err === null) ? { msg: 'OK: substitutions collection has been correctly initialized' } : { msg: 'KO: ' + err }
+        );
     });
-  });  
+});
 
 router.get('/resetEmployees', function (req, res) {
     var db = req.db;
@@ -500,11 +499,11 @@ router.get('/resetEmployees', function (req, res) {
                             "id": 9,
                             "actionState": true
                         },
-                        {
+                        /*{
                             "actionName": "delete_btn_edit",
                             "id": 11,
                             "actionState": true
-                        },
+                        },*/
                         {
                             "actionName": "print_report_edit",
                             "id": 12,
@@ -724,7 +723,17 @@ router.get('/resetEmployees', function (req, res) {
                             "actionName": "browse_conf",
                             "id": 17,
                             "actionState": true
-                        }
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_edit",
+                            "id": 13,
+                            "actionState": true
+                        },
                     ]
                 },
                 {
@@ -862,7 +871,7 @@ router.get('/resetEmployees', function (req, res) {
                     ]
                 },
                 {
-                    "subject": "sepa",
+                    "subject": "expenditurebanksclosings",
                     "id": 12,
                     "actions": [
                         {
@@ -873,6 +882,16 @@ router.get('/resetEmployees', function (req, res) {
                         {
                             "actionName": "create_btn_lst",
                             "id": 2,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 8,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 9,
                             "actionState": true
                         },
                         {
@@ -941,6 +960,56 @@ router.get('/resetEmployees', function (req, res) {
                             "actionName": "browse_lst",
                             "id": 1,
                             "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 3,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 4,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_new",
+                            "id": 5,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "confirm_btn_new",
+                            "id": 6,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "cancel_btn_new",
+                            "id": 8,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_edit",
+                            "id": 13,
+                            "actionState": true
+                        },                    
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
+                            "actionState": true
                         }
                     ]
                 },
@@ -951,6 +1020,71 @@ router.get('/resetEmployees', function (req, res) {
                         {
                             "actionName": "browse_lst",
                             "id": 1,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "create_btn_lst",
+                            "id": 2,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_report_lst",
+                            "id": 3,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_lst",
+                            "id": 4,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_new",
+                            "id": 5,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "confirm_btn_new",
+                            "id": 6,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "clear_btn_new",
+                            "id": 7,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "cancel_btn_new",
+                            "id": 8,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "browse_edit",
+                            "id": 9,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "delete_btn_edit",
+                            "id": 11,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "print_report_edit",
+                            "id": 12,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "export_xls_edit",
+                            "id": 13,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "confirm_btn_edit",
+                            "id": 10,
+                            "actionState": true
+                        },
+                        {
+                            "actionName": "cancel_btn_edit",
+                            "id": 14,
                             "actionState": true
                         }
                     ]
@@ -1087,11 +1221,11 @@ router.get('/resetEmployees', function (req, res) {
                             "id": 9,
                             "actionState": false
                         },
-                        {
+                        /*{
                             "actionName": "delete_btn_edit",
                             "id": 11,
                             "actionState": false
-                        },
+                        },*/
                         {
                             "actionName": "print_report_edit",
                             "id": 12,
@@ -1449,7 +1583,7 @@ router.get('/resetEmployees', function (req, res) {
                     ]
                 },
                 {
-                    "subject": "sepa",
+                    "subject": "expenditurebanksclosings",
                     "id": 12,
                     "actions": [
                         {
@@ -1666,11 +1800,11 @@ router.get('/resetGroups', function (req, res) {
                             "id": 9,
                             "actionState": true
                         },
-                        {
+                        /*{
                             "actionName": "delete_btn_edit",
                             "id": 11,
                             "actionState": true
-                        },
+                        },*/
                         {
                             "actionName": "print_report_edit",
                             "id": 12,
@@ -2028,7 +2162,7 @@ router.get('/resetGroups', function (req, res) {
                     ]
                 },
                 {
-                    "subject": "sepa",
+                    "subject": "expenditurebanksclosings",
                     "id": 12,
                     "actions": [
                         {
@@ -2232,11 +2366,11 @@ router.get('/resetGroups', function (req, res) {
                             "id": 9,
                             "actionState": false
                         },
-                        {
+                        /*{
                             "actionName": "delete_btn_edit",
                             "id": 11,
                             "actionState": false
-                        },
+                        },*/
                         {
                             "actionName": "print_report_edit",
                             "id": 12,
@@ -2594,7 +2728,7 @@ router.get('/resetGroups', function (req, res) {
                     ]
                 },
                 {
-                    "subject": "sepa",
+                    "subject": "expenditurebanksclosings",
                     "id": 12,
                     "actions": [
                         {

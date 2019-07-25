@@ -212,7 +212,7 @@ router.get('/get/:id', function (req, res) {
       $lookup: {
         from: "enterprises",
         localField: "enterpriseId",
-        foreignField: "enterpriseId",
+        foreignField: "id",
         as: "enterprise"
       }
     },
@@ -223,8 +223,8 @@ router.get('/get/:id', function (req, res) {
         "id": 1,
         "name": 1,
         "number": 1,
-        "enterprise.id": "$enterprise.enterpriseId",
-        "enterprise.name": "$enterprise.enterpriseName",
+        "enterprise.id": "$enterprise.id",
+        "enterprise.name": "$enterprise.name",
         "ledgerAccount": 1
       }
     },

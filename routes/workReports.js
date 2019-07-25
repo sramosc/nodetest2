@@ -191,7 +191,7 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [2, 6],
-          sum: 0,
+          sum: '00:00',
           depth: 0
         }, {
           id: 2,
@@ -200,7 +200,7 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [3],
-          sum: 0,
+          sum: '00:00',
           depth: 1
         }, {
           id: 3,
@@ -209,7 +209,7 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [4, 5],
-          sum: 0,
+          sum: '00:00',
           depth: 2
         }, {
           id: 4,
@@ -218,11 +218,11 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [],
-          day11: 8,
-          day02: 8,
-          day03: 8,
-          day16: 2,
-          sum: 0,
+          day11: '08:00',
+          day02: '08:00',
+          day03: '08:00',
+          day16: '02:00',
+          sum:'00:00',
           depth: 3
         }, {
           id: 5,
@@ -231,10 +231,10 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [],
-          day21: 3,
-          day22: 1,
-          day23: 2,
-          sum: 0,
+          day21: '03:00',
+          day22: '01:00',
+          day23: '02:00',
+          sum: '00:00',
           depth: 3
         }, {
           id: 6,
@@ -243,7 +243,7 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [7],
-          sum: 0,
+          sum: '00:00',
           depth: 1
         }, {
           id: 7,
@@ -252,7 +252,7 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [8],
-          sum: 0,
+          sum: '00:00',
           depth: 2
         }, {
           id: 8,
@@ -261,11 +261,11 @@ router.get('/get/:id', function (req, res) {
           visible: true,
           childrenAction: 'HIDE',
           children: [],
-          day15: 3,
-          day22: 2,
-          day28: 7,
-          day29: 2.5,
-          sum: 0,
+          day15: '03:00',
+          day22: '02:00',
+          day28: '07:00',
+          day29: '02:30',
+          sum: '00:00',
           depth: 3
         }
       ]

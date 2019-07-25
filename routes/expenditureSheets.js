@@ -19,7 +19,7 @@ router.get('/list', function (req, res) {
             $unwind: {
                 path: "$expenditureBankClosing",
                 "preserveNullAndEmptyArrays": true
-              }
+            }
         },
         {
             $lookup: {
@@ -80,10 +80,10 @@ router.get('/list', function (req, res) {
                 "manager.code": "$manager.code",
                 "status.id": "$status.id",
                 "status.name": "$status.name",
-                "enterprise.id":"$enterprise.id",
-                "enterprise.name":"$enterprise.name",
+                "enterprise.id": "$enterprise.id",
+                "enterprise.name": "$enterprise.name",
                 "amount": 1,
-                "date":1
+                "datedOn": 1
             }
         }]
 
@@ -137,6 +137,88 @@ router.get('/list', function (req, res) {
         })
 });
 
+router.get('/get/:id', function (req, res) {
+    var db = req.db;
+    var collection = db.get('expenditureSheets');
+    var docToFind = Number(req.params.id);
+    collection.aggregate([
+        {
+            $match: { 'id': docToFind }
+        },
+        {
+            $lookup: {
+                from: "employees",
+                localField: "employeeId",
+                foreignField: "id",
+                as: "employee"
+            }
+        },
+        {
+            $unwind: "$employee"
+        },
+        {
+            $lookup: {
+                from: "employees",
+                localField: "managerId",
+                foreignField: "id",
+                as: "manager"
+            }
+        },
+        {
+            $unwind: "$manager"
+        },
+        {
+            $lookup: {
+                from: "enterprises",
+                localField: "enterpriseId",
+                foreignField: "id",
+                as: "enterprise"
+            }
+        },
+        {
+            $unwind: "$enterprise"
+        },
+        {
+            $lookup: {
+                from: "sepaStatus",
+                localField: "statusId",
+                foreignField: "id",
+                as: "status"
+            }
+        },
+        {
+            $unwind: "$status"
+        },
+        {
+            $project: {
+                "_id": 0,
+                "id": 1,
+                "employee.id": "$employee.id",
+                "employee.name": "$employee.name",
+                "manager.id": "$manager.id",
+                "manager.name": "$manager.name",
+                "state.id": "$status.id",
+                "state.name": "$status.name",
+                "enterprise.id": "$enterprise.id",
+                "enterprise.name": "$enterprise.name",
+                "amount": 1,
+                "datedOn": 1,
+                "expenses": 1
+            }
+        }
+    ], {}, function (e, docs) {
+        if (e != null) {
+            res.json(e)
+        } else {
+            docs[0].version = 1
+            let result = {
+                expenditureSheet: docs[0]
+            }
+            res.json(result)
+        }
+    })
+});
+
 // GET resetCollectionSalaries
 router.get('/reset', function (req, res) {
     var db = req.db;
@@ -150,9 +232,14 @@ router.get('/reset', function (req, res) {
             amount: 123,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            expenses: [
+                { id: 1, activity: { id: 1, name: 'actividad 1' }, datedOn: '2019-06-01', concept: 'gasto 1', amount: 3 },
+                { id: 2, activity: { id: 2, name: 'actividad 2' }, datedOn: '2019-06-02', concept: 'gasto 2', amount: 43 },
+                { id: 3, activity: { id: 3, name: 'actividad 3' }, datedOn: '2019-05-03', concept: 'gasto 3', amount: 50 },
+                { id: 4, activity: { id: 1, name: 'actividad 1' }, datedOn: '2019-05-21', concept: 'gasto 4', amount: 27 },
+            ]
         },
         {
             id: 2,
@@ -161,9 +248,9 @@ router.get('/reset', function (req, res) {
             amount: 12.3,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 3,
@@ -172,9 +259,9 @@ router.get('/reset', function (req, res) {
             amount: 45.66,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 4,
@@ -183,9 +270,9 @@ router.get('/reset', function (req, res) {
             amount: 500,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 5,
@@ -194,9 +281,9 @@ router.get('/reset', function (req, res) {
             amount: 23.45,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 6,
@@ -205,9 +292,9 @@ router.get('/reset', function (req, res) {
             amount: 12.76,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 7,
@@ -216,9 +303,9 @@ router.get('/reset', function (req, res) {
             amount: 223,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 8,
@@ -227,9 +314,9 @@ router.get('/reset', function (req, res) {
             amount: 16.2,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 9,
@@ -238,9 +325,9 @@ router.get('/reset', function (req, res) {
             amount: 67.43,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         },
         {
             id: 10,
@@ -249,9 +336,9 @@ router.get('/reset', function (req, res) {
             amount: 237,
             managerId: 3,
             enterpriseId: 2,
-            date: '2019-03-01',
+            datedOn: '2019-03-01',
             statusId: 1,
-            activities: [1,2,3]
+            activities: [1, 2, 3]
         }
     ], function (err, result) {
         res.send(

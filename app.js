@@ -48,6 +48,7 @@ var substitutionsRoutes = require('./routes/substitutions');
 var expenditureSheetsRoutes = require('./routes/expenditureSheets');
 var expensesRoutes = require('./routes/expenses');
 var securityRouter = require('./routes/security');
+var travelAllowanceRoutes = require('./routes/travelAllowance');
 
 var app = express();
 app.use(cors());
@@ -114,6 +115,7 @@ app.use('/api/expendituresbanksclosingsstates', sepaStatusRoutes);
 app.use('/api/substitutions', substitutionsRoutes);
 app.use('/api/expendituresheets', expenditureSheetsRoutes);
 app.use('/api/expenses', expensesRoutes);
+app.use('/api/travelAllowance', travelAllowanceRoutes);
 
 
 // catch 404 and forward to error handler

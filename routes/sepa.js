@@ -131,6 +131,32 @@ router.get('/list', function (req, res) {
 });
 
 router.get('/get/:id', function (req, res) {
+
+  res.json({
+    expenditureBankClosing: {
+      id: 29,
+      generationDate: "2019-04-01",
+      sendingDate: "2019-04-30",
+      description: "blablabla",
+      status: {
+        name: "GENERATED_PAYMENT",
+        id: 0
+      },
+      enterprise: {
+        id: 3,
+        name: "Empresa 1"
+      },
+      bankAccount: {
+        id: 1,
+        name: "BBVA",
+        number: "ES632323122342342342323",
+        ledgerAccount: "31312312312"
+      }
+    }
+  })
+});
+
+/*router.get('/get/:id', function (req, res) {
   var db = req.db;
   var collection = db.get('sepa');
   var docToFind = Number(req.params.id);
@@ -191,7 +217,7 @@ router.get('/get/:id', function (req, res) {
       res.json(result)
     }
   })
-});
+});*/
 
 
 router.get('/reset', function (req, res) {
